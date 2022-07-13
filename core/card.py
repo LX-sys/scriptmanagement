@@ -25,6 +25,9 @@ class Card(QWidget):
         # self.countEvent(self.test)
         self.historyEvent(self.test)
 
+    def templeate(self):
+        pass
+
     # 创建卡片
     def createCard(self,number:str,participator="",task=None):
         self.updateID(1)
