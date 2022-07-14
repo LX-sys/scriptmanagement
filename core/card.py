@@ -12,9 +12,14 @@ import json
 import typing
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QApplication, QWidget,QHBoxLayout,QPushButton,QLabel,QComboBox
+from PyQt5.QtWidgets import QApplication, QWidget,QFrame,QHBoxLayout,QPushButton,QLabel,QComboBox
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor
+
+# 重写QComboBox取消滚动
+class myQComboBox(QComboBox):
+    def wheelEvent(self, e: QtGui.QWheelEvent) -> None:
+        pass
 
 
 # 共享ID
@@ -43,7 +48,7 @@ class ID:
 
 
 # CardFrame
-class CardABC(QWidget):
+class CardABC(QFrame):
     def __init__(self, *args,**kwargs) -> None:
         super().__init__(*args,**kwargs)
 
@@ -98,7 +103,7 @@ class TitleCard(CardABC):
 
     def defaultStyleSheet(self):
         self.setStyleSheet('''
-QWidget{
+QFrame{
 	background-color: rgb(0, 0, 0);
 }
 QLabel{
@@ -133,7 +138,7 @@ class Card(CardABC):
 
     def defaultStyleSheet(self):
         self.setStyleSheet('''
-QWidget{
+QFrame{
 	background-color: qlineargradient(spread:pad, x1:0, y1:0.528136, x2:1, y2:0.517, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(187, 187, 187, 255));
 }
 QLabel,QComboBox,QPushButton{
@@ -176,7 +181,7 @@ QPushButton:hover{
         count.setMinimumSize(60,30)
         count.setMaximumSize(60,30)
 
-        schedule = QComboBox(self)
+        schedule = myQComboBox(self)
         schedule.setMinimumSize(80,25)
         schedule.setMaximumSize(80,25)
         schedule.addItems(["未完成","完成","详情"])
@@ -191,7 +196,7 @@ QPushButton:hover{
         update_time.setMaximumSize(150, 30)
         update_time.setAlignment(CENTER)
 
-        participator = QComboBox(self)
+        participator = myQComboBox(self)
         participator.setMinimumSize(80, 25)
         participator.setMaximumSize(80, 25)
         participator.addItems(["刘璇", "丁梓靖", "赵银鹏"])
@@ -241,7 +246,7 @@ QPushButton:hover{
     def boxchangeEvent(self, text: str):
         text = self.getIDobj("schedule").currentText()
         style = '''
-        QWidget{
+        QFrame{
             background-color: <color>;
         }
         QLabel,QComboBox,QPushButton{

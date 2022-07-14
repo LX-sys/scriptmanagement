@@ -23,6 +23,22 @@ class CardFrame(QWidget):
         self._h = 50
 
         self.setupUi()
+        self.setStyleSheet('''
+        QWidget{
+	background-color: qlineargradient(spread:pad, x1:0, y1:0.528136, x2:1, y2:0.517, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(187, 187, 187, 255));
+}
+QLabel,QComboBox,QPushButton{
+background-color:none;
+	color: rgb(0, 0, 0);
+	font: 12pt "黑体";
+}
+QPushButton{
+border:none;
+}
+QPushButton:hover{
+	color: rgb(28, 58, 255);
+}
+        ''')
 
         for i in range(16):
             self.addCard(Card())
