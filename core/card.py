@@ -271,6 +271,7 @@ QPushButton:hover{
         self.getIDobj("schedule").currentIndexChanged.connect(self.boxchangeEvent)
 
 
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
