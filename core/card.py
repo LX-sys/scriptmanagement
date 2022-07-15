@@ -14,7 +14,7 @@ import typing
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QWidget,QFrame,QHBoxLayout,QPushButton,QLabel,QComboBox
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QColor,QCursor
 
 # 重写QComboBox取消滚动
 class myQComboBox(QComboBox):
@@ -99,6 +99,7 @@ class TitleCard(CardABC):
         self.setMinimumHeight(60)
         self.setMaximumHeight(60)
         self.defaultStyleSheet()
+
         self.addTitle(["ID","脚本编号","任务名称","阅览脚本","被使用次数","进度","创建时间","修改时间","修改时间","参与者","操作记录"])
 
     def defaultStyleSheet(self):
@@ -133,6 +134,9 @@ class Card(CardABC):
         self.id = ID()
         self.id.add()
         self.updateID(self.id.getID())
+
+        # 设置光标
+        self.setCursor(Qt.OpenHandCursor)
 
         self.myEvent()
 

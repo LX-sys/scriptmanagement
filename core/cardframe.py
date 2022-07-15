@@ -11,8 +11,12 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.Qt import Qt
+
+
 
 from card import TitleCard,Card
+
 
 class CardFrame(QWidget):
     def __init__(self, *args,**kwargs) -> None:
@@ -23,26 +27,10 @@ class CardFrame(QWidget):
         self._h = 50
 
         self.setupUi()
-        self.setStyleSheet('''
-        QWidget{
-	background-color: qlineargradient(spread:pad, x1:0, y1:0.528136, x2:1, y2:0.517, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(187, 187, 187, 255));
-}
-QLabel,QComboBox,QPushButton{
-background-color:none;
-	color: rgb(0, 0, 0);
-	font: 12pt "黑体";
-}
-QPushButton{
-border:none;
-}
-QPushButton:hover{
-	color: rgb(28, 58, 255);
-}
-        ''')
-
-        for i in range(16):
+        for i in range(24):
             self.addCard(Card())
         self.createCard()
+
     
     def setupUi(self):
         self.resize(1240, 700)
@@ -52,15 +40,24 @@ QPushButton:hover{
         self.var_body.addWidget(TitleCard())
 
         self.scrollArea = QtWidgets.QScrollArea(self)
+        # 设置滚动条不显示
+        self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+
         self.scrollArea.setWidgetResizable(True)
         self.scrollwidge = QtWidgets.QWidget()
         self.vbox = QtWidgets.QVBoxLayout(self.scrollwidge)
         self.vbox.setContentsMargins(0, 0, 0, 0)
+        self.vbox.setSpacing(0)
 
         self.spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
 
         self.scrollArea.setWidget(self.scrollwidge)
         self.var_body.addWidget(self.scrollArea)
+
+
+    # 在底部添加窗口
+    def endWidget(self,widget:QWidget):
+        self.var_body.addWidget(widget)
 
     # 添加卡片
     def addCard(self, card: QWidget):
@@ -108,15 +105,19 @@ QPushButton:hover{
         super(CardFrame, self).resizeEvent(e)
 
     def wheelEvent(self, e: QtGui.QWheelEvent) -> None:
+        # print("-->>",e.y())
+
+        print(e.globalY())
         # now = time.time()
         # print("滚动时间差:",now-self.rolling_time[0])
         # self.rolling_time[0]=now
-        direction = e.angleDelta().y()
-        # self.s+=direction
-        if direction < 0:
-            print("下")
-        else:
-            print("上")
+        # direction = e.angleDelta().y()
+        #
+        # # self.s+=direction
+        # if direction < 0:
+        #     print("下")
+        # else:
+        #     print("上")
         super(CardFrame, self).wheelEvent(e)
 
 if __name__ == '__main__':
