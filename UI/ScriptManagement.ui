@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1195</width>
+    <height>746</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <item row="0" column="0">
+     <widget class="QStackedWidget" name="stackedWidget">
+      <property name="styleSheet">
+       <string notr="true">QWidget{
+background-color: rgb(222, 222, 222);
+}
+QLabel,QLineEdit{
+	color: rgb(0, 0, 0);
+	font: 12pt &quot;黑体&quot;;
+}
+QLineEdit{
+	color: rgb(0, 85, 255);
+}
+QPushButton{
+	
+	color: rgb(84, 84, 84);
+	background-color: rgb(0, 255, 0);
+}</string>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="page">
+       <layout class="QGridLayout" name="gridLayout_2">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QSplitter" name="splitter_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="handleWidth">
+           <number>0</number>
+          </property>
+          <widget class="QSplitter" name="splitter">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="handleWidth">
+            <number>0</number>
+           </property>
+           <widget class="QWidget" name="card_body" native="true">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(85, 255, 0);</string>
+            </property>
+           </widget>
+           <widget class="QTabWidget" name="crad_affiliated">
+            <property name="styleSheet">
+             <string notr="true">QWidget{
+	background-color: rgb(0, 85, 255);
+}
+QTabBar{
+background-color:none;
+}
+QTabBar::tab{
+	font: 8pt &quot;微软雅黑&quot;;
+	color: rgb(217, 217, 217);
+	height:20px;
+	background-color: rgb(33, 33, 33);
+}
+QTabBar::tab:selected{
+	color: rgb(255, 255, 255);
+	background-color: rgb(113, 113, 113);
+}
+</string>
+            </property>
+            <property name="tabPosition">
+             <enum>QTabWidget::South</enum>
+            </property>
+            <property name="currentIndex">
+             <number>1</number>
+            </property>
+            <property name="elideMode">
+             <enum>Qt::ElideLeft</enum>
+            </property>
+            <property name="documentMode">
+             <bool>true</bool>
+            </property>
+            <property name="tabsClosable">
+             <bool>false</bool>
+            </property>
+            <property name="movable">
+             <bool>true</bool>
+            </property>
+            <property name="tabBarAutoHide">
+             <bool>false</bool>
+            </property>
+            <widget class="QWidget" name="tab">
+             <attribute name="title">
+              <string>Tab 1</string>
+             </attribute>
+            </widget>
+            <widget class="QWidget" name="tab_2">
+             <attribute name="title">
+              <string>Tab 2</string>
+             </attribute>
+            </widget>
+           </widget>
+          </widget>
+          <widget class="QTabWidget" name="left_Tabwidget">
+           <property name="styleSheet">
+            <string notr="true">QWidget{
+	background-color: rgb(85, 170, 255);
+}
+QTabBar{
+background-color:none;
+}
+QTabBar::tab{
+	font: 8pt &quot;微软雅黑&quot;;
+	color: rgb(217, 217, 217);
+	height:65px;
+	background-color: rgb(33, 33, 33);
+}
+QTabBar::tab:selected{
+	color: rgb(255, 255, 255);
+	background-color: rgb(113, 113, 113);
+}
+</string>
+           </property>
+           <property name="tabPosition">
+            <enum>QTabWidget::East</enum>
+           </property>
+           <property name="currentIndex">
+            <number>0</number>
+           </property>
+           <property name="elideMode">
+            <enum>Qt::ElideLeft</enum>
+           </property>
+           <property name="documentMode">
+            <bool>true</bool>
+           </property>
+           <property name="tabsClosable">
+            <bool>false</bool>
+           </property>
+           <property name="movable">
+            <bool>true</bool>
+           </property>
+           <property name="tabBarAutoHide">
+            <bool>false</bool>
+           </property>
+           <widget class="QWidget" name="tab_3">
+            <attribute name="title">
+             <string>Tab 1</string>
+            </attribute>
+           </widget>
+           <widget class="QWidget" name="tab_4">
+            <attribute name="title">
+             <string>Tab 2</string>
+            </attribute>
+           </widget>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="page_2">
+       <widget class="QLabel" name="label_name">
+        <property name="geometry">
+         <rect>
+          <x>525</x>
+          <y>380</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLabel{
+	color: rgb(80, 80, 80);
+	font: 10pt &quot;微软雅黑&quot;;
+}</string>
+        </property>
+        <property name="text">
+         <string>姓名</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignBottom|Qt::AlignHCenter</set>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_name">
+        <property name="geometry">
+         <rect>
+          <x>530</x>
+          <y>410</y>
+          <width>200</width>
+          <height>40</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLineEdit{
+color: rgb(0, 0, 0);
+border:3px solid rgb(0, 0, 0);
+border-top:none;
+border-left:none;
+border-right:none;
+font: 14pt &quot;黑体&quot;;
+}
+QLineEdit:focus{
+	border-bottom-color:rgb(0, 0, 127);
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="placeholderText">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_pwd">
+        <property name="geometry">
+         <rect>
+          <x>525</x>
+          <y>470</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLabel{
+	color: rgb(80, 80, 80);
+	font: 10pt &quot;微软雅黑&quot;;
+}</string>
+        </property>
+        <property name="text">
+         <string>密码</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignBottom|Qt::AlignHCenter</set>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_pwd">
+        <property name="geometry">
+         <rect>
+          <x>530</x>
+          <y>500</y>
+          <width>200</width>
+          <height>40</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLineEdit{
+color: rgb(0, 0, 0);
+border:3px solid rgb(0, 0, 0);
+border-top:none;
+border-left:none;
+border-right:none;
+font: 14pt &quot;黑体&quot;;
+}
+QLineEdit:focus{
+	border-bottom-color:rgb(0, 0, 127);
+}</string>
+        </property>
+        <property name="echoMode">
+         <enum>QLineEdit::Password</enum>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="btn_login">
+        <property name="geometry">
+         <rect>
+          <x>470</x>
+          <y>580</y>
+          <width>111</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+border:1px solid rgb(255, 255, 255);
+border-radius:4px;
+color: rgb(43, 43, 43);
+background-color:rgb(0, 255, 127);
+font: 13pt &quot;华文琥珀&quot;;
+}
+QPushButton:pressed{
+background-color:rgb(0, 227, 110);
+}</string>
+        </property>
+        <property name="text">
+         <string>登录</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="btn_registered">
+        <property name="geometry">
+         <rect>
+          <x>700</x>
+          <y>580</y>
+          <width>111</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+border:1px solid rgb(255, 255, 255);
+border-radius:4px;
+color:rgb(189, 189, 189);
+background-color:rgb(22, 22, 22);
+font: 13pt &quot;华文琥珀&quot;;
+}
+QPushButton:pressed{
+background-color:rgb(0, 0, 0);
+}</string>
+        </property>
+        <property name="text">
+         <string>注册</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label">
+        <property name="geometry">
+         <rect>
+          <x>300</x>
+          <y>100</y>
+          <width>661</width>
+          <height>81</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLabel{
+	color: rgb(0, 0, 0);
+	font: 40pt &quot;黑体&quot;;
+}</string>
+        </property>
+        <property name="text">
+         <string>脚本管理系统</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_2">
+        <property name="geometry">
+         <rect>
+          <x>790</x>
+          <y>110</y>
+          <width>61</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLabel{
+	color:rgb(107, 107, 107);
+	
+	font: 11pt &quot;微软雅黑&quot;;
+}</string>
+        </property>
+        <property name="text">
+         <string>@ LX</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_respace_name">
+        <property name="geometry">
+         <rect>
+          <x>740</x>
+          <y>410</y>
+          <width>200</width>
+          <height>40</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLabel{
+	background-color: rgb(85, 255, 0);
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_respace_pwd">
+        <property name="geometry">
+         <rect>
+          <x>740</x>
+          <y>500</y>
+          <width>200</width>
+          <height>40</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLabel{
+	background-color: rgb(85, 255, 0);
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1195</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>文件</string>
+    </property>
+    <addaction name="action"/>
+    <addaction name="action_2"/>
+    <addaction name="action_4"/>
+   </widget>
+   <addaction name="menu"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="action">
+   <property name="text">
+    <string>新建脚本</string>
+   </property>
+  </action>
+  <action name="action_2">
+   <property name="text">
+    <string>修改脚本</string>
+   </property>
+  </action>
+  <action name="action_4">
+   <property name="text">
+    <string>设置</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

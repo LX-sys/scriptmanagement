@@ -135,9 +135,6 @@ class Card(CardABC):
         self.id.add()
         self.updateID(self.id.getID())
 
-        # 设置光标
-        self.setCursor(Qt.OpenHandCursor)
-
         self.myEvent()
 
     def defaultStyleSheet(self):
