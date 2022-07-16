@@ -29,6 +29,8 @@ class CardFrame(QWidget):
             self.addCard(Card())
         self.createCard()
 
+        self.defaultStyleSheet()
+
     
     def setupUi(self):
         self.resize(1240, 700)
@@ -44,14 +46,20 @@ class CardFrame(QWidget):
         self.scrollArea.setWidgetResizable(True)
         self.scrollwidge = QtWidgets.QWidget()
         self.vbox = QtWidgets.QVBoxLayout(self.scrollwidge)
-        self.vbox.setContentsMargins(0, 0, 0, 0)
-        self.vbox.setSpacing(0)
+        self.vbox.setContentsMargins(6, 0, 6, 0)
+        self.vbox.setSpacing(5)
 
         self.spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
 
         self.scrollArea.setWidget(self.scrollwidge)
         self.var_body.addWidget(self.scrollArea)
 
+
+
+    def defaultStyleSheet(self):
+        self.setStyleSheet('''
+        border:none;
+        ''')
 
     # 在底部添加窗口
     def endWidget(self,widget:QWidget):

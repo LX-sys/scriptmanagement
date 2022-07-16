@@ -86,4 +86,4 @@ def deal_Code(filepath:str,c_name:str="UI",inheritance_name:str="QMainWindow",mo
     return code
 
 
-deal_Code("test.py", outfile="cardframe.py", c_name="Card", inheritance_name="QWidget")
+deal_Code("../core/ScriptManagement.py", outfile="../core/ScriptManagement.py", c_name="ScriptManagement", inheritance_name="QMainWindow")

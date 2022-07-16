@@ -6,6 +6,7 @@
 
 '''卡片'''
 
+import re
 import sys
 from datetime import datetime
 import json
@@ -135,15 +136,21 @@ class Card(CardABC):
         self.id.add()
         self.updateID(self.id.getID())
 
+
         self.myEvent()
 
     def defaultStyleSheet(self):
+        self.setObjectName("body")
         self.setStyleSheet('''
-QFrame{
-	background-color: qlineargradient(spread:pad, x1:0, y1:0.528136, x2:1, y2:0.517, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(187, 187, 187, 255));
+QFrame#body{
+	background-color: rgb(247, 247, 247);
+	border-radius:7px;
+}
+QFrame#body:hover{
+	border:2px solid qlineargradient(spread:pad, x1:0.295955, y1:0.471, x2:0.54, y2:0.619273, stop:0.488636 rgba(125, 60, 221, 77));
 }
 QLabel,QComboBox,QPushButton{
-background-color:none;
+	background-color:none;
 	color: rgb(0, 0, 0);
 	font: 12pt "黑体";
 }
@@ -246,31 +253,21 @@ QPushButton:hover{
     # 完成情况改变时事件
     def boxchangeEvent(self, text: str):
         text = self.getIDobj("schedule").currentText()
-        style = '''
-        QFrame{
-            background-color: <color>;
-        }
-        QLabel,QComboBox,QPushButton{
-            background-color:none;
-            color: rgb(0, 0, 0);
-            font: 12pt "黑体";
-        }
-        QPushButton{
-        border:none;
-        }
-        QPushButton:hover{
-            color: rgb(28, 58, 255);
-        }
-                    '''
+        style =self.styleSheet()
+
         if text == "完成":
-            style = style.replace("<color>",
-                                  "qlineargradient(spread:pad, x1:0, y1:0.528136, x2:1, y2:0.517, stop:0 rgba(86, 255, 109, 255), stop:1 rgba(158, 221, 185, 255))")
+            p = "QFrame#body{\n\tbackground-color:<color>;".replace("<color>",
+                                                                    "qlineargradient(spread:pad, x1:0, y1:0.528136, x2:1, y2:0.517, stop:0 rgba(86, 255, 109, 255), stop:1 rgba(158, 221, 185, 255))")
+            style = re.sub(r"QFrame#body{\n\tbackground-color:.*;", p, style)
+
         if text == "未完成":
-            style = style.replace("<color>",
-                                  "qlineargradient(spread:pad, x1:0, y1:0.528136, x2:1, y2:0.517, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(187, 187, 187, 255));")
+            p = "QFrame#body{\n\tbackground-color:<color>;".replace("<color>",
+                                                                    "qlineargradient(spread:pad, x1:0, y1:0.528136, x2:1, y2:0.517, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(187, 187, 187, 255))")
+            style = re.sub(r"QFrame#body{\n\tbackground-color:.*;", p, style)
         if text == "详情":
-            style = style.replace("<color>",
-                                  "qlineargradient(spread:reflect, x1:1, y1:0.528, x2:0.057, y2:0.54, stop:0 rgba(215, 226, 185, 255), stop:1 rgba(216, 235, 13, 255));")
+            p = "QFrame#body{\n\tbackground-color:<color>;".replace("<color>",
+                                                                    "qlineargradient(spread:reflect, x1:1, y1:0.528, x2:0.057, y2:0.54, stop:0 rgba(215, 226, 185, 255), stop:1 rgba(216, 235, 13, 255))")
+            style = re.sub(r"QFrame#body{\n\tbackground-color:.*;", p, style)
         self.setStyleSheet(style)
 
     def myEvent(self):
@@ -281,7 +278,7 @@ QPushButton:hover{
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
-    win = TitleCard()
+    win = Card()
     win.show()
 
     sys.exit(app.exec_())

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1195</width>
-    <height>746</height>
+    <width>1208</width>
+    <height>781</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -44,13 +44,12 @@ QLineEdit{
 	color: rgb(0, 85, 255);
 }
 QPushButton{
-	
 	color: rgb(84, 84, 84);
 	background-color: rgb(0, 255, 0);
 }</string>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="page">
        <layout class="QGridLayout" name="gridLayout_2">
@@ -70,50 +69,66 @@ QPushButton{
          <number>0</number>
         </property>
         <item row="0" column="0">
-         <widget class="QSplitter" name="splitter_2">
+         <widget class="QSplitter" name="splitter_v">
+          <property name="lineWidth">
+           <number>0</number>
+          </property>
           <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <enum>Qt::Vertical</enum>
           </property>
           <property name="handleWidth">
            <number>0</number>
           </property>
-          <widget class="QSplitter" name="splitter">
+          <property name="childrenCollapsible">
+           <bool>false</bool>
+          </property>
+          <widget class="QSplitter" name="splitter_h">
+           <property name="lineWidth">
+            <number>0</number>
+           </property>
            <property name="orientation">
-            <enum>Qt::Vertical</enum>
+            <enum>Qt::Horizontal</enum>
            </property>
            <property name="handleWidth">
             <number>0</number>
            </property>
+           <property name="childrenCollapsible">
+            <bool>false</bool>
+           </property>
            <widget class="QWidget" name="card_body" native="true">
             <property name="styleSheet">
-             <string notr="true">background-color: rgb(85, 255, 0);</string>
+             <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0.528136, x2:1, y2:0.517, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(187, 187, 187, 255));</string>
             </property>
            </widget>
-           <widget class="QTabWidget" name="crad_affiliated">
+           <widget class="QTabWidget" name="left_Tabwidget">
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
             <property name="styleSheet">
              <string notr="true">QWidget{
-	background-color: rgb(0, 85, 255);
+background-color: rgb(255, 255, 255);
+border-left:2px solid rgb(62, 62, 62);
 }
 QTabBar{
-background-color:none;
+background-color:  rgb(113, 113, 113);
+border:none;
 }
 QTabBar::tab{
-	font: 8pt &quot;微软雅黑&quot;;
-	color: rgb(217, 217, 217);
-	height:20px;
-	background-color: rgb(33, 33, 33);
+font: 8pt &quot;微软雅黑&quot;;
+color: rgb(217, 217, 217);
+height:25px;
+background-color: rgb(113, 113, 113);
 }
 QTabBar::tab:selected{
-	color: rgb(255, 255, 255);
-	background-color: rgb(113, 113, 113);
-}
-</string>
+color: rgb(255, 255, 255);
+background-color: rgb(33, 33, 33);
+}</string>
             </property>
             <property name="tabPosition">
-             <enum>QTabWidget::South</enum>
+             <enum>QTabWidget::East</enum>
             </property>
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <property name="elideMode">
              <enum>Qt::ElideLeft</enum>
@@ -130,43 +145,47 @@ QTabBar::tab:selected{
             <property name="tabBarAutoHide">
              <bool>false</bool>
             </property>
-            <widget class="QWidget" name="tab">
+            <widget class="QWidget" name="tab_3">
              <attribute name="title">
               <string>Tab 1</string>
              </attribute>
             </widget>
-            <widget class="QWidget" name="tab_2">
+            <widget class="QWidget" name="tab_4">
              <attribute name="title">
               <string>Tab 2</string>
              </attribute>
             </widget>
            </widget>
           </widget>
-          <widget class="QTabWidget" name="left_Tabwidget">
+          <widget class="QTabWidget" name="crad_affiliated">
            <property name="styleSheet">
             <string notr="true">QWidget{
-	background-color: rgb(85, 170, 255);
+background-color: rgb(255, 255, 255);
+border-top:1px solid rgb(223, 223, 223)
 }
 QTabBar{
 background-color:none;
+border:none;
 }
 QTabBar::tab{
-	font: 8pt &quot;微软雅黑&quot;;
-	color: rgb(217, 217, 217);
-	height:65px;
-	background-color: rgb(33, 33, 33);
+font: 8pt &quot;微软雅黑&quot;;
+color: rgb(217, 217, 217);
+height:25px;
+background-color: rgb(113, 113, 113);
 }
 QTabBar::tab:selected{
-	color: rgb(255, 255, 255);
-	background-color: rgb(113, 113, 113);
-}
-</string>
+color: rgb(255, 255, 255);
+background-color: rgb(33, 33, 33);
+}</string>
            </property>
            <property name="tabPosition">
-            <enum>QTabWidget::East</enum>
+            <enum>QTabWidget::South</enum>
+           </property>
+           <property name="tabShape">
+            <enum>QTabWidget::Rounded</enum>
            </property>
            <property name="currentIndex">
-            <number>0</number>
+            <number>1</number>
            </property>
            <property name="elideMode">
             <enum>Qt::ElideLeft</enum>
@@ -174,21 +193,15 @@ QTabBar::tab:selected{
            <property name="documentMode">
             <bool>true</bool>
            </property>
-           <property name="tabsClosable">
-            <bool>false</bool>
-           </property>
            <property name="movable">
             <bool>true</bool>
            </property>
-           <property name="tabBarAutoHide">
-            <bool>false</bool>
-           </property>
-           <widget class="QWidget" name="tab_3">
+           <widget class="QWidget" name="tab_5">
             <attribute name="title">
              <string>Tab 1</string>
             </attribute>
            </widget>
-           <widget class="QWidget" name="tab_4">
+           <widget class="QWidget" name="tab_6">
             <attribute name="title">
              <string>Tab 2</string>
             </attribute>
@@ -382,7 +395,6 @@ background-color:rgb(0, 0, 0);
         <property name="styleSheet">
          <string notr="true">QLabel{
 	color:rgb(107, 107, 107);
-	
 	font: 11pt &quot;微软雅黑&quot;;
 }</string>
         </property>
@@ -400,9 +412,7 @@ background-color:rgb(0, 0, 0);
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">QLabel{
-	background-color: rgb(85, 255, 0);
-}</string>
+         <string notr="true"/>
         </property>
         <property name="text">
          <string/>
@@ -418,9 +428,7 @@ background-color:rgb(0, 0, 0);
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">QLabel{
-	background-color: rgb(85, 255, 0);
-}</string>
+         <string notr="true"/>
         </property>
         <property name="text">
          <string/>
@@ -436,7 +444,7 @@ background-color:rgb(0, 0, 0);
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1195</width>
+     <width>1208</width>
      <height>23</height>
     </rect>
    </property>
