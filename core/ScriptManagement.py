@@ -24,6 +24,9 @@ class ScriptManagement(QMainWindow):
         self.setupUi()
         self.myMenu()
         self.myShortcuts()
+        self.myEvent()
+
+        self.Init()
     
     def setupUi(self):
         self.setObjectName("self")
@@ -74,10 +77,8 @@ QPushButton{
         self.card_body = CardFrame(self.splitter_h)
 
         # 右下
-        self.left_Tabwidget = TableRight(self.splitter_h)
+        self.right_Tabwidget = TableRight(self.splitter_h)
         self.crad_affiliated = TableBottom(self.splitter_v)
-        self.splitter_h.setSizes([int(self.width()*0.99),int(self.width()*0.01)])
-        self.splitter_v.setSizes([int(self.width()*0.99),int(self.width()*0.01)])
 
         self.gridLayout_2.addWidget(self.splitter_v, 0, 0, 1, 1)
         self.stackedWidget.addWidget(self.page)
@@ -200,9 +201,13 @@ QLabel{
         self.setCentralWidget(self.centralwidget)
         self.retranslateUi()
         self.stackedWidget.setCurrentIndex(0)
-        self.left_Tabwidget.setCurrentIndex(0)
+        self.right_Tabwidget.setCurrentIndex(0)
         self.crad_affiliated.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(self)
+
+    def Init(self):
+        self.splitter_h.setSizes([int(self.width() * 0.99), int(self.width() * 0.01)])
+        self.splitter_v.setSizes([int(self.width() * 0.99), int(self.width() * 0.01)])
 
     # 菜单
     def myMenu(self):
@@ -235,8 +240,23 @@ QLabel{
     def find_Event(self):
         print("搜索")
 
+    # 快捷键
     def myShortcuts(self):
         QShortcut(QKeySequence(self.tr("Ctrl+F")), self, self.find_Event)
+
+    # 底部tab展开事件
+    def bottomSpreadEvent(self):
+        # self.splitter_h.setSizes([int(self.width() * 0.99), int(self.width() * 0.01)])
+        self.crad_affiliated.splitterChange(self.splitter_v,int(self.width() * 0.7), int(self.width() * 0.3))
+
+    def rightSpreadEvent(self):
+        # self.splitter_h.setSizes([int(self.width() * 0.99), int(self.width() * 0.01)])
+        self.right_Tabwidget.splitterChange(self.splitter_h, int(self.width() * 0.7), int(self.width() * 0.3))
+
+    # 事件
+    def myEvent(self):
+        self.crad_affiliated.clickTab(self.bottomSpreadEvent)
+        self.right_Tabwidget.clickTab(self.rightSpreadEvent)
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate

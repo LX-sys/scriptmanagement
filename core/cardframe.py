@@ -113,7 +113,7 @@ class CardFrame(QWidget):
     def wheelEvent(self, e: QtGui.QWheelEvent) -> None:
         # print("-->>",e.y())
 
-        print(e.globalY())
+        # print(e.globalY())
         # now = time.time()
         # print("滚动时间差:",now-self.rolling_time[0])
         # self.rolling_time[0]=now

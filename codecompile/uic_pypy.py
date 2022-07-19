@@ -1,5 +1,9 @@
 
 import re
+'''
+    uic生成的代码重新构建为可执行代码
+'''
+
 
 class CodeCov:
 

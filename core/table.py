@@ -18,6 +18,10 @@ class TableABC(QTabWidget):
 
         self.resize(400,300)
 
+        # 方向
+        self.direction = "top"
+        self.tab_width = 30
+
         self.setMovable(True)
         self.setDocumentMode(True)
 
@@ -26,13 +30,20 @@ class TableABC(QTabWidget):
         self.tab2 = QWidget()
         self.addTab(self.tab2,"test2")
 
+        # 开关
+        self.tab_switch = dict()
+        self.cu_index = 0
+
         self.Init()
         self.myEvent()
 
     def Init(self):
-        self.setTableDirection()
+        self.tableDirection()
         self.defaultStyleSheet()
-        self.setTableWidth()
+        self.tableWidth()
+        for i in range(self.count()):
+            self.tab_switch[str(i)] = False
+
 
     def defaultStyleSheet(self):
         self.setStyleSheet('''
@@ -54,38 +65,64 @@ background-color: rgb(113, 113, 113);
 }
         ''')
 
+    # 宽度
     def setTableWidth(self,w:int=30):
+        self.tab_width = w
+
+    def tableWidth(self):
         style = self.styleSheet()
-        self.setStyleSheet(re.sub("height:(.*)px;","height:{}px;".format(w),style))
+        self.setStyleSheet(re.sub("height:(.*)px;", "height:{}px;".format(self.tab_width), style))
 
     # 设置table的方向
     def setTableDirection(self, dir:str = "top"):
-        if dir == "left":
+        self.direction = dir
+
+    def tableDirection(self):
+        if self.direction == "left":
             self.setTabPosition(QTabWidget.West)
-        elif dir == "right":
+        elif self.direction == "right":
             self.setTabPosition(QTabWidget.East)
-        elif dir == "bottom":
+        elif self.direction == "bottom":
             self.setTabPosition(QTabWidget.South)
         else:
             self.setTabPosition(QTabWidget.North)
 
     # 小标签点击事件
     def tabEvent(self,index:int):
-        pass
+        # 记录当前点击的tab
+        self.cu_index = index
 
     def myEvent(self):
         self.tabBarClicked.connect(self.tabEvent)
 
+    # 配合布局伸缩器而改变大小
+    def splitterChange(self,splitter,*args):
+        index = str(self.cu_index)
+        switch = self.tab_switch[index]
+        if not switch:
+            splitter.setSizes(args)
+            self.tab_switch[index] = True
+        else:
+            '''
+                这里应该给使用父类的宽度,而不应该使用self.width()
+            '''
+            parent_width = splitter.parent().width()
+            splitter.setSizes([int(parent_width * 0.99), int(parent_width * 0.01)])
+            self.tab_switch[index] = False
+
+    # 单机tab事件,添加响应事件
+    def clickTab(self, f):
+        self.tabBarClicked.connect(f)
+
+
 # 底部tap
 class TableBottom(TableABC):
-
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
     def Init(self):
         self.setTableDirection("bottom")
-        self.defaultStyleSheet()
-        self.setTableWidth(30)
+        super(TableBottom, self).Init()
 
     def defaultStyleSheet(self):
         self.setStyleSheet('''
@@ -109,6 +146,7 @@ background-color: rgb(33, 33, 33);
 }
         ''')
 
+
 # 右侧tap
 class TableRight(TableABC):
 
@@ -117,8 +155,8 @@ class TableRight(TableABC):
 
     def Init(self):
         self.setTableDirection("right")
-        self.defaultStyleSheet()
         self.setTableWidth(60)
+        super(TableRight, self).Init()
 
     def defaultStyleSheet(self):
         self.setStyleSheet('''
@@ -142,16 +180,13 @@ background-color: rgb(33, 33, 33);
 }
         ''')
 
-    # def tabEvent(self, index: int):
-    #     pass
-        # self.resize(30,self.height())
 
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
-    win = TableBottom()
+    win = TableRight()
     win.show()
 
     sys.exit(app.exec_())
