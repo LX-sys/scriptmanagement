@@ -10,12 +10,12 @@
 
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMenuBar, QMenu, QAction
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QShortcut
 from PyQt5.QtGui import QKeySequence
 
 from core.table import TableRight,TableBottom
-from cardframe import CardFrame
+from core.cardframe.cardframe import CardFrame
 
 
 class ScriptManagement(QMainWindow):
