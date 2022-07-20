@@ -9,7 +9,7 @@
 
 
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QMenuBar, QMenu, QAction
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMenuBar, QMenu, QAction,QPushButton
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QShortcut
 from PyQt5.QtGui import QKeySequence
@@ -79,6 +79,7 @@ QPushButton{
         # 右下
         self.right_Tabwidget = TableRight(self.splitter_h)
         self.crad_affiliated = TableBottom(self.splitter_v)
+
 
         self.gridLayout_2.addWidget(self.splitter_v, 0, 0, 1, 1)
         self.stackedWidget.addWidget(self.page)
@@ -246,11 +247,9 @@ QLabel{
 
     # 底部tab展开事件
     def bottomSpreadEvent(self):
-        # self.splitter_h.setSizes([int(self.width() * 0.99), int(self.width() * 0.01)])
         self.crad_affiliated.splitterChange(self.splitter_v,int(self.width() * 0.7), int(self.width() * 0.3))
 
     def rightSpreadEvent(self):
-        # self.splitter_h.setSizes([int(self.width() * 0.99), int(self.width() * 0.01)])
         self.right_Tabwidget.splitterChange(self.splitter_h, int(self.width() * 0.7), int(self.width() * 0.3))
 
     # 事件
