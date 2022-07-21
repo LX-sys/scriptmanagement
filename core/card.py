@@ -63,7 +63,7 @@ class CardABC(QFrame):
 
     def Init(self):
         self.resize(1200, 50)
-        # self.setMaximumHeight(50)
+        self.setMaximumHeight(50)
         self.hbox = QHBoxLayout(self)
 
     def getHbox(self)->QHBoxLayout:

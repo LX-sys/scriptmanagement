@@ -29,9 +29,9 @@ class CardFrameBody(QWidget):
         self.resize(600,500)
 
         self.scrollArea = MyQScrollArea(self)
+        # self.scrollArea.setMaximumHeight(self.height())
         # 窗口,布局,垫片
         self.win = QWidget()
-        # self.win.resize(600,500)
         self.vbox = QVBoxLayout(self.win)
         self.spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
 
@@ -42,7 +42,7 @@ class CardFrameBody(QWidget):
 
         self.setUI()
         self.Init()
-        self.scrollArea.scrolled.connect(self.test)
+        self.scrollArea.scrolled.connect(self.load_page)
 
     def setUI(self):
         self.scrollArea.setWidgetResizable(True)  # 大小自适应
@@ -52,24 +52,24 @@ class CardFrameBody(QWidget):
         self.vbox.setSpacing(3)
 
     def Init(self):
-        for _ in range(20):
+        self.body_vbox = QVBoxLayout(self)
+        self.body_vbox.setContentsMargins(0,0,0,0)
+        self.body_vbox.addWidget(self.scrollArea)
+        for _ in range(140):
             self.addCard(Card())
 
         self.createCard()
 
     # 添加卡片
     def addCard(self, card: QWidget):
-        self.card_obj.append(card)
-        # print(self.cardCount(),self.getCapacity())
-        # if self.cardCount() <= self.getCapacity():
-        #     self.card_obj.append(card)
-        #     # 获取一下高度
-        #     self._h = card.size().height()
-        # else:
-        #     if card not in self.overflow_card_obj:
-        #         self.overflow_card_obj.insert(0, card)
-        #         # print(self.overflowCardCount())
-        #     print("超过页面显示的最大数量")
+        if self.cardCount() <= self.getCapacity():
+            self.card_obj.append(card)
+            # 获取一下高度
+            self._h = card.size().height()
+        else:
+            if card not in self.overflow_card_obj:
+                self.overflow_card_obj.insert(0, card)
+            print("超过页面显示的最大数量:",self.overflowCardCount())
 
     # 卡片数量
     def cardCount(self) -> int:
@@ -81,9 +81,8 @@ class CardFrameBody(QWidget):
 
     # 获取容量,一页能展示多少个
     def getCapacity(self) -> int:
-        print(self.win.height())
         # -1防止移除
-        return (self.win.height() // self._h) - 1
+        return (self.height() // self._h) - 1
 
     def createCard(self, create: list = None):
         if not create:
@@ -98,25 +97,18 @@ class CardFrameBody(QWidget):
         self.vbox.addItem(self.spacerItem)
 
     def resizeEvent(self, e: QtGui.QResizeEvent) -> None:
-        # temp = []
-        # for _ in range(self.getCapacity()-len(self.card_obj)):
-        #     if self.overflow_card_obj:
-        #         card = self.overflow_card_obj.pop()
-        #         self.card_obj.append(card)
-        #         temp.append(card)
-        # if temp:
-        #     self.createCard(temp)
+        # self.scrollArea.setMaximumHeight(self.height())
         super(CardFrameBody, self).resizeEvent(e)
 
-    def test(self)-> None:
-        # print("dsda")
-        if self.overflow_card_obj:
-            # print("--")
-            # self.win.setMinimumHeight(self.height()+120)
-            self.addCard(self.overflow_card_obj.pop())
-            self.createCard()
-            # print("成功")
-            self.update()
+    # 加载页面
+    def load_page(self)-> None:
+        if self.overflowCardCount():
+            self.vbox.addWidget(self.overflow_card_obj.pop())
+            self.vbox.removeItem(self.spacerItem)
+            self.vbox.addItem(self.spacerItem)
+            print("加载剩余个数:", self.overflowCardCount())
+
+
 
 
 if __name__ == '__main__':

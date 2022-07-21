@@ -90,4 +90,4 @@ def deal_Code(filepath:str,c_name:str="UI",inheritance_name:str="QMainWindow",mo
     return code
 
 
-deal_Code("../core/untitled.py", outfile="../core/untitled.py", c_name="Test", inheritance_name="QWidget")
+deal_Code("../core/open_load.py", outfile="../core/open_load.py", c_name="OpenLoad", inheritance_name="QWidget")
