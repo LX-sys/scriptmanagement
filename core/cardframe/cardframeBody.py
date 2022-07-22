@@ -16,7 +16,8 @@ class MyQScrollArea(QScrollArea):
         super().__init__(*args, **kwargs)
 
     def wheelEvent(self, e: QtGui.QWheelEvent) -> None:
-        self.scrolled.emit(True)
+        if e.angleDelta().y() < 0:
+            self.scrolled.emit(True)
 
         super(MyQScrollArea, self).wheelEvent(e)
 
