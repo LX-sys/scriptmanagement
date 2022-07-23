@@ -14,6 +14,32 @@ class MyQScrollArea(QScrollArea):
 
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
+        self.setStyleSheet('''
+QWidget{
+	background-color: qlineargradient(spread:pad, x1:0.295955, y1:0.471, x2:0.705, y2:0.778, stop:0.488636 rgba(34, 178, 221, 5));
+}
+QScrollBar:vertical{
+border-radius:5px; 
+padding-top:14px; 
+padding-bottom:14px; 
+}
+QScrollBar::handle:vertical
+{
+    background:qlineargradient(spread:pad, x1:0.023, y1:0.023, x2:1, y2:1, stop:0 rgba(130, 247, 255, 164), stop:1 rgba(181, 218, 221, 255));  
+    border-radius:4px;  
+    margin-left:4px;
+    margin-right:4px;
+}
+QScrollBar::sub-line:vertical,
+QScrollBar::add-line:vertical{
+image:url("");
+}
+QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical{
+background-color:qlineargradient(spread:pad, x1:0.295955, y1:0.471, x2:0.705, y2:0.778, stop:0.488636 rgba(34, 178, 221, 5));
+}
+        ''')
+        # 不显示滚动条
+        self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
     def wheelEvent(self, e: QtGui.QWheelEvent) -> None:
         if e.angleDelta().y() < 0:
@@ -47,7 +73,10 @@ class CardFrameBody(QWidget):
 
     def setUI(self):
         self.scrollArea.setWidgetResizable(True)  # 大小自适应
-
+        # 背景设置为
+        self.setStyleSheet('''
+        	background-color: qlineargradient(spread:pad, x1:0.484, y1:1, x2:0.488, y2:0, stop:0 rgba(166, 249, 255, 253), stop:1 rgba(243, 254, 255, 255));
+        ''')
         # 创建布局
         self.vbox.setContentsMargins(0, 3, 3, 0)
         self.vbox.setSpacing(3)

@@ -16,8 +16,21 @@ from PyQt5.QtGui import QKeySequence
 
 from core.table import TableRight,TableBottom
 from core.cardframe.cardframe import CardFrame
-
-
+'''
+QLabel,QLineEdit{
+background-color:none;
+color: rgb(0, 0, 0);
+font: 12pt \"黑体\";
+}
+QLineEdit{
+background-color: qlineargradient(spread:pad, x1:0.295955, y1:0.471, x2:0.705, y2:0.778, stop:0.488636 rgba(34, 178, 221, 5));
+color: rgb(0, 85, 255);
+}
+QPushButton{
+color: rgb(84, 84, 84);
+background-color: rgb(0, 255, 0);
+}
+'''
 
 class ScriptManagement(QMainWindow):
     def __init__(self, *args,**kwargs) -> None:
@@ -39,24 +52,12 @@ class ScriptManagement(QMainWindow):
         self.gridLayout.setSpacing(0)
         self.gridLayout.setObjectName("gridLayout")
         self.stackedWidget = QtWidgets.QStackedWidget(self.centralwidget)
-        self.stackedWidget.setStyleSheet("QWidget{\n"
-"/*background-color: rgb(222, 222, 222);*/\n"
-"    border:none;\n"
-"    background-color: qlineargradient(spread:pad, x1:0.023, y1:0.023, x2:1, y2:1, stop:0 rgba(130, 247, 255, 255), stop:1 rgba(190, 191, 221, 255));\n"
-"}\n"
-"QLabel,QLineEdit{\n"
-"background-color:none;\n"
-"    color: rgb(0, 0, 0);\n"
-"    font: 12pt \"黑体\";\n"
-"}\n"
-"QLineEdit{\n"
-"    background-color: qlineargradient(spread:pad, x1:0.295955, y1:0.471, x2:0.705, y2:0.778, stop:0.488636 rgba(34, 178, 221, 5));\n"
-"    color: rgb(0, 85, 255);\n"
-"}\n"
-"QPushButton{\n"
-"    color: rgb(84, 84, 84);\n"
-"    background-color: rgb(0, 255, 0);\n"
-"}")
+        self.stackedWidget.setStyleSheet('''
+QWidget{
+border:none;
+background-color: qlineargradient(spread:pad, x1:0.484, y1:1, x2:0.488, y2:0, stop:0 rgba(43, 192, 228, 253), stop:1 rgba(234, 236, 198, 255));
+}
+        ''')
         self.stackedWidget.setObjectName("stackedWidget")
         self.page = QtWidgets.QWidget()
         self.page.setObjectName("page")
@@ -77,7 +78,6 @@ class ScriptManagement(QMainWindow):
         self.splitter_h.setChildrenCollapsible(False)
         self.splitter_h.setObjectName("splitter_h")
         self.card_body = CardFrame(self.splitter_h)
-        print("---")
 
         # 修改
         self.card_body.setStyleSheet("background-color: qlineargradient(spread:pad, x1:0, y1:0.528136, x2:1, y2:0.517, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(187, 187, 187, 255));")
@@ -172,17 +172,19 @@ class ScriptManagement(QMainWindow):
         self.label_respace_pwd.setObjectName("label_respace_pwd")
         self.lineEdit_name = QtWidgets.QLineEdit(self.widget_2)
         self.lineEdit_name.setGeometry(QtCore.QRect(480, 200, 200, 40))
-        self.lineEdit_name.setStyleSheet("QLineEdit{\n"
-"color: rgb(0, 0, 0);\n"
-"border:3px solid rgb(0, 0, 0);\n"
-"border-top:none;\n"
-"border-left:none;\n"
-"border-right:none;\n"
-"font: 14pt \"黑体\";\n"
-"}\n"
-"QLineEdit:focus{\n"
-"    border-bottom-color:rgb(0, 0, 127);\n"
-"}")
+        self.lineEdit_name.setStyleSheet('''
+QLineEdit{
+color: rgb(0, 0, 0);
+border:3px solid rgb(0, 0, 0);
+border-top:none;
+border-left:none;
+border-right:none;
+font: 14pt "黑体";
+}
+QLineEdit:focus{
+	border-bottom-color:rgb(0, 0, 127);
+}
+        ''')
         self.lineEdit_name.setText("")
         self.lineEdit_name.setPlaceholderText("")
         self.lineEdit_name.setObjectName("lineEdit_name")
@@ -196,17 +198,19 @@ class ScriptManagement(QMainWindow):
         self.label_pwd.setObjectName("label_pwd")
         self.lineEdit_pwd = QtWidgets.QLineEdit(self.widget_2)
         self.lineEdit_pwd.setGeometry(QtCore.QRect(480, 290, 200, 40))
-        self.lineEdit_pwd.setStyleSheet("QLineEdit{\n"
-"color: rgb(0, 0, 0);\n"
-"border:3px solid rgb(0, 0, 0);\n"
-"border-top:none;\n"
-"border-left:none;\n"
-"border-right:none;\n"
-"font: 14pt \"黑体\";\n"
-"}\n"
-"QLineEdit:focus{\n"
-"    border-bottom-color:rgb(0, 0, 127);\n"
-"}")
+        self.lineEdit_pwd.setStyleSheet('''
+QLineEdit{
+color: rgb(0, 0, 0);
+border:3px solid rgb(0, 0, 0);
+border-top:none;
+border-left:none;
+border-right:none;
+font: 14pt "黑体";
+}
+QLineEdit:focus{
+	border-bottom-color:rgb(0, 0, 127);
+}
+        ''')
         self.lineEdit_pwd.setEchoMode(QtWidgets.QLineEdit.Password)
         self.lineEdit_pwd.setObjectName("lineEdit_pwd")
         self.label_name = QtWidgets.QLabel(self.widget_2)

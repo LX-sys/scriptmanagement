@@ -211,7 +211,7 @@ class TableRight(TableABC):
         self.setStyleSheet('''
 QWidget{
 background-color: rgb(255, 255, 255);
-border-left:2px solid rgb(62, 62, 62);
+border-left:0px solid rgb(62, 62, 62);
 }
 QTabBar{
 background-color:  rgb(113, 113, 113);

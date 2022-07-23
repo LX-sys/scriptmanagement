@@ -128,8 +128,9 @@ class Card(CardABC):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
-        self.defaultStyleSheet()
+
         self.createCard()
+        self.defaultStyleSheet()
 
         # 创建共享ID
         self.id = ID()
@@ -143,7 +144,7 @@ class Card(CardABC):
         self.setObjectName("body")
         self.setStyleSheet('''
 QFrame#body{
-	background-color: rgb(247, 247, 247);
+	background-color: none;
 	border-radius:7px;
 }
 QFrame#body:hover{
@@ -160,6 +161,27 @@ border:none;
 QPushButton:hover{
 	color: rgb(28, 58, 255);
 }
+QComboBox{
+background-color: qlineargradient(spread:pad, x1:0.295955, y1:0.471, x2:0.705, y2:0.778, stop:0.488636 rgba(34, 178, 221, 5));
+}
+QComboBox QAbstractItemView{
+color:rgb(12, 12, 12);
+background-color:rgb(141, 236, 249);
+selection-background-color:rgb(141, 236, 249);
+}
+QLabel#id{
+color: qlineargradient(spread:pad, x1:0.484, y1:1, x2:0.488, y2:0, stop:0 rgba(101, 53, 255, 253), stop:1 rgba(243, 254, 255, 255));;
+}
+QPushButton#history{
+color:gray;
+}
+QPushButton#history{
+color:gray;
+}
+QPushButton#history:hover{
+color:rgb(81, 81, 81);
+}
+
         ''')
 
     # 创建标准卡片
@@ -167,6 +189,8 @@ QPushButton:hover{
         CENTER = Qt.AlignHCenter | Qt.AlignVCenter # 文本居中
 
         id_ = QLabel("1",self)  # 最大显示数字100万
+        id_.setObjectName("id")
+
         id_.setMinimumSize(60,30)
         id_.setMaximumSize(60,30)
         id_.setAlignment(CENTER)
@@ -210,6 +234,7 @@ QPushButton:hover{
         participator.addItems(["刘璇", "丁梓靖", "赵银鹏"])
 
         history = QPushButton("历史", self)
+        history.setObjectName("history")
         history.setMinimumSize(60,30)
         history.setMaximumSize(60,30)
 
@@ -262,7 +287,7 @@ QPushButton:hover{
 
         if text == "未完成":
             p = "QFrame#body{\n\tbackground-color:<color>;".replace("<color>",
-                                                                    "qlineargradient(spread:pad, x1:0, y1:0.528136, x2:1, y2:0.517, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(187, 187, 187, 255))")
+                                                                    "qlineargradient(spread:pad, x1:0, y1:0.528136, x2:1, y2:0.517, stop:0 rgba(187, 187, 187, 255), stop:1 rgba(255, 255, 255, 255))")
             style = re.sub(r"QFrame#body{\n\tbackground-color:.*;", p, style)
         if text == "详情":
             p = "QFrame#body{\n\tbackground-color:<color>;".replace("<color>",
