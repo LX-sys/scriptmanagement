@@ -9,13 +9,16 @@
 
 
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QMenuBar, QMenu, QAction,QPushButton
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMenuBar, QMenu, QAction, QPushButton, QMessageBox
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QShortcut
 from PyQt5.QtGui import QKeySequence
 
+from core.utility import Mysql_PersonalInfo
+from core.register import Register
 from core.table import TableRight,TableBottom
 from core.cardframe.cardframe import CardFrame
+from core.newJS import NewJS
 '''
 QLabel,QLineEdit{
 background-color:none;
@@ -35,6 +38,7 @@ background-color: rgb(0, 255, 0);
 class ScriptManagement(QMainWindow):
     def __init__(self, *args,**kwargs) -> None:
         super().__init__(*args,**kwargs)
+        self.__info = None
         self.setupUi()
         self.myMenu()
         self.myShortcuts()
@@ -55,6 +59,7 @@ class ScriptManagement(QMainWindow):
         self.stackedWidget.setStyleSheet('''
 QWidget{
 border:none;
+
 background-color: qlineargradient(spread:pad, x1:0.484, y1:1, x2:0.488, y2:0, stop:0 rgba(43, 192, 228, 253), stop:1 rgba(234, 236, 198, 255));
 }
         ''')
@@ -292,15 +297,21 @@ QLineEdit:focus{
         self.menubar.addAction(self.menu.menuAction())
 
         self.retranslateUi()
-        self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(1)
         self.right_Tabwidget.setCurrentIndex(0)
         self.crad_affiliated.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(self)
 
 
     def Init(self):
+        self.smj_personal_info = Mysql_PersonalInfo()
         self.splitter_h.setSizes([int(self.width() * 0.99), int(self.width() * 0.01)])
         self.splitter_v.setSizes([int(self.width() * 0.99), int(self.width() * 0.01)])
+
+    # 新建脚本
+    def newJS_Event(self):
+        self.newjs_obj = NewJS()
+        self.newjs_obj.show()
 
     # 菜单
     def myMenu(self):
@@ -310,6 +321,7 @@ QLineEdit:focus{
         self.menubar.addAction(self.menu.menuAction())
         self.menu.setTitle("文件")
 
+
         self.about = QMenu(self.menubar)
         self.setMenuBar(self.menubar)
         self.menubar.addAction(self.about.menuAction())
@@ -317,6 +329,7 @@ QLineEdit:focus{
 
         # --------------文件------------------
         self.newjs = QAction("新建脚本",self)
+        self.newjs.triggered.connect(self.newJS_Event)
         self.menu.addAction(self.newjs)
 
         self.updatejs = QAction("修改脚本", self)
@@ -344,10 +357,40 @@ QLineEdit:focus{
     def rightSpreadEvent(self):
         self.right_Tabwidget.splitterChange(self.splitter_h, int(self.width() * 0.7), int(self.width() * 0.3))
 
+    # 登录事件
+    def login_Event(self):
+        text_name = self.lineEdit_name.text()
+        text_password = self.lineEdit_pwd.text()
+
+        if text_name == "" or text_password == "":
+            QMessageBox.warning(self, "警告", "用户名或密码不能为空！", QMessageBox.Yes, QMessageBox.Yes)
+            return
+        self.__info = [text_name, text_password]
+        if self.smj_personal_info.is_exist(text_name):
+            # 登录成功提示
+            QMessageBox.information(self, "提示", "登录成功！", QMessageBox.Yes, QMessageBox.Yes)
+            self.stackedWidget.setCurrentIndex(0)
+        else:
+            # 登录失败提示
+            QMessageBox.warning(self, "警告", "用户名或密码错误！", QMessageBox.Yes, QMessageBox.Yes)
+            self.lineEdit_name.setText("")
+            self.lineEdit_pwd.setText("")
+            self.lineEdit_name.setFocus()
+
+    # 注册事件
+    def register_Event(self):
+        self.reg = Register()
+        self.reg.show()
+
     # 事件
     def myEvent(self):
         self.crad_affiliated.clickTab(self.bottomSpreadEvent)
         self.right_Tabwidget.clickTab(self.rightSpreadEvent)
+
+        # 登录
+        self.btn_login.clicked.connect(self.login_Event)
+        # 注册
+        self.btn_registered.clicked.connect(self.register_Event)
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
@@ -368,6 +411,7 @@ QLineEdit:focus{
         self.action.setText(_translate("self", "新建脚本"))
         self.action_2.setText(_translate("self", "修改脚本"))
         self.action_4.setText(_translate("self", "设置"))
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

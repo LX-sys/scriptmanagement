@@ -129,8 +129,9 @@ class Card(CardABC):
         super().__init__(*args, **kwargs)
 
 
-        self.createCard()
+
         self.defaultStyleSheet()
+        self.createCard()
 
         # 创建共享ID
         self.id = ID()
@@ -184,11 +185,16 @@ color:rgb(81, 81, 81);
 
         ''')
 
+    # 保存数据
+    def save_data(self,ip="127.0.0.1",data:dict=None):
+        if ip == "127.0.0.1":
+            pass
+
     # 创建标准卡片
     def createCard(self):
         CENTER = Qt.AlignHCenter | Qt.AlignVCenter # 文本居中
 
-        id_ = QLabel("1",self)  # 最大显示数字100万
+        id_ = QLabel(self)  # 最大显示数字100万
         id_.setObjectName("id")
 
         id_.setMinimumSize(60,30)

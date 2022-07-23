@@ -4,8 +4,7 @@
     入口
 '''
 import sys
-from PyQt5.QtWidgets import QApplication
-
+from core.utility import QApplication
 from core.open_load import OpenLoad
 
 

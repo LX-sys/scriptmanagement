@@ -6,8 +6,8 @@ from PyQt5.QtWidgets import QApplication, QWidget,QScrollArea,QVBoxLayout,QSpace
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.Qt import Qt
 
-from core.card import Card
 
+from core.card import Card
 
 class MyQScrollArea(QScrollArea):
     scrolled = pyqtSignal(bool)
@@ -99,7 +99,7 @@ class CardFrameBody(QWidget):
         else:
             if card not in self.overflow_card_obj:
                 self.overflow_card_obj.insert(0, card)
-            print("超过页面显示的最大数量:",self.overflowCardCount())
+            # print("超过页面显示的最大数量:",self.overflowCardCount())
 
     # 卡片数量
     def cardCount(self) -> int:
