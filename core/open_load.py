@@ -216,7 +216,7 @@ class OpenLoad(QWidget):
 
     def myEvent(self):
         # 测试事件
-        self.progressBar.add_event_start(self.t)
+        self.progressBar.add_event_start(self.fake_load_Event)
         self.progressBar.progress_bar_finish_signal.connect(self.wanc)
 
     def wanc(self):
@@ -225,9 +225,10 @@ class OpenLoad(QWidget):
         self.jsm.show()
         self.close()
 
-    def t(self):
+    # 伪造进度条加载
+    def fake_load_Event(self):
         for i in range(101):
-            self.progressBar.msleep(250)
+            self.progressBar.msleep(150)
             self.progressBar.setValue(i)
 
     def retranslateUi(self):

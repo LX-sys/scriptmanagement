@@ -18,22 +18,9 @@ from core.utility import Mysql_PersonalInfo
 from core.register import Register
 from core.table import TableRight,TableBottom
 from core.cardframe.cardframe import CardFrame
+from core.menusys.menuSys import MenuSys
 from core.newJS import NewJS
-'''
-QLabel,QLineEdit{
-background-color:none;
-color: rgb(0, 0, 0);
-font: 12pt \"黑体\";
-}
-QLineEdit{
-background-color: qlineargradient(spread:pad, x1:0.295955, y1:0.471, x2:0.705, y2:0.778, stop:0.488636 rgba(34, 178, 221, 5));
-color: rgb(0, 85, 255);
-}
-QPushButton{
-color: rgb(84, 84, 84);
-background-color: rgb(0, 255, 0);
-}
-'''
+
 
 class ScriptManagement(QMainWindow):
     def __init__(self, *args,**kwargs) -> None:
@@ -313,34 +300,28 @@ QLineEdit:focus{
         self.newjs_obj = NewJS()
         self.newjs_obj.show()
 
+    # 返回登录界面
+    def toLogin_Event(self):
+        # 返回登录界面,并清空输入框,聚焦输入框,禁用菜单栏
+        self.stackedWidget.setCurrentIndex(1)
+        self.lineEdit_name.setText("")
+        self.lineEdit_pwd.setText("")
+        self.lineEdit_name.setFocus()
+        self.menu_sys.allDisable(False)
+
     # 菜单
     def myMenu(self):
-        self.menubar = QMenuBar(self)
-        self.menu = QMenu(self.menubar)
-        self.setMenuBar(self.menubar)
-        self.menubar.addAction(self.menu.menuAction())
-        self.menu.setTitle("文件")
+        self.menu_sys = MenuSys(self)
+        self.menu_sys.addMenuHeader(["文件","关于"])
+        self.menu_sys.addMenuChild("文件",["新建脚本","修改脚本","设置","返回登录界面"])
+        self.menu_sys.addMenuChild("关于",["脚本管理系统"])
+        # 绑定事件
+        self.menu_sys.connect("文件", "新建脚本", self.newJS_Event)
+        self.menu_sys.connect("文件", "返回登录界面", self.toLogin_Event)
+        # =================
+        # 禁用所有功能,登录之后开放
+        self.menu_sys.allDisable(False)
 
-
-        self.about = QMenu(self.menubar)
-        self.setMenuBar(self.menubar)
-        self.menubar.addAction(self.about.menuAction())
-        self.about.setTitle("关于")
-
-        # --------------文件------------------
-        self.newjs = QAction("新建脚本",self)
-        self.newjs.triggered.connect(self.newJS_Event)
-        self.menu.addAction(self.newjs)
-
-        self.updatejs = QAction("修改脚本", self)
-        self.menu.addAction(self.updatejs)
-
-        self.setting = QAction("设置", self)
-        self.menu.addAction(self.setting)
-
-        # ----------关于-------------------
-        self.info_js = QAction("脚本管理系统",self)
-        self.about.addAction(self.info_js)
 
     # 搜索事件
     def find_Event(self):
@@ -370,6 +351,8 @@ QLineEdit:focus{
             # 登录成功提示
             QMessageBox.information(self, "提示", "登录成功！", QMessageBox.Yes, QMessageBox.Yes)
             self.stackedWidget.setCurrentIndex(0)
+            # 开放所有功能--菜单
+            self.menu_sys.allDisable(True)
         else:
             # 登录失败提示
             QMessageBox.warning(self, "警告", "用户名或密码错误！", QMessageBox.Yes, QMessageBox.Yes)
@@ -389,12 +372,13 @@ QLineEdit:focus{
 
         # 登录
         self.btn_login.clicked.connect(self.login_Event)
+        self.lineEdit_pwd.returnPressed.connect(self.login_Event)
         # 注册
         self.btn_registered.clicked.connect(self.register_Event)
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
-        self.setWindowTitle(_translate("self", "self"))
+        self.setWindowTitle(_translate("self", "jsm"))
         self.label_j2.setText(_translate("self", "J"))
         self.label_m1.setText(_translate("self", "M"))
         self.label_s1.setText(_translate("self", "S"))

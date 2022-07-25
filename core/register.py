@@ -150,7 +150,7 @@ class Register(QWidget):
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
-        self.setWindowTitle(_translate("self", "self"))
+        self.setWindowTitle(_translate("self", "jsm注册"))
         self.pushButton.setText(_translate("self", "注册"))
         self.label_3.setText(_translate("self", "确认密码*:"))
         self.label.setText(_translate("self", "姓名*:"))
