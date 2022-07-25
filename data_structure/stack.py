@@ -93,7 +93,7 @@ class StructData:
 
 class Stack:
     def __init__(self):
-        self.s = StructData(100, "40099", "test", "", 1, "完成", "2021.1.21 10:30", "2021.1.21 10:31", "刘璇", "")
+        self.s = StructData(0, "", "", "", 1, "", "2021.1.21 10:30", "2021.1.21 10:31", "刘璇", "")
         self.items = []
 
     def isEmpty(self)->bool:
@@ -102,7 +102,7 @@ class Stack:
     def push(self, *args):
         self.items.append(StructData(*args))
 
-    def pop(self)->StructData:
+    def pop(self) -> StructData:
         return self.items.pop()
 
     def peek(self):
@@ -112,13 +112,9 @@ class Stack:
         return len(self.items)
 
 
-
-
-
-
-
-
 s = Stack()
-s.push(1,2,3,4,5,6,7,8,9,10)
-print(s.pop())
+# s.push(1,2,3,4,5,6,7,8,9,10)
+# s.push(11,12,13,14,15,16,17,18,19,20)
+print(s.items)
+# print(s.pop())
 

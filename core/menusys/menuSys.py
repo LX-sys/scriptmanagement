@@ -48,6 +48,7 @@ class MenuSys:
                 self.menu.addMenuChild("文件", ["新建", "修改"])
                 # self.menu.createMenu({"文件":["新建","修改"],"编辑":["撤销","重做"]})
                 self.menu.connect("文件","新建",self.test)
+                self.menu.setShortcut("文件","新建","Ctrl+N")
 
 
         :param main_win:
@@ -114,7 +115,14 @@ class MenuSys:
         obj = self.getChildObj(parent_menu_name,child_menu_name)
         obj.triggered.connect(lambda:target(*args))
 
-    # 禁用所有功能
+    # 绑定快捷键
+    def setShortcut(self,parent_menu_name:str,child_menu_name:str,shortcut:str):
+        obj = self.getChildObj(parent_menu_name,child_menu_name)
+        obj.setShortcut(shortcut)
+        # obj.setShortcutContext(Qt.ApplicationShortcut)
+        # obj.setShortcutEnabled(True)
+
+    # 禁用/开放所有功能
     def allDisable(self,b:bool=True):
         for parentNode,childNode in self.menu_tree_obj.items():
             child_obj = childNode.get("child_obj")

@@ -14,18 +14,19 @@ from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QShortcut
 from PyQt5.QtGui import QKeySequence
 
-from core.utility import Mysql_PersonalInfo
+from core.utility import Mysql_PersonalInfo,time
 from core.register import Register
 from core.table import TableRight,TableBottom
 from core.cardframe.cardframe import CardFrame
 from core.menusys.menuSys import MenuSys
 from core.newJS import NewJS
-
+from core.token import JWT,QtJWT
 
 class ScriptManagement(QMainWindow):
     def __init__(self, *args,**kwargs) -> None:
         super().__init__(*args,**kwargs)
         self.__info = None
+
         self.setupUi()
         self.myMenu()
         self.myShortcuts()
@@ -295,6 +296,10 @@ QLineEdit:focus{
         self.splitter_h.setSizes([int(self.width() * 0.99), int(self.width() * 0.01)])
         self.splitter_v.setSizes([int(self.width() * 0.99), int(self.width() * 0.01)])
 
+        # token
+        self.__token = JWT()
+        self.__th_token = QtJWT(self,self.__token)
+
     # 新建脚本
     def newJS_Event(self):
         self.newjs_obj = NewJS()
@@ -318,6 +323,9 @@ QLineEdit:focus{
         # 绑定事件
         self.menu_sys.connect("文件", "新建脚本", self.newJS_Event)
         self.menu_sys.connect("文件", "返回登录界面", self.toLogin_Event)
+        # 绑定快捷键
+        self.menu_sys.setShortcut("文件","新建脚本", "Ctrl+N")
+        self.menu_sys.setShortcut("文件","返回登录界面", "Ctrl+E")
         # =================
         # 禁用所有功能,登录之后开放
         self.menu_sys.allDisable(False)
@@ -330,6 +338,7 @@ QLineEdit:focus{
     # 快捷键
     def myShortcuts(self):
         QShortcut(QKeySequence(self.tr("Ctrl+F")), self, self.find_Event)
+        QShortcut(QKeySequence(self.tr("Ctrl+I")), self, self.newJS_Event)
 
     # 底部tab展开事件
     def bottomSpreadEvent(self):
@@ -340,6 +349,19 @@ QLineEdit:focus{
 
     # 登录事件
     def login_Event(self):
+        d = {
+            # 公共声明
+            'exp': time.time() + 8,  # (Expiration Time) 此token的过期时间的时间戳
+            'iat': time.time(),  # (Issued At) 指明此创建时间的时间戳
+            'iss': 'LX',  # token的签发者
+
+            # 私有声明
+            'data': {
+                'username': 'lx',
+                "pwd": "123456",
+                'timestamp': time.time()
+            }
+        }
         text_name = self.lineEdit_name.text()
         text_password = self.lineEdit_pwd.text()
 
@@ -347,12 +369,16 @@ QLineEdit:focus{
             QMessageBox.warning(self, "警告", "用户名或密码不能为空！", QMessageBox.Yes, QMessageBox.Yes)
             return
         self.__info = [text_name, text_password]
-        if self.smj_personal_info.is_exist(text_name):
+        if self.smj_personal_info.login(*self.__info):
             # 登录成功提示
             QMessageBox.information(self, "提示", "登录成功！", QMessageBox.Yes, QMessageBox.Yes)
             self.stackedWidget.setCurrentIndex(0)
             # 开放所有功能--菜单
             self.menu_sys.allDisable(True)
+            # 设置token,启动监视线程
+            self.__token.setData(d)
+            self.__token.encode()
+            self.__th_token.start()
         else:
             # 登录失败提示
             QMessageBox.warning(self, "警告", "用户名或密码错误！", QMessageBox.Yes, QMessageBox.Yes)

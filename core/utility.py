@@ -44,6 +44,7 @@ from PyQt5.QtCore import (
 
 # python 内置库
 import sys
+import time
 from datetime import datetime as dt
 
 # mysql数据库操作类

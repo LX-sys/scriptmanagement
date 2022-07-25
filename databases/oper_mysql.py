@@ -10,7 +10,7 @@ import pymysql
 
 # 操作mysql数据库
 class OperMysql:
-    def __init__(self, host="43.138.57.51", port=3306, user="root", password="Lx984608061.", db="jsm"):
+    def __init__(self, host="43.***", port=3306, user="****", password="***.", db="***"):
         self.host = host
         self.port = port
         self.user = user
@@ -86,6 +86,16 @@ class SMJPersonalInfo(OperMysql):
         sql = "select * from {} where user='{}';".format(SMJPersonalInfo.table_name, username)
         if self.select(sql):
             return True
+        return False
+
+    # 登录验证
+    def login(self, username, password)->bool:
+        try:
+            sql = "select * from {} where user='{}' and pwd='{}';".format(SMJPersonalInfo.table_name, username, password)
+            if self.select(sql):
+                return True
+        except Exception as e:
+            print(e)
         return False
 
     def close(self):
