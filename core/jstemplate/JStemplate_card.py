@@ -27,6 +27,7 @@ class JSTemplate(QWidget):
         self.Init()
 
     def Init(self):
+        self.setTitle("代码片段")
         self.setTemplateMaxNumber(4)
         self.addTemplate("清空谷歌进程代码",code='''
 import os
@@ -180,6 +181,8 @@ QLabel{
         print("id:",id)
         print("code:",self.getCode(id))
 
+    def setTitle(self,title:str):
+        self.setWindowTitle(title)
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
