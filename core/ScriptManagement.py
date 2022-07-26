@@ -317,8 +317,9 @@ QLineEdit:focus{
     # 菜单
     def myMenu(self):
         self.menu_sys = MenuSys(self)
-        self.menu_sys.addMenuHeader(["文件","关于"])
+        self.menu_sys.addMenuHeader(["文件","模板","关于"])
         self.menu_sys.addMenuChild("文件",["新建脚本","修改脚本","设置","返回登录界面"])
+        self.menu_sys.addMenuChild("模板",["脚本模板"])
         self.menu_sys.addMenuChild("关于",["脚本管理系统"])
         # 绑定事件
         self.menu_sys.connect("文件", "新建脚本", self.newJS_Event)
@@ -351,7 +352,7 @@ QLineEdit:focus{
     def login_Event(self):
         d = {
             # 公共声明
-            'exp': time.time() + 8,  # (Expiration Time) 此token的过期时间的时间戳
+            'exp': time.time() + 60*60*8,  # (Expiration Time) 此token的过期时间的时间戳
             'iat': time.time(),  # (Issued At) 指明此创建时间的时间戳
             'iss': 'LX',  # token的签发者
 

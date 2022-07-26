@@ -10,7 +10,7 @@ import pymysql
 
 # 操作mysql数据库
 class OperMysql:
-    def __init__(self, host="43.***", port=3306, user="****", password="***.", db="***"):
+    def __init__(self, host="43.138.57.51", port=3306, user="root", password="Lx984608061.", db="jsm"):
         self.host = host
         self.port = port
         self.user = user
