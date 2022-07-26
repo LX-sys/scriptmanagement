@@ -21,8 +21,10 @@ from core.cardframe.cardframe import CardFrame
 from core.menusys.menuSys import MenuSys
 from core.newJS import NewJS
 from core.token import JWT,QtJWT
-from core.jstemplate.JStemplate_card import JSTemplate
+from core.jstemplate.JStemplate_tree import JSTemplate
 
+
+# JSM
 class ScriptManagement(QMainWindow):
     def __init__(self, *args,**kwargs) -> None:
         super().__init__(*args,**kwargs)

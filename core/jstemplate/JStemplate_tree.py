@@ -10,6 +10,8 @@
 
 import sys
 import copy
+
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QWidget, QListWidgetItem
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -174,21 +176,27 @@ def reblank(text):
         # print(code)
         self.writeCode(code)
 
+    # 搜索子项点击事件
+    def search_Event(self,text:str):
+        # 获得索引
+        item = self.listWidget_title.findItems(text,Qt.MatchContains)
+        index=self.listWidget_title.indexFromItem(item[0]).row()
+        # 获得代码
+        code = self.getCode(index)
+        self.writeCode(code)
+
 
     def myEvent(self):
         #listWidget_title的点击事件
         self.listWidget_title.itemClicked.connect(self.code_Event)
+        # 搜索子项点击事件
+        self.btn_ok.clicked.connect(lambda:self.search_Event(self.lineEdit_search.text()))
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
         self.setWindowTitle(_translate("self", "self"))
         self.lineEdit_search.setPlaceholderText(_translate("self", "搜索"))
         self.btn_ok.setText(_translate("self", "确定"))
-        self.textEdit_code.setHtml(_translate("self", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'黑体\'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">driver.execute_script(&quot;arguments[0].scrollIntoView();&quot;, e)</p></body></html>"))
         self.btn_c.setText(_translate("self", "复制"))
 
 if __name__ == '__main__':
