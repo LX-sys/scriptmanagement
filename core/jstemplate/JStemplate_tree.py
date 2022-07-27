@@ -9,13 +9,13 @@
 
 
 import sys
-import copy
-
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QWidget, QListWidgetItem
-from PyQt5 import QtCore, QtGui, QtWidgets
+import re
+from core.utility import QApplication,QWidget,QListWidgetItem,QGridLayout,QPushButton,QTextEdit,QListWidget,QSpacerItem,QSizePolicy,core_Qt,QtCore
 
 
+
+from GuiLib.linedit_complement.lineeditComplement import LineEditComplement
+from fileio.fileIO import FileIO
 
 class JSTemplate(QWidget):
     def __init__(self, *args,**kwargs) -> None:
@@ -31,51 +31,8 @@ class JSTemplate(QWidget):
 
     def Init(self):
         self.setTitle("代码片段")
-        self.addTemplate("清空谷歌进程代码", code='''import os
-os.system('taskkill /im chromedriver.exe /F')''')
-        self.addTemplate("获取当前年龄", code='''
-def getAge():
-    from datetime import datetime as dt
-    Birth = Year_Of_Birth + "-" + Month_Of_Birth.zfill(2) + "-" + Day_Of_Birth.zfill(2)
-    return (dt.now()-dt.strptime(Birth,"%Y-%m-%d")).days//365''')
-        self.addTemplate("美国时间",
-                         code='''Birth = Month_Of_Birth.zfill(2) + "-" + Day_Of_Birth.zfill(2) + "-" + Year_Of_Birth''')
-        self.addTemplate("LP模板", code='''
-try:
-   a_1 = am.see("xpath",'xxx')[0]
-   a_2 = am.see("xpath",'xxx')[0]
-   e=random.choice([a_1])
-   driver.execute_script("arguments[0].scrollIntoView(false);", e)
-   am.click(e)
+        self.loadCode()
 
-   if e == a_1:
-       win_handles = driver.window_handles
-       driver.switch_to.window(win_handles[-1])
-except:
-    pass
-time.sleep(random.randint(10,15))''')
-        self.addTemplate("移除空白", code=r'''
-def reblank(text):
-    import re
-    import copy
-
-    s="移除空白函数类似下面这种"
-    s= "Adasd ASD       1kld Uca     "
-    s= r"Adasd ASD\n       1kld Uca     "
-    s= "Adasd ASD" + r"\n" + "       1kld Uca     "
-    s = "这是注释说明"
-
-    if "\n" in text:
-        return re.sub(r"\n.*?\S"," ",text,re.M)
-    else:
-        text = text.strip().split(" ")
-        copy_text = copy.deepcopy(text)
-        for t in copy_text:
-            if not t:
-                text.remove(t)
-        return " ".join(text)
-''')
-        self.addTemplate("元素居中", code='''driver.execute_script("arguments[0].scrollIntoView();", e)''')
 
     def setTitle(self,title:str):
         self.setWindowTitle(title)
@@ -105,44 +62,44 @@ def reblank(text):
 "QPushButton#btn_c:pressed{\n"
 "    background-color: rgb(58, 58, 58);\n"
 "}")
-        self.gridLayout = QtWidgets.QGridLayout(self)
+        self.gridLayout = QGridLayout(self)
         self.gridLayout.setContentsMargins(5, 3, 0, 0)
         self.gridLayout.setSpacing(0)
         self.gridLayout.setObjectName("gridLayout")
-        self.lineEdit_search = QtWidgets.QLineEdit(self)
-        self.lineEdit_search.setMinimumSize(QtCore.QSize(197, 40))
-        self.lineEdit_search.setMaximumSize(QtCore.QSize(197, 40))
+        self.lineEdit_search = LineEditComplement(self)
+        self.lineEdit_search.setMinimumSize(197, 40)
+        self.lineEdit_search.setMaximumSize(197, 40)
         self.lineEdit_search.setStyleSheet("border-top:none;\n"
 "border-right:none;\n"
 "border-left:none;")
         self.lineEdit_search.setObjectName("lineEdit_search")
+
         self.gridLayout.addWidget(self.lineEdit_search, 0, 0, 1, 1)
-        self.btn_ok = QtWidgets.QPushButton(self)
-        self.btn_ok.setMinimumSize(QtCore.QSize(58, 40))
-        self.btn_ok.setMaximumSize(QtCore.QSize(58, 40))
+        self.btn_ok = QPushButton(self)
+        self.btn_ok.setMinimumSize(58, 40)
+        self.btn_ok.setMaximumSize(58, 40)
         self.btn_ok.setObjectName("btn_ok")
         self.gridLayout.addWidget(self.btn_ok, 0, 1, 1, 1)
-        self.textEdit_code = QtWidgets.QTextEdit(self)
+        self.textEdit_code = QTextEdit(self)
         self.textEdit_code.setStyleSheet("border:none;")
         self.textEdit_code.setObjectName("textEdit_code")
         self.gridLayout.addWidget(self.textEdit_code, 0, 2, 2, 2)
-        self.listWidget_title = QtWidgets.QListWidget(self)
-        self.listWidget_title.setMaximumSize(QtCore.QSize(256, 16777215))
+        self.listWidget_title = QListWidget(self)
+        self.listWidget_title.setMaximumSize(256, 16777215)
         self.listWidget_title.setStyleSheet("border-top:none;\n"
 "border-left:none;\n"
 "border-bottom:none;")
         self.listWidget_title.setObjectName("listWidget_title")
         self.gridLayout.addWidget(self.listWidget_title, 1, 0, 2, 2)
-        spacerItem = QtWidgets.QSpacerItem(760, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QSpacerItem(760, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
         self.gridLayout.addItem(spacerItem, 2, 2, 1, 1)
-        self.btn_c = QtWidgets.QPushButton(self)
-        self.btn_c.setMinimumSize(QtCore.QSize(41, 30))
-        self.btn_c.setMaximumSize(QtCore.QSize(41, 30))
+        self.btn_c = QPushButton(self)
+        self.btn_c.setMinimumSize(41, 30)
+        self.btn_c.setMaximumSize(41, 30)
         self.btn_c.setObjectName("btn_c")
         self.gridLayout.addWidget(self.btn_c, 2, 3, 1, 1)
 
         self.retranslateUi()
-        QtCore.QMetaObject.connectSlotsByName(self)
 
     def getID(self) -> int:
         return self.__template_dict["id"]
@@ -152,15 +109,46 @@ def reblank(text):
         if self.__template_dict.get(str(id),None) is None:
             self.__template_dict[str(id)] = code
 
+    # ID自增
+    def id_add(self):
+        self.__template_dict["id"] += 1
+
     def getCode(self,id:int):
         return self.__template_dict.get(str(id),None)
 
+    # 加载所有代码片段
+    def loadCode(self):
+        fileio = FileIO()
+        fileio.setFilePath("../../template/tree_py/")
+        file_names = fileio.getFileName()
+
+        if "__init__.py" in file_names: # 去除__init__.py
+            file_names.remove("__init__.py")
+
+        for i in file_names:
+            self.addTemplatePath(r"../../template/tree_py/{}".format(i))
+
+
     def addTemplate(self, title:str,code:str=""):
+        self.lineEdit_search.addCompleterList([title])
+
         item = QListWidgetItem()
         item.setText(title)
-        self.__template_dict["id"] += 1
-        self.addCode(self.__template_dict["id"],code)
         self.listWidget_title.addItem(item)
+
+        self.id_add()
+        self.addCode(self.__template_dict["id"],code)
+
+    # 添加代码片段路径
+    def addTemplatePath(self,path:str):
+        fileio = FileIO()
+        fileio.setFilePath(path)
+        # 读取标题
+        title = re.findall(r"# title:(.*)",fileio.readLine())
+        if title:
+            # 读取代码
+            code = fileio.read()
+            self.addTemplate(title[0],code)
 
     # 写代码到文本框
     def writeCode(self,code:str):
@@ -179,7 +167,7 @@ def reblank(text):
     # 搜索子项点击事件
     def search_Event(self,text:str):
         # 获得索引
-        item = self.listWidget_title.findItems(text,Qt.MatchContains)
+        item = self.listWidget_title.findItems(text,core_Qt.MatchContains)
         index=self.listWidget_title.indexFromItem(item[0]).row()
         # 获得代码
         code = self.getCode(index)
@@ -191,6 +179,7 @@ def reblank(text):
         self.listWidget_title.itemClicked.connect(self.code_Event)
         # 搜索子项点击事件
         self.btn_ok.clicked.connect(lambda:self.search_Event(self.lineEdit_search.text()))
+        self.lineEdit_search.returnPressed.connect(lambda:self.search_Event(self.lineEdit_search.text()))
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
