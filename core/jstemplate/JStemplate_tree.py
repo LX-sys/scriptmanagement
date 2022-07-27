@@ -11,11 +11,12 @@
 import sys
 import re
 from core.utility import QApplication,QWidget,QListWidgetItem,QGridLayout,QPushButton,QTextEdit,QListWidget,QSpacerItem,QSizePolicy,core_Qt,QtCore
-
+from core.utility import joinPath
 
 
 from GuiLib.linedit_complement.lineeditComplement import LineEditComplement
 from fileio.fileIO import FileIO
+
 
 class JSTemplate(QWidget):
     def __init__(self, *args,**kwargs) -> None:
@@ -119,15 +120,15 @@ class JSTemplate(QWidget):
     # 加载所有代码片段
     def loadCode(self):
         fileio = FileIO()
-        fileio.setFilePath("../../template/tree_py/")
+        path = joinPath(r"template\tree_py")
+        fileio.setFilePath(path)
         file_names = fileio.getFileName()
 
         if "__init__.py" in file_names: # 去除__init__.py
             file_names.remove("__init__.py")
 
         for i in file_names:
-            self.addTemplatePath(r"../../template/tree_py/{}".format(i))
-
+            self.addTemplatePath(path+"\{}".format(i))
 
     def addTemplate(self, title:str,code:str=""):
         self.lineEdit_search.addCompleterList([title])
@@ -149,6 +150,10 @@ class JSTemplate(QWidget):
             # 读取代码
             code = fileio.read()
             self.addTemplate(title[0],code)
+
+    # 从数据库中获取代码片段
+    def getCodeFromDB(self):
+        pass
 
     # 写代码到文本框
     def writeCode(self,code:str):
@@ -173,6 +178,22 @@ class JSTemplate(QWidget):
         code = self.getCode(index)
         self.writeCode(code)
 
+    # 内容复制到鼠标上
+    def copyTomouse_Event(self):
+        import copy
+        code = self.textEdit_code.toPlainText()
+        code_ = code.split("\n")
+        del code_[0]  # 移除标题
+
+        # 移除空白
+        code_copy = copy.deepcopy(code_)
+        for c in code_copy:
+            if not c:
+                del code_[code_copy.index(c)]
+            else: # 遇到第一段有效代码就立刻结束
+                break
+        # 写入剪贴板
+        QApplication.clipboard().setText("\n".join(code_))
 
     def myEvent(self):
         #listWidget_title的点击事件
@@ -180,6 +201,8 @@ class JSTemplate(QWidget):
         # 搜索子项点击事件
         self.btn_ok.clicked.connect(lambda:self.search_Event(self.lineEdit_search.text()))
         self.lineEdit_search.returnPressed.connect(lambda:self.search_Event(self.lineEdit_search.text()))
+        # 复制
+        self.btn_c.clicked.connect(lambda:self.copyTomouse_Event())
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
@@ -187,6 +210,7 @@ class JSTemplate(QWidget):
         self.lineEdit_search.setPlaceholderText(_translate("self", "搜索"))
         self.btn_ok.setText(_translate("self", "确定"))
         self.btn_c.setText(_translate("self", "复制"))
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

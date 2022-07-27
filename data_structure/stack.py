@@ -4,7 +4,7 @@
 # @file:stack.py
 # @software:PyCharm
 '''
-    列表实现堆栈
+    列表实现堆栈,用来存储所有脚本结构
 '''
 
 
