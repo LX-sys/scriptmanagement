@@ -19,10 +19,11 @@ from core.register import Register
 from core.table import TableRight,TableBottom
 from core.cardframe.cardframe import CardFrame
 from core.menusys.menuSys import MenuSys
+from core.card import Card
 from core.newJS import NewJS
 from core.token import JWT,QtJWT
 from core.jstemplate.JStemplate_tree import JSTemplate
-
+from core.viewJS import ViewJS
 
 # JSM
 class ScriptManagement(QMainWindow):
@@ -50,7 +51,6 @@ class ScriptManagement(QMainWindow):
         self.stackedWidget.setStyleSheet('''
 QWidget{
 border:none;
-
 background-color: qlineargradient(spread:pad, x1:0.484, y1:1, x2:0.488, y2:0, stop:0 rgba(43, 192, 228, 253), stop:1 rgba(234, 236, 198, 255));
 }
         ''')
@@ -73,6 +73,7 @@ background-color: qlineargradient(spread:pad, x1:0.484, y1:1, x2:0.488, y2:0, st
         self.splitter_h.setHandleWidth(0)
         self.splitter_h.setChildrenCollapsible(False)
         self.splitter_h.setObjectName("splitter_h")
+        # 核心区域
         self.card_body = CardFrame(self.splitter_h)
 
         # 修改
@@ -293,7 +294,6 @@ QLineEdit:focus{
         self.crad_affiliated.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(self)
 
-
     def Init(self):
         self.smj_personal_info = Mysql_PersonalInfo()
         self.splitter_h.setSizes([int(self.width() * 0.99), int(self.width() * 0.01)])
@@ -303,9 +303,28 @@ QLineEdit:focus{
         self.__token = JWT()
         self.__th_token = QtJWT(self,self.__token)
 
+    # view事件
+    def view_Event(self,jspath:str):
+        if jspath:
+            self.view_js = ViewJS()
+            self.view_js.show()
+            print("test_view:",jspath)
+        else:
+            print("空")
+
+    def newjs_Event(self,info):
+        # 创建卡片
+        card = Card(info=info)
+        # 添加view事件
+        card.addViewEvent(self.view_Event,info.get("jspath",None))
+        self.card_body.external_cardBodyObj().addCard(card)
+        self.card_body.external_cardBodyObj().createCard()
+
     # 新建脚本
     def newJS_Event(self):
         self.newjs_obj = NewJS()
+        self.newjs_obj.external_set_name(self.name()) # 设置创建者
+        self.newjs_obj.newjsed.connect(self.newjs_Event)
         self.newjs_obj.show()
 
     # 返回登录界面
@@ -357,6 +376,10 @@ QLineEdit:focus{
 
     def rightSpreadEvent(self):
         self.right_Tabwidget.splitterChange(self.splitter_h, int(self.width() * 0.7), int(self.width() * 0.3))
+
+    # 当前操作者
+    def name(self) -> str:
+        return self.__info[0]
 
     # 登录事件
     def login_Event(self):

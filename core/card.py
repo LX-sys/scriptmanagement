@@ -125,19 +125,21 @@ QLabel{
 # 标准卡片
 class Card(CardABC):
 
-    def __init__(self, *args, **kwargs) -> None:
+    def __init__(self, *args,info:dict=None, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
 
 
         self.defaultStyleSheet()
-        self.createCard()
+        self.test_createCard()
 
         # 创建共享ID
         self.id = ID()
         self.id.add()
-        self.updateID(self.id.getID())
 
+        if not info:
+            info = dict()
+        self.createCard(info)
 
         self.myEvent()
 
@@ -190,8 +192,16 @@ color:rgb(81, 81, 81);
         if ip == "127.0.0.1":
             pass
 
+    # 创建卡片
+    def createCard(self,info:dict):
+        # 卡片信息集
+        self.updateID(self.id.getID())
+        self.updateTask(info.get("task", "test"))
+        self.updateNumber(info.get("number", "-1"))
+        self.updateCount(1)
+
     # 创建标准卡片
-    def createCard(self):
+    def test_createCard(self):
         CENTER = Qt.AlignHCenter | Qt.AlignVCenter # 文本居中
 
         id_ = QLabel(self)  # 最大显示数字100万
@@ -281,6 +291,25 @@ color:rgb(81, 81, 81);
     def updateTime(self):
         self.getIDobj("update_time").setText(datetime.now().strftime("%Y-%m-%d %H:%M"))
 
+    # 绑定事件模型
+    def event_model(self,id_name:str,func,args=None):
+        if args is None:
+            self.getIDobj(id_name).clicked.connect(func)
+        else:
+            self.getIDobj(id_name).clicked.connect(lambda:func(args))
+
+    # view事件
+    def addViewEvent(self,func,args=None):
+        self.event_model("view",func,args)
+
+    # 使用次数的事件
+    def addCountEvent(self,func,args=None):
+        self.event_model("count",func,args)
+
+    # 历史事件
+    def addHistoryEvent(self,func,args=None):
+        self.event_model("history",func,args)
+
     # 完成情况改变时事件
     def boxchangeEvent(self, text: str):
         text = self.getIDobj("schedule").currentText()
@@ -309,7 +338,7 @@ color:rgb(81, 81, 81);
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
-    win = Card()
+    win = Card(info={"number":"123","task":"dasd"})
     win.show()
 
     sys.exit(app.exec_())

@@ -39,6 +39,9 @@ class CardFrame(QWidget):
         self.card_body = CardFrameBody(self)
         self.var_body.addWidget(self.card_body)
 
+    # 给外部卡片对象
+    def external_cardBodyObj(self)->CardFrameBody:
+        return self.card_body
 
     def defaultStyleSheet(self):
         self.setStyleSheet('''

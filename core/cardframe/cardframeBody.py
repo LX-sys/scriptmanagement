@@ -85,7 +85,7 @@ class CardFrameBody(QWidget):
         self.body_vbox = QVBoxLayout(self)
         self.body_vbox.setContentsMargins(0,0,0,0)
         self.body_vbox.addWidget(self.scrollArea)
-        for _ in range(140):
+        for _ in range(3):
             self.addCard(Card())
 
         self.createCard()

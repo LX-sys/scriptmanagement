@@ -5,16 +5,21 @@
 
 import sys
 from datetime import datetime
-
+from core.utility import pyqtSignal
 from PyQt5.QtWidgets import QApplication, QWidget, QMessageBox,QFileDialog
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class NewJS(QWidget):
+    # 新建脚本完成信号
+    newjsed = pyqtSignal(dict)
+
     def __init__(self, *args,**kwargs) -> None:
         super().__init__(*args,**kwargs)
         self.setupUi()
         self.Init()
+        # 窗口前置
+        self.setWindowModality(QtCore.Qt.ApplicationModal)
 
         self.myEvent()
     
@@ -209,7 +214,7 @@ class NewJS(QWidget):
         self.create_time_title.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.create_time_title.setObjectName("create_time_title")
         self.create_time = QtWidgets.QLabel(self.widget)
-        self.create_time.setGeometry(QtCore.QRect(130, 320, 141, 31))
+        self.create_time.setGeometry(QtCore.QRect(130, 320, 161, 31))
         self.create_time.setStyleSheet("font: 13pt \"黑体\";\n"
 "color: rgb(0, 0, 0);")
         self.create_time.setObjectName("create_time")
@@ -256,6 +261,15 @@ class NewJS(QWidget):
         self.task.setText(text_task)
         self.create_time.setText(datetime.now().strftime("%Y-%m-%d %H:%M"))
         self.show_label()
+        self.btn_sbumit.setText("创建完成")
+        # 构建信息
+        info = {
+            "number": text_number,
+            "task": text_task,
+            "jspath": self.lineEdit_jspath.text()
+        }
+        self.newjsed.emit(info)
+        self.setEnabled(False)
 
     # 打开文件
     def openFileEvent(self):
@@ -264,10 +278,18 @@ class NewJS(QWidget):
         # 获取文件名
         self.lineEdit_jspath.setText(file_name[0])
 
-
     def myEvent(self):
         self.btn_sbumit.clicked.connect(self.submitEvent)
         self.btn_open.clicked.connect(self.openFileEvent)
+
+    # 从外部接收 创建者 姓名
+    def external_set_name(self, title):
+        self.participator.setText(title)
+
+    def closeEvent(self, e: QtGui.QCloseEvent) -> None:
+        self.setEnabled(True)
+        super(NewJS, self).closeEvent(e)
+
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
