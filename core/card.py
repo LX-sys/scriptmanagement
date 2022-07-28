@@ -198,6 +198,8 @@ color:rgb(81, 81, 81);
         self.updateID(self.id.getID())
         self.updateTask(info.get("task", "test"))
         self.updateNumber(info.get("number", "-1"))
+        self.createTime()
+        self.updateTime()
         self.updateCount(1)
 
     # 创建标准卡片

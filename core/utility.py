@@ -4,6 +4,11 @@
 # @file:utility.py
 # @software:PyCharm
 
+'''
+    实用工具
+
+'''
+
 # qt常用包
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -64,7 +69,8 @@ from databases.oper_mysql import SMJPersonalInfo
 # 创建数据库
 PersonalInfo = SMJPersonalInfo()
 
-# 让数据只导入一次
+
+# 让数据库对象只导入一次
 def Mysql_PersonalInfo()->SMJPersonalInfo:
     return PersonalInfo
 
@@ -78,3 +84,42 @@ def rootPath()->str:
 # 组合路径
 def joinPath(path:str)->str:
     return os.path.join(rootPath(),path)
+
+
+# 运行python文件
+def runPython(path:str,version:int=2)->None:
+    if version==2:
+        os.system("python2 {}".format(path))
+    else:
+        os.system("python3 {}".format(path))
+
+
+# 将python2的print转换为python3的print
+def py2_print_To_py3(py_file_path:str,encoding:str="utf8",file_cover=False)->str:
+    '''
+            将python2的print转换为python3的print
+    :param py_file_path:
+    :param encoding:
+    :param file_cover: 不需要返回值,执行完毕后覆盖原文件
+    :return:
+    '''
+    import re
+    from fileio.fileIO import FileIO
+
+    f = FileIO()
+    pyfile = f.read(py_file_path,encoding=encoding) # 原文件代码
+    temp = []
+    no_bracket_print = re.findall("print.*",pyfile) # 没有括号的print
+    bracket_data = re.findall("print(.*)",pyfile) # print 后面的数据
+    for c in bracket_data:
+        temp.append("print({})".format(c.strip()))
+    # 替换
+    for i in range(len(no_bracket_print)):
+        upfile = pyfile.replace(no_bracket_print[i],temp[i])
+        pyfile = upfile
+    if file_cover:
+        f.write(py_file_path,content=upfile,encoding=encoding)
+    return  upfile if no_bracket_print else ""
+
+
+

@@ -9,14 +9,18 @@
 
 
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QFileDialog
+# sys.path.extend(['D:\\code\\scriptmanagement', 'D:/code/scriptmanagement'])
+from PyQt5.QtWidgets import QApplication, QWidget, QFileDialog, QMessageBox
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from fileio.fileIO import FileIO
+import sys
+
 
 class ViewJS(QWidget):
     def __init__(self, *args,**kwargs) -> None:
         super().__init__(*args,**kwargs)
+        self.__original_path = None # 原始路径
         self.setupUi()
 
         self.myEvent()
@@ -90,31 +94,51 @@ class ViewJS(QWidget):
         self.retranslateUi()
         QtCore.QMetaObject.connectSlotsByName(self)
 
+    # 原始路径
+    def originalPath(self)->str:
+        return self.__original_path
+
     # 从外部加载code路径
     def external_load_path(self,path:str):
+        self.writeCode(path)
+        self.lineEdit_jspath.setText(path)
+
+    # 写代码到编辑器上
+    def writeCode(self,path:str):
         fileio = FileIO()
         fileio.setFilePath(path)
         self.textEdit_code.setText(fileio.read())
-        self.lineEdit_jspath.setText(path)
+        self.setWindowTitle(fileio.getFileNameNoExtension(path))
+        self.__original_path = path
 
     # 打开文件
     def openFileEvent(self):
         # 使用QFileDialog打开文件
         file_name = QFileDialog.getOpenFileName(self, "打开文件", "./", "All Files (*)")
         path = file_name[0]
+        if self.__original_path is None:
+            self.__original_path = path
+        elif self.originalPath() != path:
+            decision = QMessageBox.question(self, "警告", "确定修改路径(临时)", QMessageBox.Yes|QMessageBox.No, QMessageBox.Yes)
+            if decision == QMessageBox.Yes:
+                self.__original_path = path
         # 获取文件名
-        self.lineEdit_jspath.setText(path)
+        self.lineEdit_jspath.setText(self.originalPath())
 
-        fileio = FileIO()
-        fileio.setFilePath(path)
-        self.textEdit_code.setText(fileio.read())
+        self.writeCode(self.originalPath())
+
+    # 重新加载代码
+    def reloadCodeEvent(self):
+        self.writeCode(self.lineEdit_jspath.text())
 
     def myEvent(self):
         self.btn_open.clicked.connect(self.openFileEvent)
+        # 重新加载
+        self.btn_reload.clicked.connect(self.reloadCodeEvent)
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
-        self.setWindowTitle(_translate("self", "self"))
+        self.setWindowTitle(_translate("self", "view"))
         self.label_jspath.setText(_translate("self", "脚本路径"))
         self.btn_open.setText(_translate("self", "..."))
         self.btn_reload.setText(_translate("self", "重新加载"))

@@ -191,6 +191,17 @@ class FileIO:
             file_name = self.filePath()
         return os.listdir(file_name)
 
+    # 获取文件名称
+    def getFileNameNoExtension(self, file_name:str=None) -> str:
+        '''
+        获取文件名称
+        :param file_name:
+        :return:
+        '''
+        if file_name is None:
+            file_name = self.filePath()
+        return os.path.basename(file_name)
+
 # 配置文件操作
 class FileConfig(FileIO):
     '''
@@ -259,7 +270,6 @@ class FileConfig(FileIO):
 
 
 if __name__ == '__main__':
-    pass
-    # file_io = FileConfig()
-    # file_io.setFilePath(r"D:\code\scriptmanagement\fileio\test\testl.conf")
-    # file_io.write(header="test", config={"test": "test","dsa":"123"})
+    file_io = FileConfig()
+    file_io.setFilePath(r"D:\code\scriptmanagement\fileio\test\testl.conf")
+    print(file_io.getFileNameNoExtension())

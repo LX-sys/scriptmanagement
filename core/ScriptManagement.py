@@ -24,6 +24,7 @@ from core.newJS import NewJS
 from core.token import JWT,QtJWT
 from core.jstemplate.JStemplate_tree import JSTemplate
 from core.viewJS import ViewJS
+from core.py2_py3.py2_py3 import Py2Py3
 
 # JSM
 class ScriptManagement(QMainWindow):
@@ -306,17 +307,22 @@ QLineEdit:focus{
     # view事件
     def view_Event(self,jspath:str):
         if jspath:
-            self.view_js = ViewJS()
+            if not hasattr(self,"view_js"):
+                self.view_js = ViewJS()
+                print("---")
+            self.view_js.external_load_path(jspath)
             self.view_js.show()
             print("test_view:",jspath)
         else:
-            print("空")
+            print("空:",jspath)
 
     def newjs_Event(self,info):
         # 创建卡片
         card = Card(info=info)
-        # 添加view事件
-        card.addViewEvent(self.view_Event,info.get("jspath",None))
+        # 绑定view事件,一旦绑定,路径会被锁死无法修改
+        jspath = info.get("jspath",None)
+
+        card.addViewEvent(self.view_Event,jspath)
         self.card_body.external_cardBodyObj().addCard(card)
         self.card_body.external_cardBodyObj().createCard()
 
@@ -341,17 +347,23 @@ QLineEdit:focus{
         self.js_template = JSTemplate()
         self.js_template.show()
 
+    # py2 print 转换为 py3 print
+    def py2_to_py3_print_Event(self):
+        if not hasattr(self,"py2_print"):
+            self.py2_print = Py2Py3()
+        self.py2_print.show()
     # 菜单
     def myMenu(self):
         self.menu_sys = MenuSys(self)
         self.menu_sys.addMenuHeader(["文件","模板","关于"])
         self.menu_sys.addMenuChild("文件",["新建脚本","修改脚本","设置","返回登录界面"])
-        self.menu_sys.addMenuChild("模板",["脚本模板","代码片段"])
+        self.menu_sys.addMenuChild("模板",["脚本模板","代码片段","py2_print转py3_print"])
         self.menu_sys.addMenuChild("关于",["脚本管理系统"])
         # 绑定事件
         self.menu_sys.connect("文件", "新建脚本", self.newJS_Event)
         self.menu_sys.connect("文件", "返回登录界面", self.toLogin_Event)
         self.menu_sys.connect("模板", "代码片段", self.code_Event)
+        self.menu_sys.connect("模板", "py2_print转py3_print", self.py2_to_py3_print_Event)
         # 绑定快捷键
         self.menu_sys.setShortcut("文件","新建脚本", "Ctrl+N")
         self.menu_sys.setShortcut("文件","返回登录界面", "Ctrl+E")

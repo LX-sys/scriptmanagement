@@ -255,19 +255,27 @@ class NewJS(QWidget):
 
         text_task = self.lineEdit_task.text()
         if text_number == "" or text_task == "":
-            QMessageBox.warning(self, "警告", "请输入完整信息！", QMessageBox.Yes)
+            QMessageBox.warning(self, "警告", "请输入任务名称！", QMessageBox.Yes)
             return
+
+        jspath = self.lineEdit_jspath.text()
+        # 判断是否为空
+        if jspath == "":
+            QMessageBox.warning(self, "警告", "请选择脚本！", QMessageBox.Yes)
+            return
+
+        # 构建信息
+        info = {
+            "number": text_number,
+            "task": text_task,
+            "jspath": jspath
+        }
         self.number.setText(text_number)
         self.task.setText(text_task)
         self.create_time.setText(datetime.now().strftime("%Y-%m-%d %H:%M"))
         self.show_label()
         self.btn_sbumit.setText("创建完成")
-        # 构建信息
-        info = {
-            "number": text_number,
-            "task": text_task,
-            "jspath": self.lineEdit_jspath.text()
-        }
+
         self.newjsed.emit(info)
         self.setEnabled(False)
 
@@ -297,9 +305,9 @@ class NewJS(QWidget):
         self.groupBox.setTitle(_translate("self", "新建脚本"))
         self.label_id.setText(_translate("self", "脚本编号*"))
         self.lineEdit_id.setPlaceholderText(_translate("self", "必填"))
-        self.label_task.setText(_translate("self", "任务名称"))
+        self.label_task.setText(_translate("self", "任务名称*"))
         self.lineEdit_task.setPlaceholderText(_translate("self", "必填"))
-        self.label_jspath.setText(_translate("self", "脚本路径"))
+        self.label_jspath.setText(_translate("self", "脚本路径*"))
         self.lineEdit_jspath.setPlaceholderText(_translate("self", "可选"))
         self.btn_open.setText(_translate("self", "..."))
         self.btn_sbumit.setText(_translate("self", "创建新脚本"))
