@@ -1,11 +1,17 @@
-import sys
-import typing
 
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QApplication, QWidget,QScrollArea,QVBoxLayout,QSpacerItem,QScrollBar
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.Qt import Qt
 
+from core.utility import sys,typing
+
+from core.utility import (
+    QApplication,
+    QWidget,
+    QVBoxLayout,
+    pyqtSignal,
+    QScrollArea,
+    QtGui,
+    QtWidgets,
+    qt_Qt
+)
 
 from core.card import Card
 
@@ -39,7 +45,7 @@ background-color:qlineargradient(spread:pad, x1:0.295955, y1:0.471, x2:0.705, y2
 }
         ''')
         # 不显示滚动条
-        self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.setHorizontalScrollBarPolicy(qt_Qt.ScrollBarAlwaysOff)
 
     def wheelEvent(self, e: QtGui.QWheelEvent) -> None:
         if e.angleDelta().y() < 0:

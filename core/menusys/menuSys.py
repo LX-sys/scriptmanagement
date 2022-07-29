@@ -3,8 +3,15 @@
 # @author:LX
 # @file:menuSys.py
 # @software:PyCharm
-from core.utility import QApplication,QMenu,QMainWindow,QMenuBar,QAction
 from core.utility import sys
+from core.utility import (
+    QApplication,
+    QMenu,
+    QMainWindow,
+    QMenuBar,
+    QAction
+)
+
 '''
 # 原生代码
 # self.menubar = QMenuBar(self)

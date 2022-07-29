@@ -2,13 +2,15 @@
 '''
     脚本模板
 '''
-import sys
-import copy
-import random
-from PyQt5.QtWidgets import QApplication, QWidget
-from PyQt5 import QtCore, QtGui, QtWidgets
+from core.utility import sys,copy
 
+from core.utility import (
+    QApplication,
+    QWidget,
+    QtCore,
+    QtWidgets
 
+)
 
 class JSTemplate(QWidget):
 

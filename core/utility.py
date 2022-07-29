@@ -62,6 +62,8 @@ import re
 import os
 import sys
 import time
+import copy
+import typing
 from datetime import datetime
 
 # mysql数据库操作类
