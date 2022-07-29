@@ -6,116 +6,206 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>409</width>
-    <height>519</height>
+    <width>740</width>
+    <height>544</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>740</width>
+    <height>544</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>740</width>
+    <height>544</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget{
+	color: rgb(255, 255, 255);
+	font: 12pt &quot;黑体&quot;;
+}</string>
+  </property>
   <layout class="QGridLayout" name="gridLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <property name="spacing">
+    <number>0</number>
+   </property>
    <item row="0" column="0">
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QWidget" name="widget" native="true">
      <property name="minimumSize">
       <size>
-       <width>391</width>
-       <height>501</height>
+       <width>311</width>
+       <height>521</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>391</width>
-       <height>501</height>
+       <width>400</width>
+       <height>600</height>
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">QLabel,QPushButton{
-	color: rgb(0, 0, 0);
-	font: 12pt &quot;黑体&quot;;
+      <string notr="true">background-color: rgb(91, 0, 136);</string>
+     </property>
+     <widget class="QLabel" name="label_o_title">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>30</y>
+        <width>161</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel{
+	font: 24pt &quot;黑体&quot;;
 }</string>
-     </property>
-     <property name="title">
-      <string>修改脚本</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-     <widget class="QLabel" name="label_id">
+      </property>
+      <property name="text">
+       <string>原脚本</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_o_id">
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>50</y>
+        <y>130</y>
         <width>71</width>
         <height>31</height>
        </rect>
       </property>
       <property name="text">
-       <string>脚本编号</string>
+       <string>脚本编号:</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_id">
+     <widget class="QLabel" name="label_o_task">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>190</y>
+        <width>71</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>任务名称:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_o_jspath">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>250</y>
+        <width>71</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>脚本路径:</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_copy">
+      <property name="geometry">
+       <rect>
+        <x>85</x>
+        <y>255</y>
+        <width>75</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;脚本路径&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton{
+	border:none;
+	background-color:rgba(255, 255, 255, 0);
+}
+QPushButton:hover{
+	color: rgb(214, 214, 107);
+}
+QPushButton:pressed{
+	color:rgb(240, 240, 240);
+}</string>
+      </property>
+      <property name="text">
+       <string>复制</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_input_id">
       <property name="geometry">
        <rect>
         <x>110</x>
-        <y>40</y>
-        <width>251</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>可选</string>
-      </property>
-      <property name="placeholderText">
-       <string>必填</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_task">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>120</y>
-        <width>71</width>
+        <y>130</y>
+        <width>141</width>
         <height>31</height>
        </rect>
       </property>
       <property name="text">
-       <string>任务名称</string>
+       <string>1</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_task">
+     <widget class="QLabel" name="label_input_task">
       <property name="geometry">
        <rect>
         <x>110</x>
-        <y>110</y>
-        <width>251</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>可选</string>
-      </property>
-      <property name="placeholderText">
-       <string>必填</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_jspath">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>180</y>
-        <width>71</width>
+        <y>190</y>
+        <width>181</width>
         <height>31</height>
        </rect>
       </property>
       <property name="text">
-       <string>脚本路径</string>
+       <string>hello wrold</string>
       </property>
      </widget>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QWidget" name="widget_2" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>411</width>
+       <height>521</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>411</width>
+       <height>600</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QWidget{
+	color: rgb(255, 255, 255);
+	background-color: rgb(85, 0, 0);
+}
+</string>
+     </property>
      <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
-        <x>110</x>
-        <y>180</y>
+        <x>130</x>
+        <y>290</y>
         <width>251</width>
         <height>32</height>
        </rect>
@@ -142,7 +232,6 @@
           <string notr="true">QLineEdit{
 color: rgb(252, 252, 252);
 font-size:13pt;
-background-color: rgb(143, 143, 143);
 border:1px solid rgb(238, 238, 238);
 border-right:none;
 border-top-left-radius:4px;
@@ -194,13 +283,87 @@ background-color:rgb(95, 48, 0);
        </item>
       </layout>
      </widget>
+     <widget class="QLineEdit" name="lineEdit_id">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>140</y>
+        <width>251</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="placeholderText">
+       <string>可选</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_jspath">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>290</y>
+        <width>71</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>脚本路径:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_task">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>210</y>
+        <width>71</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>任务名称:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_id">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>140</y>
+        <width>71</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>脚本编号:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_task">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>220</y>
+        <width>251</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="placeholderText">
+       <string>可选</string>
+      </property>
+     </widget>
      <widget class="QPushButton" name="btn_sbumit">
       <property name="geometry">
        <rect>
-        <x>140</x>
-        <y>300</y>
+        <x>160</x>
+        <y>370</y>
         <width>111</width>
-        <height>61</height>
+        <height>41</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -217,6 +380,27 @@ background-color:rgb(0, 220, 106);
       </property>
       <property name="text">
        <string>提交修改</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_title">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>30</y>
+        <width>161</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel{
+	font: 24pt &quot;黑体&quot;;
+}</string>
+      </property>
+      <property name="text">
+       <string>修改</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </widget>
