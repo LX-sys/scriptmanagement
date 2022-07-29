@@ -105,6 +105,9 @@ class CardFrameBody(QWidget):
     def cardCount(self) -> int:
         return len(self.card_obj)
 
+    def card(self)-> typing.List[Card]:
+        return self.card_obj
+
     # 溢出卡片数量
     def overflowCardCount(self) -> int:
         return len(self.overflow_card_obj)

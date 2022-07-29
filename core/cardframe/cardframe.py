@@ -9,11 +9,13 @@
 
 
 import sys
+import typing
+
 from PyQt5.QtWidgets import QApplication, QWidget,QVBoxLayout
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-from core.card import TitleCard
+from core.card import TitleCard,Card
 from core.cardframe.cardframeBody import CardFrameBody
 
 # 设置
@@ -52,13 +54,31 @@ class CardFrame(QWidget):
     def endWidget(self,widget:QWidget):
         self.var_body.addWidget(widget)
 
+    def cardInfoAll(self)->typing.List[Card]:
+        temp =[obj for obj in self.card_body.card()]
+        return temp
 
+    # 根据索引获取卡片信息
+    def getCardInfo(self,id:int)->Card:
+        # 二分查找
+        left = 0
+        right = len(self.cardInfoAll()) - 1
+        while left <= right:
+            mid = (left + right) // 2
+            if int(self.cardInfoAll()[mid].id_()) == id:
+                return self.cardInfoAll()[mid]
+            elif int(self.cardInfoAll()[mid].id_()) > id:
+                right = mid - 1
+            else:
+                left = mid + 1
+        return None
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
     win = CardFrame()
     win.show()
+    print(win.getCardInfo(2))
 
     sys.exit(app.exec_())
 

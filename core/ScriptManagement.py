@@ -354,6 +354,7 @@ QLineEdit:focus{
         self.js_template = JSTemplate()
         self.js_template.show()
 
+
     # py2 print 转换为 py3 print
     def py2_to_py3_print_Event(self):
         if not hasattr(self,"py2_print"):
@@ -364,17 +365,17 @@ QLineEdit:focus{
         self.menu_sys = MenuSys(self)
         self.menu_sys.addMenuHeader(["文件","模板","关于"])
         self.menu_sys.addMenuChild("文件",["新建脚本","修改脚本","设置","返回登录界面"])
-        self.menu_sys.addMenuChild("模板",["脚本模板","代码片段","py2_print转py3_print"])
+        self.menu_sys.addMenuChild("模板",["脚本模板","代码片段与陷阱","py2_print转py3_print"])
         self.menu_sys.addMenuChild("关于",["脚本管理系统"])
         # 绑定事件
         self.menu_sys.connect("文件", "新建脚本", self.newJS_Event)
         self.menu_sys.connect("文件", "返回登录界面", self.toLogin_Event)
-        self.menu_sys.connect("模板", "代码片段", self.code_Event)
+        self.menu_sys.connect("模板", "代码片段与陷阱", self.code_Event)
         self.menu_sys.connect("模板", "py2_print转py3_print", self.py2_to_py3_print_Event)
         # 绑定快捷键
         self.menu_sys.setShortcut("文件","新建脚本", "Ctrl+N")
         self.menu_sys.setShortcut("文件","返回登录界面", "Ctrl+E")
-        self.menu_sys.setShortcut("模板","代码片段", "Ctrl+Shift+C")
+        self.menu_sys.setShortcut("模板","代码片段与陷阱", "Ctrl+Shift+C")
         # =================
         # 禁用所有功能,登录之后开放
         self.menu_sys.allDisable(False)

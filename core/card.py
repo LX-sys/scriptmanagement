@@ -275,6 +275,58 @@ color:rgb(81, 81, 81);
 
         self.createChild()
 
+    def info(self):
+        info = dict()
+        info["id"] = self.id_()
+        info["task"] = self.task()
+        info["number"] = self.number()
+        info["count"] = self.count()
+        info["schedule"] = self.schedule()
+        info["scheduleAll"] = self.scheduleAll()
+        info["create_time"] = self.create_time()
+        info["update_time"] = self.update_time()
+        info["participator"] = self.participator()
+        info["participatorAll"] = self.participatorAll()
+        return info
+
+    def scheduleAll_template(self,name:str) -> list:
+        temp = []
+        # 获取所有的下拉列表文本
+        count = self.getIDobj(name).count()
+        for i in range(count):
+            temp.append(self.getIDobj(name).itemText(i))
+        return temp
+
+    def id_(self)->str:
+        return self.getIDobj("id").text()
+
+    def task(self)->str:
+        return self.getIDobj("task").text()
+
+    def number(self)->str:
+        return self.getIDobj("number").text()
+
+    def count(self)->str:
+        return self.getIDobj("count").text()
+
+    def schedule(self)->str:
+        return self.getIDobj("schedule").currentText()
+
+    def scheduleAll(self)->list:
+        return self.scheduleAll_template("schedule")
+
+    def create_time(self)->str:
+        return self.getIDobj("create_time").text()
+
+    def update_time(self)->str:
+        return self.getIDobj("update_time").text()
+
+    def participator(self)->str:
+        return self.getIDobj("participator").currentText()
+
+    def participatorAll(self)->list:
+        return self.scheduleAll_template("participator")
+
     # 修改id
     def updateID(self, id: int):
         self.getIDobj("id").setText(str(id))
@@ -298,6 +350,14 @@ color:rgb(81, 81, 81);
     # 修改脚本时间
     def updateTime(self):
         self.getIDobj("update_time").setText(datetime.now().strftime("%Y-%m-%d %H:%M"))
+
+    # 修改当前完成进度
+    def updateSchedule(self,name:str):
+        self.getIDobj("schedule").setCurrentText(name)
+
+    # 修改当前操作者
+    def updateParticipator(self,name:str):
+        self.getIDobj("participator").setCurrentText(name)
 
     # 绑定事件模型
     def event_model(self,id_name:str,func,args=None):
