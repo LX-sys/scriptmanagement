@@ -6,7 +6,7 @@
 
 import os
 import shutil
-from configparser import ConfigParser
+
 
 # 标准文件操作
 class FileIO:

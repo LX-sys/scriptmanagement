@@ -14,7 +14,7 @@ from core.utility import QApplication,QWidget,QListWidgetItem,QGridLayout,QPushB
 from core.utility import joinPath
 
 
-from GuiLib.linedit_complement.lineeditComplement import LineEditComplement
+from GuiLib import LineEditComplement
 from fileio.fileIO import FileIO
 
 

@@ -2,13 +2,19 @@
 
     新建脚本
 '''
+from core.utility import (
+    QApplication,
+    QWidget,
+    QMessageBox,
+    QFileDialog,
+    pyqtSignal,
+    QtCore,
+    QtGui,
+    QtWidgets
+)
 
-import sys
-from datetime import datetime
-from core.utility import pyqtSignal
-from PyQt5.QtWidgets import QApplication, QWidget, QMessageBox,QFileDialog
-from PyQt5 import QtCore, QtGui, QtWidgets
 
+from core.utility import datetime,sys
 
 class NewJS(QWidget):
     # 新建脚本完成信号

@@ -58,10 +58,11 @@ from PyQt5.QtCore import (
 )
 
 # python 内置库
+import re
 import os
 import sys
 import time
-from datetime import datetime as dt
+from datetime import datetime
 
 # mysql数据库操作类
 from databases.oper_mysql import SMJPersonalInfo

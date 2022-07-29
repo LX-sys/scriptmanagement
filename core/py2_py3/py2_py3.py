@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QFileDialog,QLineEdit
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from fileio.fileIO import FileIO
-from GuiLib.textedit_typewriter.typewriter import Typewriter
+from GuiLib import Typewriter
 from core.utility import py2_print_To_py3
 from core.py2_py3.down_window import DownWindow
 

@@ -7,6 +7,7 @@
 
     生成token
 '''
+
 from core.utility import QThread,QMainWindow,QMessageBox
 
 import jwt

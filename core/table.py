@@ -3,11 +3,20 @@
 # @author:LX
 # @file:table.py
 # @software:PyCharm
-import sys
-import re
-import typing
-from PyQt5.QtWidgets import QApplication, QWidget, QTabWidget, QDockWidget,QMainWindow
-from PyQt5.Qt import Qt
+from core.utility import sys,re
+
+# from PyQt5.QtWidgets import QApplication, QWidget, QTabWidget, QDockWidget,QMainWindow
+# from PyQt5.Qt import Qt
+
+from core.utility import (
+    QApplication,
+    QWidget,
+    QTabWidget,
+    QDockWidget,
+    QMainWindow,
+    qt_Qt
+
+)
 
 from core.crad_affiliated import CradAffiliated
 
@@ -74,7 +83,7 @@ class TableABC(QTabWidget):
         if text not in self.tab_doc:
             self.tab = QMainWindow()
             self.docw = MyQDockWidget()
-            self.tab.addDockWidget(Qt.RightDockWidgetArea, self.docw)
+            self.tab.addDockWidget(qt_Qt.RightDockWidgetArea, self.docw)
             self.addTab(self.tab, text)
 
             self.tab_switch[str(self.count()-1)] = False

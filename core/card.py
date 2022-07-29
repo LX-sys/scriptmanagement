@@ -5,17 +5,23 @@
 # @software:PyCharm
 
 '''卡片'''
+from core.utility import (
+    QApplication,
+    QWidget,
+    QFrame,
+    QHBoxLayout,
+    QPushButton,
+    QLabel,
+    QComboBox,
+    QtGui,
+    core_Qt
+)
+from core.utility import (
+    re,
+    sys,
+    datetime
+)
 
-import re
-import sys
-from datetime import datetime
-import json
-import typing
-
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QApplication, QWidget,QFrame,QHBoxLayout,QPushButton,QLabel,QComboBox
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QColor,QCursor
 
 # 重写QComboBox取消滚动
 class myQComboBox(QComboBox):
@@ -117,7 +123,7 @@ QLabel{
     def addTitle(self,title:list):
         for t in title:
             l = QLabel(t,self)
-            l.setAlignment(Qt.AlignHCenter|Qt.AlignVCenter)
+            l.setAlignment(core_Qt.AlignHCenter|core_Qt.AlignVCenter)
             self.addChild(l)
         self.createChild()
 
@@ -204,7 +210,7 @@ color:rgb(81, 81, 81);
 
     # 创建标准卡片
     def test_createCard(self):
-        CENTER = Qt.AlignHCenter | Qt.AlignVCenter # 文本居中
+        CENTER = core_Qt.AlignHCenter | core_Qt.AlignVCenter # 文本居中
 
         id_ = QLabel(self)  # 最大显示数字100万
         id_.setObjectName("id")

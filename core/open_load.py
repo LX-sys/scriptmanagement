@@ -2,12 +2,17 @@
 
     登录加载界面
 '''
+from core.utility import (
+    QApplication,
+    QWidget,
+    QMouseEvent,
+    QtCore,
+    QtWidgets,
+    QPoint,
+    core_Qt
+)
 
-import sys
-from PyQt5.QtWidgets import QApplication, QWidget
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtGui import QMouseEvent
-from PyQt5.QtCore import Qt, QPoint
+from core.utility import sys
 
 from GuiLib.progressbar.progressBar import MyQProgressBar
 from core.ScriptManagement import ScriptManagement
@@ -17,11 +22,11 @@ class OpenLoad(QWidget):
         super().__init__(*args,**kwargs)
         self.setupUi()
         # 背景透明
-        self.setAttribute(QtCore.Qt.WA_TranslucentBackground, True)
+        self.setAttribute(core_Qt.WA_TranslucentBackground, True)
         # 去掉窗口边框
-        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setWindowFlags(core_Qt.FramelessWindowHint)
         # 去掉边框
-        self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        self.setAttribute(core_Qt.WA_DeleteOnClose)
         self.myEvent()
     
     def setupUi(self):
@@ -193,7 +198,7 @@ class OpenLoad(QWidget):
         QtCore.QMetaObject.connectSlotsByName(self)
 
     def mousePressEvent(self, e: QMouseEvent) -> None:
-            if e.button() == Qt.LeftButton:
+            if e.button() == core_Qt.LeftButton:
                     self._isTracking = True
                     self._startPos = QPoint(e.x(), e.y())
 
@@ -205,7 +210,7 @@ class OpenLoad(QWidget):
                     pass
 
     def mouseReleaseEvent(self, e: QMouseEvent):
-            if e.button() == Qt.LeftButton:
+            if e.button() == core_Qt.LeftButton:
                     self._isTracking = False
 
 
