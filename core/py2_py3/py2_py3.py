@@ -1,3 +1,4 @@
+from PyQt5.QtWidgets import QMessageBox
 
 from core.utility import sys
 
@@ -159,10 +160,14 @@ border:1px solid rgb(85, 170, 0);
         file = FileIO()
         # 获取文件名
         file_name = self.lineEdit_jspath.text()
-        # 获取文件内容
-        file_content = file.read(file_name)
-        self.textEdit_front.setText(file_content,True)
-        self.btn_img.setText("扫描文件中...")
+        if file_name:
+            # 获取文件内容
+            file_content = file.read(file_name)
+            self.textEdit_front.setText(file_content,True)
+            self.btn_img.setText("扫描文件中...")
+        else:
+            QMessageBox.warning(self, "警告", "请选择文件", QMessageBox.Yes)
+            return
 
     # 下载代码
     def downLoadEvent(self):
@@ -176,7 +181,12 @@ border:1px solid rgb(85, 170, 0);
     # 打字完成触发信号
     def codeEndEvent(self):
         self.stackedWidget.setCurrentIndex(1)
-        self.textEdit.setText(py2_print_To_py3(self.lineEdit_jspath.text()))
+        code = py2_print_To_py3(self.lineEdit_jspath.text())
+        if code:
+            self.textEdit.setText(code)
+        else:
+            QMessageBox.warning(self, "警告", "代码中没有py2的print,不需要转换", QMessageBox.Yes)
+            return
 
     def myEvent(self):
         self.btn_open.clicked.connect(self.openFileEvent)
