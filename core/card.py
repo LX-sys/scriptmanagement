@@ -211,6 +211,8 @@ color:rgb(81, 81, 81);
         self.createTime()
         self.updateTime()
         self.updateCount(1)
+        self.updatePath(info.get("jspath", ""))
+        print("-->",self.info())
 
     # 创建标准卡片
     def test_createCard(self):
@@ -386,18 +388,17 @@ color:rgb(81, 81, 81);
             self.getIDobj(id_name).clicked.connect(lambda:func(args))
 
     # view事件
-    def addViewEvent(self,func,jspath=None):
-        self.event_model("view",func,jspath)
-        # 绑定view事件时,同时更新路径
-        self.updatePath(jspath)
+    def addViewEvent(self,func):
+        # 回调自己的函数
+        self.event_model("view",func,self)
 
     # 使用次数的事件
-    def addCountEvent(self,func,args=None):
-        self.event_model("count",func,args)
+    def addCountEvent(self,func):
+        self.event_model("count",func,self)
 
     # 历史事件
-    def addHistoryEvent(self,func,args=None):
-        self.event_model("history",func,args)
+    def addHistoryEvent(self,func):
+        self.event_model("history",func,self)
 
     # 完成情况改变时事件
     def boxchangeEvent(self, text: str):

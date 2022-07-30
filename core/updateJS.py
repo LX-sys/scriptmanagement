@@ -62,9 +62,9 @@ class UpdateJS(QWidget):
 "}")
         self.label_o_title.setAlignment(QtCore.Qt.AlignCenter)
         self.label_o_title.setObjectName("label_o_title")
-        self.label_o_id = QtWidgets.QLabel(self.widget)
-        self.label_o_id.setGeometry(QtCore.QRect(20, 130, 71, 31))
-        self.label_o_id.setObjectName("label_o_id")
+        self.label_o_number = QtWidgets.QLabel(self.widget)
+        self.label_o_number.setGeometry(QtCore.QRect(20, 130, 71, 31))
+        self.label_o_number.setObjectName("label_o_id")
         self.label_o_task = QtWidgets.QLabel(self.widget)
         self.label_o_task.setGeometry(QtCore.QRect(20, 190, 71, 31))
         self.label_o_task.setObjectName("label_o_task")
@@ -84,9 +84,9 @@ class UpdateJS(QWidget):
 "    color:rgb(240, 240, 240);\n"
 "}")
         self.btn_copy.setObjectName("btn_copy")
-        self.label_input_id = QtWidgets.QLabel(self.widget)
-        self.label_input_id.setGeometry(QtCore.QRect(110, 130, 141, 31))
-        self.label_input_id.setObjectName("label_input_id")
+        self.label_input_number = QtWidgets.QLabel(self.widget)
+        self.label_input_number.setGeometry(QtCore.QRect(110, 130, 141, 31))
+        self.label_input_number.setObjectName("label_input_id")
         self.label_input_task = QtWidgets.QLabel(self.widget)
         self.label_input_task.setGeometry(QtCore.QRect(110, 190, 181, 31))
         self.label_input_task.setObjectName("label_input_task")
@@ -166,15 +166,15 @@ class UpdateJS(QWidget):
 "}")
         self.btn_open.setObjectName("btn_open")
         self.horizontalLayout.addWidget(self.btn_open)
-        self.lineEdit_id = QtWidgets.QLineEdit(self.widget_2)
-        self.lineEdit_id.setGeometry(QtCore.QRect(130, 140, 251, 41))
-        self.lineEdit_id.setStyleSheet("QLineEdit{\n"
+        self.lineEdit_number = QtWidgets.QLineEdit(self.widget_2)
+        self.lineEdit_number.setGeometry(QtCore.QRect(130, 140, 251, 41))
+        self.lineEdit_number.setStyleSheet("QLineEdit{\n"
 "border:1px solid rgb(255, 255, 255);\n"
 "border-radius:4px;\n"
 "}\n"
 "")
-        self.lineEdit_id.setText("")
-        self.lineEdit_id.setObjectName("lineEdit_id")
+        self.lineEdit_number.setText("")
+        self.lineEdit_number.setObjectName("lineEdit_id")
         self.label_jspath = QtWidgets.QLabel(self.widget_2)
         self.label_jspath.setGeometry(QtCore.QRect(30, 290, 71, 31))
         self.label_jspath.setObjectName("label_jspath")
@@ -225,7 +225,7 @@ class UpdateJS(QWidget):
             info = {
                 "name":card.participator(),
                 "up_name":loginInfo.name(),
-                "id": card.id_(),
+                "number": card.number(),
                 "task": card.task(),
                 "jspath": card.jspath(),
             }
@@ -234,21 +234,21 @@ class UpdateJS(QWidget):
             info = {
                 "name":"LX",
                 "up_name":"LX",
-                "id": "1",
+                "number": "1",
                 "task": "hello",
                 "jspath": "test/test.js",
             }
         self.setOriginInfo(*info.values())
 
     # 设置源信息
-    def setOriginInfo(self,name:str,up_name:str,id: int, task: str, jspath: str):
+    def setOriginInfo(self,name:str,up_name:str,number: int, task: str, jspath: str):
         # 设置标题
         self.label_o_title.setText("原脚本({})".format(name))
         # 设置修改者
         self.label_title.setText("修改({})".format(up_name))
 
 
-        self.label_input_id.setText(str(id))
+        self.label_input_number.setText(str(number))
         self.label_input_task.setText(task)
         self.btn_copy.setToolTip("<html><head/><body><p>{}</p></body></html>".format(jspath))
 
@@ -268,20 +268,20 @@ class UpdateJS(QWidget):
 
     # 提交信息
     def submitEvent(self):
-        id = self.lineEdit_id.text()
+        number = self.lineEdit_number.text()
         task = self.lineEdit_task.text()
         jspath = self.lineEdit_jspath.text()
 
 
-        if not self.label_input_id.text():
+        if not self.label_input_number.text():
             QMessageBox.warning(self, "提示", "请先查询的脚本编号或ID")
             return
 
-        if (not id) and (not task) and (not jspath):
+        if (not number) and (not task) and (not jspath):
             QMessageBox.warning(self, "提示", "没有做任何修改")
             return
 
-        if not id.isdigit():
+        if number and not number.isdigit():
             QMessageBox.warning(self, "警告", "编号必须是数字", QMessageBox.Yes)
             return
 
@@ -291,7 +291,8 @@ class UpdateJS(QWidget):
 
         # 构建信息
         info = {
-            "id": id if id else None,
+            "o_number":self.label_input_number.text(),
+            "up_number": number if number else None,
             "task": task if task else None,
             "jspath": jspath if jspath else None
         }
@@ -300,6 +301,11 @@ class UpdateJS(QWidget):
         QMessageBox.information(self, "提示", "修改完成")
         # 修改完成,发送信号
         self.updateEnded.emit(info)
+
+        # 清空
+        self.lineEdit_number.setText("")
+        self.lineEdit_task.setText("")
+        self.lineEdit_jspath.setText("")
 
     # 查询脚本
     def findEvent(self):
@@ -317,27 +323,30 @@ class UpdateJS(QWidget):
         else:
             # 发送信息
             self.externaled.emit(text_id)
+        self.lineEdit_ip_number.setText("")
 
     def myEvent(self):
         self.btn_sbumit.clicked.connect(self.submitEvent)
         self.btn_open.clicked.connect(self.openFileEvent)
+        # 查询ID或者编号事件
         self.btn_find.clicked.connect(self.findEvent)
+        self.lineEdit_ip_number.returnPressed.connect(self.findEvent)
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
         self.label_o_title.setText(_translate("self", "原脚本()"))
-        self.label_o_id.setText(_translate("self", "脚本编号:"))
+        self.label_o_number.setText(_translate("self", "脚本编号:"))
         self.label_o_task.setText(_translate("self", "任务名称:"))
         self.label_o_jspath.setText(_translate("self", "脚本路径:"))
         self.btn_copy.setToolTip(_translate("self", "<html><head/><body><p>脚本路径</p></body></html>"))
         self.btn_copy.setText(_translate("self", "复制"))
-        self.label_input_id.setText(_translate("self", ""))
+        self.label_input_number.setText(_translate("self", ""))
         self.label_input_task.setText(_translate("self", ""))
         self.groupBox.setTitle(_translate("self", "脚本ID或者编号"))
         self.btn_find.setText(_translate("self", "查询"))
         self.lineEdit_jspath.setPlaceholderText(_translate("self", "可选"))
         self.btn_open.setText(_translate("self", "..."))
-        self.lineEdit_id.setPlaceholderText(_translate("self", "可选"))
+        self.lineEdit_number.setPlaceholderText(_translate("self", "可选"))
         self.label_jspath.setText(_translate("self", "脚本路径:"))
         self.label_task.setText(_translate("self", "任务名称:"))
         self.label_id.setText(_translate("self", "脚本编号:"))

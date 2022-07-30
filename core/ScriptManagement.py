@@ -319,26 +319,23 @@ QLineEdit:focus{
         return self.__login_info
 
     # view事件
-    def view_Event(self,jspath:str):
+    def view_Event(self,card:Card):
+        jspath = card.jspath()
         if jspath:
             if not hasattr(self,"view_js"):
                 self.view_js = ViewJS()
-                print("---")
             self.view_js.external_load_path(jspath)
             self.view_js.show()
-            print("test_view:",jspath)
         else:
             print("空:",jspath)
 
-    def newjs_Event(self,info):
+    def newjs_Event(self,info:dict):
         # 创建卡片
         card = Card(info=info)
-        # 绑定view事件,一旦绑定,路径会被锁死无法修改
-        jspath = info.get("jspath",None)
-
-        card.addViewEvent(self.view_Event,jspath)
+        card.addViewEvent(self.view_Event)
         self.card_body.external_cardBodyObj().addCard(card)
         self.card_body.external_cardBodyObj().createCard()
+
 
     # 新建脚本
     def newJS_Event(self):
@@ -354,11 +351,28 @@ QLineEdit:focus{
             # 提示没有该脚本
             QMessageBox.warning(self,"提示","没有该脚本")
 
+    # 更新脚本
+    def update_js_Event(self,info:dict):
+        print(info)
+        o_number = int(info.get("o_number", None))
+        up_number = info.get("up_number",None)
+        task = info.get("task",None)
+        jspath = info.get("jspath",None)
+
+        if up_number:
+            # print(self.card_body.getCardInfo(o_number).info())
+            self.card_body.getCardInfo(o_number).updateNumber(up_number)
+        if task:
+            self.card_body.getCardInfo(o_number).updateTask(task)
+        if jspath:
+            self.card_body.getCardInfo(o_number).updatePath(jspath)
+
 
     # 修改脚本
     def updateJS_Event(self):
         self.update_obj = UpdateJS()
         self.update_obj.externaled.connect(lambda id:self.external_update_js(self.update_obj,self.card_body.getCardInfo(int(id))))
+        self.update_obj.updateEnded.connect(self.update_js_Event)
         self.update_obj.show()
 
     # 返回登录界面
@@ -478,6 +492,7 @@ QLineEdit:focus{
         self.lineEdit_pwd.returnPressed.connect(self.login_Event)
         # 注册
         self.btn_registered.clicked.connect(self.register_Event)
+
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
