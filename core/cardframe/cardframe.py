@@ -71,6 +71,16 @@ class CardFrame(QWidget):
                 right = mid - 1
             else:
                 left = mid + 1
+
+        # 如果二分查找没有找到,就通过编号去找
+        return self.getCardInfo2(str(id))
+
+    # 根据编号获取卡片对象
+    def getCardInfo2(self,number:str)->Card:
+        for c in self.cardInfoAll():
+            if c.number() == number:
+                return c
+
         return None
 
 if __name__ == '__main__':
@@ -78,7 +88,6 @@ if __name__ == '__main__':
 
     win = CardFrame()
     win.show()
-    print(win.getCardInfo(2))
 
     sys.exit(app.exec_())
 

@@ -10,6 +10,7 @@
 
 from core.utility import time,sys
 
+
 from core.utility import (
     QApplication,
     QMainWindow,
@@ -28,17 +29,20 @@ from core.cardframe.cardframe import CardFrame
 from core.menusys.menuSys import MenuSys
 from core.card import Card
 from core.newJS import NewJS
+from core.updateJS import UpdateJS
 from core.token import JWT,QtJWT
 from core.jstemplate.JStemplate_tree import JSTemplate
 from core.viewJS import ViewJS
 from core.py2_py3.py2_py3 import Py2Py3
+from core.login_info import LoginInfo
+
 
 # JSM
 class ScriptManagement(QMainWindow):
     def __init__(self, *args,**kwargs) -> None:
         super().__init__(*args,**kwargs)
         self.__info = None
-
+        self.__login_info = LoginInfo()
         self.setupUi()
         self.myMenu()
         self.myShortcuts()
@@ -311,6 +315,9 @@ QLineEdit:focus{
         self.__token = JWT()
         self.__th_token = QtJWT(self,self.__token)
 
+    def loginObj(self)->LoginInfo:
+        return self.__login_info
+
     # view事件
     def view_Event(self,jspath:str):
         if jspath:
@@ -336,9 +343,23 @@ QLineEdit:focus{
     # 新建脚本
     def newJS_Event(self):
         self.newjs_obj = NewJS()
-        self.newjs_obj.external_set_name(self.name()) # 设置创建者
+        self.newjs_obj.external_set_name(self.loginObj().name()) # 设置创建者
         self.newjs_obj.newjsed.connect(self.newjs_Event)
         self.newjs_obj.show()
+
+    def external_update_js(self,update_obj:UpdateJS,card:Card):
+        if card:
+            update_obj.setCard(card,self.loginObj())
+        else:
+            # 提示没有该脚本
+            QMessageBox.warning(self,"提示","没有该脚本")
+
+
+    # 修改脚本
+    def updateJS_Event(self):
+        self.update_obj = UpdateJS()
+        self.update_obj.externaled.connect(lambda id:self.external_update_js(self.update_obj,self.card_body.getCardInfo(int(id))))
+        self.update_obj.show()
 
     # 返回登录界面
     def toLogin_Event(self):
@@ -360,6 +381,7 @@ QLineEdit:focus{
         if not hasattr(self,"py2_print"):
             self.py2_print = Py2Py3()
         self.py2_print.show()
+
     # 菜单
     def myMenu(self):
         self.menu_sys = MenuSys(self)
@@ -369,11 +391,13 @@ QLineEdit:focus{
         self.menu_sys.addMenuChild("关于",["脚本管理系统"])
         # 绑定事件
         self.menu_sys.connect("文件", "新建脚本", self.newJS_Event)
+        self.menu_sys.connect("文件", "修改脚本", self.updateJS_Event)
         self.menu_sys.connect("文件", "返回登录界面", self.toLogin_Event)
         self.menu_sys.connect("模板", "代码片段与陷阱", self.code_Event)
         self.menu_sys.connect("模板", "py2_print转py3_print", self.py2_to_py3_print_Event)
         # 绑定快捷键
         self.menu_sys.setShortcut("文件","新建脚本", "Ctrl+N")
+        self.menu_sys.setShortcut("文件","修改脚本", "Ctrl+U")
         self.menu_sys.setShortcut("文件","返回登录界面", "Ctrl+E")
         self.menu_sys.setShortcut("模板","代码片段与陷阱", "Ctrl+Shift+C")
         # =================
@@ -397,10 +421,6 @@ QLineEdit:focus{
     def rightSpreadEvent(self):
         self.right_Tabwidget.splitterChange(self.splitter_h, int(self.width() * 0.7), int(self.width() * 0.3))
 
-    # 当前操作者
-    def name(self) -> str:
-        return self.__info[0]
-
     # 登录事件
     def login_Event(self):
         d = {
@@ -422,8 +442,8 @@ QLineEdit:focus{
         if text_name == "" or text_password == "":
             QMessageBox.warning(self, "警告", "用户名或密码不能为空！", QMessageBox.Yes, QMessageBox.Yes)
             return
-        self.__info = [text_name, text_password]
-        if self.smj_personal_info.login(*self.__info):
+
+        if self.smj_personal_info.login(text_name, text_password):
             # 登录成功提示
             QMessageBox.information(self, "提示", "登录成功！", QMessageBox.Yes, QMessageBox.Yes)
             self.stackedWidget.setCurrentIndex(0)
@@ -431,14 +451,17 @@ QLineEdit:focus{
             self.menu_sys.allDisable(True)
             # 设置token,启动监视线程
             self.__token.setData(d)
-            self.__token.encode()
+            self.__token.encode() # 创建token
+            # 设置登录信息类
+            self.loginObj().setInfo(text_name, text_password,self.__info)
+            # print(self.loginObj().info())
             self.__th_token.start()
         else:
             # 登录失败提示
             QMessageBox.warning(self, "警告", "用户名或密码错误！", QMessageBox.Yes, QMessageBox.Yes)
-            self.lineEdit_name.setText("")
-            self.lineEdit_pwd.setText("")
-            self.lineEdit_name.setFocus()
+        self.lineEdit_name.setText("")
+        self.lineEdit_pwd.setText("")
+        self.lineEdit_name.setFocus()
 
     # 注册事件
     def register_Event(self):

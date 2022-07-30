@@ -143,6 +143,10 @@ class Card(CardABC):
         self.id = ID()
         self.id.add()
 
+        # 添加路径信息
+
+        self.obj_dict["jspath"] = ""
+
         if not info:
             info = dict()
         self.createCard(info)
@@ -240,7 +244,10 @@ color:rgb(81, 81, 81);
         schedule = myQComboBox(self)
         schedule.setMinimumSize(80,25)
         schedule.setMaximumSize(80,25)
-        schedule.addItems(["未完成","完成","详情"])
+        import random  # 测试,将列表顺序打乱
+        c = ["未完成","完成","详情"]
+        random.shuffle(c)
+        schedule.addItems(c)
 
         create_time = QLabel("2022.1.21 10:30", self)
         create_time.setMinimumSize(150,30)
@@ -255,7 +262,9 @@ color:rgb(81, 81, 81);
         participator = myQComboBox(self)
         participator.setMinimumSize(80, 25)
         participator.setMaximumSize(80, 25)
-        participator.addItems(["刘璇", "丁梓靖", "赵银鹏"])
+        s = ["刘璇", "丁梓靖", "赵银鹏"]
+        random.shuffle(s)
+        participator.addItems(s)
 
         history = QPushButton("历史", self)
         history.setObjectName("history")
@@ -287,6 +296,7 @@ color:rgb(81, 81, 81);
         info["update_time"] = self.update_time()
         info["participator"] = self.participator()
         info["participatorAll"] = self.participatorAll()
+        info["jspath"] = self.jspath()
         return info
 
     def scheduleAll_template(self,name:str) -> list:
@@ -296,6 +306,9 @@ color:rgb(81, 81, 81);
         for i in range(count):
             temp.append(self.getIDobj(name).itemText(i))
         return temp
+
+    def __setJsPath(self,jspath:str):
+        self.obj_dict["jspath"]= jspath
 
     def id_(self)->str:
         return self.getIDobj("id").text()
@@ -326,6 +339,9 @@ color:rgb(81, 81, 81);
 
     def participatorAll(self)->list:
         return self.scheduleAll_template("participator")
+
+    def jspath(self)->str:
+        return self.getIDobj("jspath")
 
     # 修改id
     def updateID(self, id: int):
@@ -359,6 +375,9 @@ color:rgb(81, 81, 81);
     def updateParticipator(self,name:str):
         self.getIDobj("participator").setCurrentText(name)
 
+    def updatePath(self,jspath:str):
+        self.__setJsPath(jspath)
+
     # 绑定事件模型
     def event_model(self,id_name:str,func,args=None):
         if args is None:
@@ -367,8 +386,10 @@ color:rgb(81, 81, 81);
             self.getIDobj(id_name).clicked.connect(lambda:func(args))
 
     # view事件
-    def addViewEvent(self,func,args=None):
-        self.event_model("view",func,args)
+    def addViewEvent(self,func,jspath=None):
+        self.event_model("view",func,jspath)
+        # 绑定view事件时,同时更新路径
+        self.updatePath(jspath)
 
     # 使用次数的事件
     def addCountEvent(self,func,args=None):

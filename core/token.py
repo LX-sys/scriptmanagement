@@ -91,7 +91,7 @@ class QtJWT(QThread):
 
 
 
-myjwt = JWT()
+# myjwt = JWT()
 # myjwt.setData(d)
 # myjwt.encode()
 # print(myjwt.decode())

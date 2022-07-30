@@ -66,6 +66,9 @@ import copy
 import typing
 from datetime import datetime
 
+import socket as SOCKET
+from socket import socket
+
 # mysql数据库操作类
 from databases.oper_mysql import SMJPersonalInfo
 
@@ -125,4 +128,7 @@ def py2_print_To_py3(py_file_path:str,encoding:str="utf8",file_cover=False)->str
     return  upfile if no_bracket_print else ""
 
 
+# 获取当前时间
+def cu_time()->str:
+    return datetime.now().strftime("%Y-%m-%d %H:%M")
 
