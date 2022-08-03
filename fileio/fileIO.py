@@ -9,6 +9,9 @@ import shutil
 
 
 # 标准文件操作
+from configparser import ConfigParser
+
+
 class FileIO:
     # 文件操作
     def __init__(self, *args, **kwargs) -> None:

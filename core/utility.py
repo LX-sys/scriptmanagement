@@ -61,6 +61,7 @@ from PyQt5.QtCore import (
 import re
 import os
 import sys
+import jwt
 import time
 import copy
 import typing
@@ -87,11 +88,39 @@ def rootPath()->str:
     return os.path.join(z_path[0],"scriptmanagement")
 
 
+# win
+def is_windows()->bool:
+    return sys.platform == "win32" or sys.platform == "win64"
+
+
+# linux
+def is_linux()->bool:
+    return sys.platform == "linux" or sys.platform == "linux2"
+
+
+# mac
+def is_mac()->bool:
+    return sys.platform == "darwin"
+
+
 # 组合路径
-def joinPath(path:str)->str:
-    return os.path.join(rootPath(),path)
+def joinPath(path:str,before_path:str=None)->str:
+    if is_windows() and "/" in path:
+        path = path.replace("/","\\")
 
+    if is_mac():
+       if "\\\\" in path:
+            print("---")
+            path = path.replace("\\\\","/")
+       elif "\\" in path:
+            print("===")
+            path = path.replace("\\","/")
+    if before_path:
+        return os.path.join(before_path, path)
+    else:
+        return os.path.join(rootPath(),path)
 
+# print(joinPath(r"dsad\dasd"))
 # 运行python文件
 def runPython(path:str,version:int=2)->None:
     if version==2:
@@ -109,7 +138,6 @@ def py2_print_To_py3(py_file_path:str,encoding:str="utf8",file_cover=False)->str
     :param file_cover: 不需要返回值,执行完毕后覆盖原文件
     :return:
     '''
-    import re
     from fileio.fileIO import FileIO
 
     f = FileIO()

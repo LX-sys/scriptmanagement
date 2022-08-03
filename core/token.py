@@ -8,10 +8,14 @@
     生成token
 '''
 
-from core.utility import QThread,QMainWindow,QMessageBox
+from core.utility import time
 
-import jwt
-import time
+from core.utility import (
+    QThread,
+    QMainWindow
+)
+
+from core.utility import jwt
 
 class JWT:
     def __init__(self, *args, **kwargs) -> None:

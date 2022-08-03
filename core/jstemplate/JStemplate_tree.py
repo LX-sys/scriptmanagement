@@ -139,7 +139,7 @@ class JSTemplate(QWidget):
             file_names.remove("__init__.py")
 
         for i in file_names:
-            self.addTemplatePath(path+"\{}".format(i))
+            self.addTemplatePath(joinPath(r"{}".format(i),path))
 
     def addTemplate(self, title:str,code:str=""):
         self.lineEdit_search.addCompleterList([title])
@@ -217,7 +217,6 @@ class JSTemplate(QWidget):
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
-        self.setWindowTitle(_translate("self", "self"))
         self.lineEdit_search.setPlaceholderText(_translate("self", "搜索"))
         self.btn_ok.setText(_translate("self", "确定"))
         self.btn_c.setText(_translate("self", "复制"))
