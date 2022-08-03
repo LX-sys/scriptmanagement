@@ -83,6 +83,6 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     test = Typewriter()
     test.setText("Hello World!", True)
-    test.append("Hello World")
+    test.append("Hello World",True)
     test.show()
     sys.exit(app.exec_())

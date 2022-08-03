@@ -30,6 +30,7 @@ from core.menusys.menuSys import MenuSys
 from core.card import Card
 from core.newJS import NewJS
 from core.updateJS import UpdateJS
+from core.deleteJS import DeleteJS
 from core.token import JWT,QtJWT
 from core.jstemplate.JStemplate_tree import JSTemplate
 from core.viewJS import ViewJS
@@ -339,6 +340,8 @@ QLineEdit:focus{
 
     # 新建脚本
     def newJS_Event(self):
+        # if not hasattr(self,"newjs_obj"):
+        #     print("--")
         self.newjs_obj = NewJS()
         self.newjs_obj.external_set_name(self.loginObj().name()) # 设置创建者
         self.newjs_obj.newjsed.connect(self.newjs_Event)
@@ -353,7 +356,7 @@ QLineEdit:focus{
 
     # 更新脚本
     def update_js_Event(self,info:dict):
-        print(info)
+        # print(info)
         o_number = int(info.get("o_number", None))
         up_number = info.get("up_number",None)
         task = info.get("task",None)
@@ -367,13 +370,17 @@ QLineEdit:focus{
         if jspath:
             self.card_body.getCardInfo(o_number).updatePath(jspath)
 
-
     # 修改脚本
     def updateJS_Event(self):
         self.update_obj = UpdateJS()
         self.update_obj.externaled.connect(lambda id:self.external_update_js(self.update_obj,self.card_body.getCardInfo(int(id))))
         self.update_obj.updateEnded.connect(self.update_js_Event)
         self.update_obj.show()
+
+    # 删除脚本
+    def deleteJS_Event(self):
+        self.del_js = DeleteJS()
+        self.del_js.show()
 
     # 返回登录界面
     def toLogin_Event(self):
@@ -400,18 +407,20 @@ QLineEdit:focus{
     def myMenu(self):
         self.menu_sys = MenuSys(self)
         self.menu_sys.addMenuHeader(["文件","模板","关于"])
-        self.menu_sys.addMenuChild("文件",["新建脚本","修改脚本","设置","返回登录界面"])
+        self.menu_sys.addMenuChild("文件",["新建脚本","修改脚本","删除脚本","设置","返回登录界面"])
         self.menu_sys.addMenuChild("模板",["脚本模板","代码片段与陷阱","py2_print转py3_print"])
         self.menu_sys.addMenuChild("关于",["脚本管理系统"])
         # 绑定事件
         self.menu_sys.connect("文件", "新建脚本", self.newJS_Event)
         self.menu_sys.connect("文件", "修改脚本", self.updateJS_Event)
+        self.menu_sys.connect("文件", "删除脚本", self.deleteJS_Event)
         self.menu_sys.connect("文件", "返回登录界面", self.toLogin_Event)
         self.menu_sys.connect("模板", "代码片段与陷阱", self.code_Event)
         self.menu_sys.connect("模板", "py2_print转py3_print", self.py2_to_py3_print_Event)
         # 绑定快捷键
         self.menu_sys.setShortcut("文件","新建脚本", "Ctrl+N")
         self.menu_sys.setShortcut("文件","修改脚本", "Ctrl+U")
+        self.menu_sys.setShortcut("文件","删除脚本", "Ctrl+D")
         self.menu_sys.setShortcut("文件","返回登录界面", "Ctrl+E")
         self.menu_sys.setShortcut("模板","代码片段与陷阱", "Ctrl+Shift+C")
         # =================

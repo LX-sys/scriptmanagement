@@ -54,7 +54,7 @@ class EventThread(QThread):
         else:
             self.f()
 
-
+# mac系统下会存在问题，win不会
 class MyQProgressBar(QProgressBar):
     # 进度条完成触发事件
     progress_bar_finish_signal = pyqtSignal(bool)

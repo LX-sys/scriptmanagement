@@ -300,8 +300,20 @@ class NewJS(QWidget):
     def external_set_name(self, title):
         self.participator.setText(title)
 
+    # 清空
+    def clear(self):
+        self.lineEdit_id.clear()
+        self.lineEdit_task.clear()
+        self.lineEdit_jspath.clear()
+        self.number.clear()
+        self.task.clear()
+        self.schedule.clear()
+        self.participator.clear()
+        self.create_time.clear()
+
     def closeEvent(self, e: QtGui.QCloseEvent) -> None:
         self.setEnabled(True)
+        self.clear()
         super(NewJS, self).closeEvent(e)
 
 

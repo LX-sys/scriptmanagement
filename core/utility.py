@@ -120,7 +120,7 @@ def joinPath(path:str,before_path:str=None)->str:
     else:
         return os.path.join(rootPath(),path)
 
-# print(joinPath(r"dsad\dasd"))
+
 # 运行python文件
 def runPython(path:str,version:int=2)->None:
     if version==2:
