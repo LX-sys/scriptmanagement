@@ -391,13 +391,15 @@ QLineEdit:focus{
             QMessageBox.warning(self,"提示","没有该脚本")
 
     # 卡片删除事件
-
     def del_js_Event(self,number:str,del_js_obj:DeleteJS):
         print("删除脚本",number,del_js_obj)
-        if self.card_body.delCard_number(number):
-            del_js_obj.resetUI()
-            # 提示删除成功
-            QMessageBox.information(self,"提示","删除成功")
+        # 是否删除提示
+        reply = QMessageBox.question(self,"提示","是否删除该脚本",QMessageBox.Yes|QMessageBox.No)
+        if reply == QMessageBox.Yes:
+            if self.card_body.delCard_number(number):
+                del_js_obj.resetUI()
+                # 提示删除成功
+                QMessageBox.information(self,"提示","删除成功")
 
     # 删除脚本
     def deleteJS_Event(self):

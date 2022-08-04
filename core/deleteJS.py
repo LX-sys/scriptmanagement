@@ -30,11 +30,17 @@ class DeleteJS(QWidget):
         self.setupUi()
         # 窗口前置
         self.setWindowModality(QtCore.Qt.ApplicationModal)
-        self.btn_del.setEnabled(False)
         self.myEvent()
+
+        self.Init()
     
     def setupUi(self):
         self.setObjectName("self")
+        self.setStyleSheet('''
+QWidget{
+	font: 12pt "黑体";
+}
+        ''')
         self.resize(771, 421)
         self.setMinimumSize(QtCore.QSize(771, 421))
         self.setMaximumSize(QtCore.QSize(771, 421))
@@ -60,14 +66,18 @@ class DeleteJS(QWidget):
         self.btn_find = QtWidgets.QPushButton(self.widget)
         self.btn_find.setGeometry(QtCore.QRect(150, 180, 113, 32))
         self.btn_find.setObjectName("btn_find")
+        self.btn_find.setStyleSheet('''
+QPushButton{
+	background-color: rgb(71, 99, 255);
+	color: rgb(255, 255, 255);
+	border:1px solid rgb(0, 61, 182);
+}
+QPushButton:pressed{
+	background-color: rgb(0, 53, 159);
+}
+        ''')
         self.btn_del = QtWidgets.QPushButton(self.widget)
         self.btn_del.setGeometry(QtCore.QRect(90, 350, 231, 61))
-        self.btn_del.setStyleSheet("QPushButton{\n"
-"    background-color: rgb(255, 0, 0);\n"
-"    border-radius:10px;\n"
-"    color: rgb(255, 255, 255);\n"
-"    font: 24pt \"Baoli SC\";\n"
-"}")
         self.btn_del.setObjectName("btn_del")
         self.gridLayout.addWidget(self.widget, 0, 0, 1, 1)
         self.widget_2 = QtWidgets.QWidget(self)
@@ -132,6 +142,36 @@ class DeleteJS(QWidget):
         self.retranslateUi()
         QtCore.QMetaObject.connectSlotsByName(self)
 
+    # 设置删除按钮状态
+    def setBtnEnable(self, enable:bool):
+        if enable:
+            self.btn_del.setEnabled(True)
+            self.btn_del.setStyleSheet('''
+QPushButton{
+	background-color: red;
+	border:1px solid rgb(179, 0, 0);
+	border-radius:10px;
+	color: rgb(255, 255, 255);
+	font: 24pt "Baoli SC";
+}
+QPushButton:pressed{
+	background-color: rgb(139, 0, 0);
+}
+            ''')
+        else:
+            self.btn_del.setEnabled(False)
+            self.btn_del.setStyleSheet('''
+                        QPushButton{
+                        	background-color: gray;
+                        	border-radius:10px;
+                        	color: rgb(255, 255, 255);
+                        	font: 24pt "Baoli SC";
+                        }''')
+
+    def Init(self):
+        self.setBtnEnable(False)
+
+
     # 创建表格
     def createTable(self,info:list):
         hearders = ["ID", "编号","完成情况", "任务名", "创建者", "创建时间", "删除权限"]
@@ -140,7 +180,7 @@ class DeleteJS(QWidget):
             self.tableWidget.addTable([hearders[i],info[i]])
 
         # 激活删除按钮
-        self.btn_del.setEnabled(True)
+        self.setBtnEnable(True)
 
     # 查找事情
     def find_Event(self):
@@ -160,7 +200,7 @@ class DeleteJS(QWidget):
        self.findJSed.emit(info)
 
        if __name__ == '__main__':
-           self.btn_del.setEnabled(True)
+           self.setBtnEnable(True)
 
     # 删除事件
     def del_Event(self):
@@ -182,7 +222,7 @@ class DeleteJS(QWidget):
     def resetUI(self):
         self.label.setText("脚本")
         self.lineEdit.setText("")
-        self.btn_del.setEnabled(False)
+        self.setBtnEnable(False)
         self.tableWidget.tableUrlClear()
 
 
