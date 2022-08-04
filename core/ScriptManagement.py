@@ -331,11 +331,15 @@ QLineEdit:focus{
             print("空:",jspath)
 
     def newjs_Event(self,info:dict):
-        # 创建卡片
-        card = Card(info=info)
-        card.addViewEvent(self.view_Event)
-        self.card_body.external_cardBodyObj().addCard(card)
-        self.card_body.external_cardBodyObj().createCard()
+        if not self.card_body.external_cardBodyObj().is_card_exist(info["number"]):
+            # 创建卡片
+            card = Card(info=info)
+            card.addViewEvent(self.view_Event)
+            self.card_body.external_cardBodyObj().addCard(card)
+            self.card_body.external_cardBodyObj().createCard()
+        else:
+            # 提示卡片已存在
+            QMessageBox.warning(self, "提示", "该编号已存在")
 
 
     # 新建脚本

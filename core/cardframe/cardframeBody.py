@@ -62,7 +62,6 @@ class CardFrameBody(QWidget):
         self.resize(600,500)
 
         self.scrollArea = MyQScrollArea(self)
-        # self.scrollArea.setMaximumHeight(self.height())
         # 窗口,布局,垫片
         self.win = QWidget()
         self.vbox = QVBoxLayout(self.win)
@@ -91,11 +90,8 @@ class CardFrameBody(QWidget):
         self.body_vbox = QVBoxLayout(self)
         self.body_vbox.setContentsMargins(0,0,0,0)
         self.body_vbox.addWidget(self.scrollArea)
-        for _ in range(3):
-            self.addCard(Card())
-        # self.removeCard(self.card_obj[1])
-        # self.removeCard_ID(2)
-        # self.removeCard_number("1")
+        # for _ in range(3):
+        #     self.addCard(Card())
 
         self.createCard()
 
@@ -104,6 +100,7 @@ class CardFrameBody(QWidget):
         if self.cardCount() <= self.getCapacity():
             if not self.is_card_exist(card.number()):
                 self.card_obj.append(card)
+                print(card.jspath())
                 # 获取一下高度
                 self._h = card.size().height()
             else:
