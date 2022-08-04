@@ -377,9 +377,33 @@ QLineEdit:focus{
         self.update_obj.updateEnded.connect(self.update_js_Event)
         self.update_obj.show()
 
+    # 查询待删除的脚本事件
+    def find_del_JS_Event(self,info:dict):
+        fun = info["fun"]
+        number = info["number"]
+        card_info = self.card_body.getCardInfo2(number)
+        if card_info:
+            temp_info = [card_info.id_(),card_info.number(),card_info.schedule(),
+                         card_info.task(),card_info.participator(),card_info.create_time(),"可删除"]
+            fun(temp_info)
+        else:
+            # 提示没有该脚本
+            QMessageBox.warning(self,"提示","没有该脚本")
+
+    # 卡片删除事件
+
+    def del_js_Event(self,number:str,del_js_obj:DeleteJS):
+        print("删除脚本",number,del_js_obj)
+        if self.card_body.delCard_number(number):
+            del_js_obj.resetUI()
+            # 提示删除成功
+            QMessageBox.information(self,"提示","删除成功")
+
     # 删除脚本
     def deleteJS_Event(self):
         self.del_js = DeleteJS()
+        self.del_js.findJSed.connect(self.find_del_JS_Event)
+        self.del_js.cardDeled.connect(lambda number:self.del_js_Event(number,self.del_js))
         self.del_js.show()
 
     # 返回登录界面

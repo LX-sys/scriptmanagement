@@ -93,15 +93,21 @@ class CardFrameBody(QWidget):
         self.body_vbox.addWidget(self.scrollArea)
         for _ in range(3):
             self.addCard(Card())
+        # self.removeCard(self.card_obj[1])
+        # self.removeCard_ID(2)
+        # self.removeCard_number("1")
 
         self.createCard()
 
     # 添加卡片
     def addCard(self, card: QWidget):
         if self.cardCount() <= self.getCapacity():
-            self.card_obj.append(card)
-            # 获取一下高度
-            self._h = card.size().height()
+            if not self.is_card_exist(card.number()):
+                self.card_obj.append(card)
+                # 获取一下高度
+                self._h = card.size().height()
+            else:
+                print("编号重复")
         else:
             if card not in self.overflow_card_obj:
                 self.overflow_card_obj.insert(0, card)
@@ -113,6 +119,13 @@ class CardFrameBody(QWidget):
 
     def card(self)-> typing.List[Card]:
         return self.card_obj
+
+    # 判断IP是否重复
+    def is_card_exist(self, number: str) -> bool:
+        for card in self.card_obj:
+            if card.number() == number:
+                return True
+        return False
 
     # 溢出卡片数量
     def overflowCardCount(self) -> int:
@@ -147,8 +160,39 @@ class CardFrameBody(QWidget):
             self.vbox.addItem(self.spacerItem)
             print("加载剩余个数:", self.overflowCardCount())
 
+    # 删除卡片-卡片对象
+    def removeCard(self, card: Card):
+        if card in self.card_obj:
+            self.card_obj.remove(card)
+            self.vbox.removeWidget(card)
+            card.deleteLater()
+            return True
+        else:
+            print("卡片不存在")
+            return False
 
+    # 根据ID删除卡片
+    def removeCard_ID(self,id:int):
+        left = 0
+        right = len(self.card_obj) - 1
+        while left <= right:
+            mid = (left + right) // 2
+            if int(self.card_obj[mid].id_()) == id:
+                self.removeCard(self.card_obj[mid])
+                return True
+            elif int(self.card_obj[mid].id_()) > id:
+                right = mid - 1
+            else:
+                left = mid + 1
+        return False
 
+    # 根据编号删除卡片
+    def removeCard_number(self,number:str):
+        for card in self.card_obj:
+            if card.number() == number:
+                self.removeCard(card)
+                return True
+        return False
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

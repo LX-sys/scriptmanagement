@@ -83,6 +83,14 @@ class CardFrame(QWidget):
 
         return None
 
+    # 删除卡片
+    def delCard_ID(self,id:int)->bool:
+        return self.card_body.removeCard_ID(id)
+
+    # 删除卡片
+    def delCard_number(self, nunmber: str) -> bool:
+        return self.card_body.removeCard_number(nunmber)
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
