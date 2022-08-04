@@ -14,6 +14,7 @@ from core.utility import (
 )
 
 from core.card import Card
+from core.cardframe.js_path import JSPath
 
 class MyQScrollArea(QScrollArea):
     scrolled = pyqtSignal(bool)
@@ -57,6 +58,9 @@ background-color:qlineargradient(spread:pad, x1:0.295955, y1:0.471, x2:0.705, y2
 
 # 自定义滚动区域
 class CardFrameBody(QWidget):
+    # 修改脚本使用次数信号
+    updateCounted = pyqtSignal(dict)
+
     def __init__(self, *args,**kwargs) -> None:
         super().__init__(*args,**kwargs)
         self.resize(600,500)
@@ -71,6 +75,14 @@ class CardFrameBody(QWidget):
         self.card_obj = []  # 卡片对象
         self.overflow_card_obj = []  # 溢出卡片对象
         self._h = 50
+        # 统计脚本路径
+        '''
+        {
+        # 卡片编号:脚本路径,共享路径卡片编号
+        "1":{"path":"xxx","number":["1","2"]},
+        }
+        '''
+        self.jspath_obj = JSPath()
 
         self.setUI()
         self.Init()
@@ -100,7 +112,22 @@ class CardFrameBody(QWidget):
         if self.cardCount() <= self.getCapacity():
             if not self.is_card_exist(card.number()):
                 self.card_obj.append(card)
-                print(card.jspath())
+                self.jspath_obj.addJSPath(card)
+                # 当脚本路径不唯一时
+                if not self.jspath_obj.isOnly(card.jspath()):
+                    number_list = self.jspath_obj.getNumberList(card.jspath())
+                    count = str(len(number_list))
+                    # 先更新自己脚本使用次数
+                    card.updateCount(count)
+                    # 只需要更新其他脚本的使用次数,移除自己
+                    number_list.remove(card.number())
+                    # 发送信号,构建信息
+                    info ={
+                        "number":number_list,
+                        "count":count
+                    }
+                    self.updateCounted.emit(info)
+
                 # 获取一下高度
                 self._h = card.size().height()
             else:

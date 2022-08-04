@@ -344,8 +344,6 @@ QLineEdit:focus{
 
     # 新建脚本
     def newJS_Event(self):
-        # if not hasattr(self,"newjs_obj"):
-        #     print("--")
         self.newjs_obj = NewJS()
         self.newjs_obj.external_set_name(self.loginObj().name()) # 设置创建者
         self.newjs_obj.newjsed.connect(self.newjs_Event)
@@ -367,7 +365,6 @@ QLineEdit:focus{
         jspath = info.get("jspath",None)
 
         if up_number:
-            # print(self.card_body.getCardInfo(o_number).info())
             self.card_body.getCardInfo(o_number).updateNumber(up_number)
         if task:
             self.card_body.getCardInfo(o_number).updateTask(task)
@@ -521,6 +518,12 @@ QLineEdit:focus{
         self.reg = Register()
         self.reg.show()
 
+    # 更新脚本使用次数
+    def updateCount_Event(self,info:dict):
+        for n in info["number"]:
+            card=self.card_body.getCardInfo2(n)
+            card.updateCount(int(info["count"]))
+
     # 事件
     def myEvent(self):
         self.crad_affiliated.clickTab(self.bottomSpreadEvent)
@@ -531,6 +534,8 @@ QLineEdit:focus{
         self.lineEdit_pwd.returnPressed.connect(self.login_Event)
         # 注册
         self.btn_registered.clicked.connect(self.register_Event)
+        # 更新脚本使用次数
+        self.card_body.external_cardBodyObj().updateCounted.connect(self.updateCount_Event)
 
 
     def retranslateUi(self):
