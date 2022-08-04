@@ -330,11 +330,20 @@ QLineEdit:focus{
         else:
             print("空:",jspath)
 
+    # Count 事件
+    def count_Event(self,card:Card):
+        jspath = card.jspath()
+        jspath_obj = self.card_body.external_cardBodyObj().external_jspath_obj()
+        # 使用同一脚本路径的编号
+        number_list = jspath_obj.getNumberList(jspath)
+        print(number_list)
+
     def newjs_Event(self,info:dict):
         if not self.card_body.external_cardBodyObj().is_card_exist(info["number"]):
             # 创建卡片
             card = Card(info=info)
             card.addViewEvent(self.view_Event)
+            card.addCountEvent(self.count_Event)
             self.card_body.external_cardBodyObj().addCard(card)
             self.card_body.external_cardBodyObj().createCard()
         else:
@@ -393,7 +402,6 @@ QLineEdit:focus{
 
     # 卡片删除事件
     def del_js_Event(self,number:str,del_js_obj:DeleteJS):
-        print("删除脚本",number,del_js_obj)
         # 是否删除提示
         reply = QMessageBox.question(self,"提示","是否删除该脚本",QMessageBox.Yes|QMessageBox.No)
         if reply == QMessageBox.Yes:

@@ -107,6 +107,10 @@ class CardFrameBody(QWidget):
 
         self.createCard()
 
+    # 给外部使用js路径类
+    def external_jspath_obj(self)-> JSPath:
+        return self.jspath_obj
+
     # 添加卡片
     def addCard(self, card: QWidget):
         if self.cardCount() <= self.getCapacity():
