@@ -90,4 +90,4 @@ def deal_Code(filepath:str,c_name:str="UI",inheritance_name:str="QMainWindow",mo
     return code
 
 
-deal_Code("../core/deleteJS.py", outfile="../DeleteJS.py", c_name="DeleteJS", inheritance_name="QWidget")
+deal_Code("../core/countView.py", outfile="../UI/countView.py", c_name="CountView", inheritance_name="QWidget")

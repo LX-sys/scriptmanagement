@@ -9,3 +9,4 @@ from GuiLib.linedit_complement.lineeditComplement import LineEditComplement
 from GuiLib.progressbar.progressBar import MyQProgressBar
 from GuiLib.textedit_typewriter.typewriter import Typewriter
 from GuiLib.table.table import Table
+from GuiLib.listWidget.listWidget import ListWidget

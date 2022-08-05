@@ -36,6 +36,7 @@ from core.jstemplate.JStemplate_tree import JSTemplate
 from core.viewJS import ViewJS
 from core.py2_py3.py2_py3 import Py2Py3
 from core.login_info import LoginInfo
+from core.countView import CountView
 
 
 # JSM
@@ -337,6 +338,11 @@ QLineEdit:focus{
         # 使用同一脚本路径的编号
         number_list = jspath_obj.getNumberList(jspath)
         print(number_list)
+        if not hasattr(self, "count_view"):
+            self.count_view = CountView()
+        self.count_view.setTitle(card.number())
+        self.count_view.createList(number_list)
+        self.count_view.show()
 
     def newjs_Event(self,info:dict):
         if not self.card_body.external_cardBodyObj().is_card_exist(info["number"]):
@@ -373,12 +379,30 @@ QLineEdit:focus{
         task = info.get("task",None)
         jspath = info.get("jspath",None)
 
+        # 修改脚本,更新脚本使用次数
+        jspath_obj = self.card_body.external_cardBodyObj().external_jspath_obj()
+
         if up_number:
             self.card_body.getCardInfo(o_number).updateNumber(up_number)
+            jspath_obj.updateNumber(str(o_number),up_number)
         if task:
             self.card_body.getCardInfo(o_number).updateTask(task)
         if jspath:
+            # 在修改路径之前,先获取旧路径绑定的编号
+            number_list = jspath_obj.getNumberList(self.card_body.getCardInfo(o_number).jspath())
+            # number_list.remove(str(o_number))  # 移除自己 ,下面使用减一,比移除自己执行效率高
+            # 修改路径
             self.card_body.getCardInfo(o_number).updatePath(jspath)
+            jspath_obj.updateJSPath(str(o_number),jspath)
+            # 在同步其他脚本的使用次数-1
+            number_list_len = len(number_list)-1
+            for n in number_list:
+                print("==>",n)
+                self.card_body.getCardInfo2(n).updateCount(number_list_len)
+            # 在计算修改后的路径使用次数
+            number_list = jspath_obj.getNumberList(jspath)
+            for n in number_list:
+                self.card_body.getCardInfo2(n).updateCount(len(number_list))
 
     # 修改脚本
     def updateJS_Event(self):
@@ -461,7 +485,6 @@ QLineEdit:focus{
         # =================
         # 禁用所有功能,登录之后开放
         self.menu_sys.allDisable(False)
-
 
     # 搜索事件
     def find_Event(self):

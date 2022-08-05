@@ -6,6 +6,7 @@
 
 # from core.card import Card
 
+import copy
 
 class Card:
     def __init__(self,number,jspath):
@@ -125,15 +126,39 @@ class JSPath:
             self.___script_path[w_number]["number"].append(number)
         else:
             # 不存在
+            print("--")
             self.___script_path[number] = {"path":jspath,"number":[number]}
+
+    # 修改编号
+    def updateNumber(self,old_number:str,new_number:str):
+        if not self.is_number(old_number):
+            return
+
+        if self.is_number(new_number):
+            print("编号重复")
+            return
+        else:
+            # 先判断这个编号是否在最外层
+            if old_number in self.scriptPathAll():
+                temp_copy = copy.deepcopy(self.scriptPathAll()[old_number])
+                del self.___script_path[old_number]
+                self.___script_path[new_number]=temp_copy
+                self.___script_path[new_number]["number"].insert(0,new_number)
+            else: # 内层
+                for wn in self.scriptPathAll():
+                    if old_number in self.scriptPathAll()[wn]["number"]:
+                        index = self.___script_path[wn]["number"].index(old_number)
+                        self.___script_path[wn]["number"][index] = new_number
+                        break
+            self.removeNumber(old_number)
 
 if __name__ == '__main__':
     #  测试
     js_path = JSPath()
     js_path.addJSPath(Card("1","xxx"))
     js_path.addJSPath(Card("2","xxx"))
-    # js_path.addJSPath(Card("3","xxsadx"))
-    # js_path.updateJSPath("1","xxsadx")
+    js_path.addJSPath(Card("3","xxx"))
+    js_path.updateNumber("1","5")
     # js_path.removeNumber("1")
-    # print(js_path.scriptPathAll())
+    print(js_path.scriptPathAll())
     # print(js_path.getNumberList("xxx"))
