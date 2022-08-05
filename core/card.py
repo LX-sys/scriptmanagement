@@ -208,9 +208,21 @@ color:rgb(81, 81, 81);
         self.updateID(self.id.getID())
         self.updateTask(info.get("task", "test"))
         self.updateNumber(info.get("number", "-1"))
-        self.createTime()
-        self.updateTime()
-        self.updateCount(1)
+
+        if info.get("create_time",None):
+            self.update_create_time(info.get("create_time"))
+        else:
+            self.createTime()
+
+        if info.get("update_time", None):
+            self.update_update_time(info.get("update_time"))
+        else:
+            self.updateTime()
+
+        if info.get("count",None):
+            self.updateCount(int(info.get("count")))
+        else:
+            self.updateCount(1)
         self.updatePath(info.get("jspath", ""))
         print("-->",self.info())
 
@@ -365,9 +377,17 @@ color:rgb(81, 81, 81);
     def createTime(self):
         self.getIDobj("create_time").setText(datetime.now().strftime("%Y-%m-%d %H:%M"))
 
+    # 更新创建时间(主要用于数据库调用)
+    def update_create_time(self,time: str):
+        self.getIDobj("create_time").setText(time)
+
     # 修改脚本时间
     def updateTime(self):
         self.getIDobj("update_time").setText(datetime.now().strftime("%Y-%m-%d %H:%M"))
+
+    # 更新修改脚本时间(主要用于数据库调用)
+    def update_update_time(self,time: str):
+        self.getIDobj("update_time").setText(time)
 
     # 修改当前完成进度
     def updateSchedule(self,name:str):

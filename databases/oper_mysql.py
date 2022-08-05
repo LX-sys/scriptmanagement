@@ -102,8 +102,35 @@ class SMJPersonalInfo(OperMysql):
         self.cursor.close()
         self.conn.close()
 
+
+class CardInfo(OperMysql):
+    table_name = "card_info"
+
+    def __init__(self):
+        super(CardInfo, self).__init__()
+        self.connect()
+
+    def get_card_info(self,limit=100):
+        sql = "select * from {} limit {}".format(CardInfo.table_name,limit)
+        return self.select(sql)
+
+    def get_name_card_info(self,user:str):
+        sql = "select * from {} where user='{}';".format(CardInfo.table_name,user)
+        # 预处理
+        temp_card_info = self.select(sql)
+        result = []
+        for info in temp_card_info:
+            info = list(info)
+            info[6]=info[6].split("-")
+            info[10]=info[10].split("-")
+            result.append(tuple(info))
+        return result
+
+    def close(self):
+        self.cursor.close()
+        self.conn.close()
 if __name__ == '__main__':
     # 测试
-    smj = SMJPersonalInfo()
-    print(smj.get_personal_info())
+    smj = CardInfo()
+    print(smj.get_name_card_info('lx'))
 

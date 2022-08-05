@@ -56,6 +56,10 @@ from PyQt5.QtCore import (
     Qt as core_Qt,
     QPoint
 )
+from PyQt5.QtNetwork import (
+    QTcpSocket,
+    QHostAddress
+)
 
 # python 内置库
 import re
@@ -64,6 +68,7 @@ import sys
 import jwt
 import time
 import copy
+import json
 import typing
 from datetime import datetime
 
