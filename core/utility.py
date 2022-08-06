@@ -108,6 +108,11 @@ def is_mac()->bool:
     return sys.platform == "darwin"
 
 
+# 比较路径是否相同
+def compare_path(path1:str,path2:str)->bool:
+    return os.path.normpath(path1) == os.path.normpath(path2)
+
+
 # 组合路径
 def joinPath(path:str,before_path:str=None)->str:
     if is_windows() and "/" in path:
@@ -164,4 +169,3 @@ def py2_print_To_py3(py_file_path:str,encoding:str="utf8",file_cover=False)->str
 # 获取当前时间
 def cu_time()->str:
     return datetime.now().strftime("%Y-%m-%d %H:%M")
-
