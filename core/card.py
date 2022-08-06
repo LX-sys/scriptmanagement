@@ -224,6 +224,18 @@ color:rgb(81, 81, 81);
         else:
             self.updateCount(1)
         self.updatePath(info.get("jspath", ""))
+
+        if info.get("schedule",None):
+            text = info.get("schedule")
+            self.updateSchedule(text)
+            self.boxchangeEvent(text)  # 手动调用事件染色
+        else:
+            self.updateSchedule("未完成")
+            self.boxchangeEvent("未完成")
+
+        if info.get("participator",None):
+            self.updateParticipator(info.get("participator"))
+
         print("-->",self.info())
 
     # 创建标准卡片

@@ -120,10 +120,23 @@ class CardInfo(OperMysql):
         temp_card_info = self.select(sql)
         result = []
         for info in temp_card_info:
-            info = list(info)
-            info[6]=info[6].split("-")
-            info[10]=info[10].split("-")
-            result.append(tuple(info))
+            # 构建信息
+            card_info = {
+                "id": info[0],
+                "user": info[1],
+                "ip": info[2],
+                "number": info[3],
+                "task": info[4],
+                "count": info[5],
+                "schedule": info[6],
+                "scheduleAll": info[7].split("-"),
+                "create_time":info[8],
+                "update_time":info[9],
+                "participator":info[10],
+                "participatorAll":info[11].split("-"),
+                "jspath":info[12],
+            }
+            result.append(card_info)
         return result
 
     def close(self):

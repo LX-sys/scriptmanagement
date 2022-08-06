@@ -117,9 +117,11 @@ class CardFrameBody(QWidget):
             if not self.is_card_exist(card.number()):
                 self.card_obj.append(card)
                 self.jspath_obj.addJSPath(card)
+                print(card.jspath())
                 # 当脚本路径不唯一时
                 if not self.jspath_obj.isOnly(card.jspath()):
                     number_list = self.jspath_obj.getNumberList(card.jspath())
+
                     count = str(len(number_list))
                     # 先更新自己脚本使用次数
                     card.updateCount(count)
@@ -130,6 +132,7 @@ class CardFrameBody(QWidget):
                         "number":number_list,
                         "count":count
                     }
+                    print("变更后")
                     self.updateCounted.emit(info)
 
                 # 获取一下高度

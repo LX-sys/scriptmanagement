@@ -6,7 +6,7 @@
 
 # from core.card import Card
 
-import copy
+from core.utility import copy,compare_path
 
 class Card:
     def __init__(self,number,jspath):
@@ -47,14 +47,14 @@ class JSPath:
     # 判断路径是否存在
     def is_jspath(self,jspath:str):
         for number in self.scriptPathAll():
-            if self.scriptPathAll()[number]["path"] == jspath:
+            if compare_path(self.scriptPathAll()[number]["path"],jspath):
                 return True
         return False
 
     # 获取路径对应的最外层卡片编号
     def getPathID(self,jspath):
         for number in self.scriptPathAll():
-            if self.scriptPathAll()[number]["path"] == jspath:
+            if compare_path(self.scriptPathAll()[number]["path"],jspath):
                 return number
         return None
 
@@ -73,7 +73,7 @@ class JSPath:
     def getNumberList(self,jspath:str):
         number_list = []
         for number in self.scriptPathAll():
-            if self.scriptPathAll()[number]["path"] == jspath:
+            if compare_path(self.scriptPathAll()[number]["path"],jspath):
                 number_list.extend(self.scriptPathAll()[number]["number"])
         return number_list
 

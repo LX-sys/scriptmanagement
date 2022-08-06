@@ -55,22 +55,8 @@ class ScriptManagement(QMainWindow):
         self.Init()
         self.InitSocket()
 
-        # 测试读取数据库
-        self.cardDB = CardInfo()
-        r=self.cardDB.get_name_card_info('lx')
-        # 构建
-        for data in r:
-            # 构建信息
-            info = {
-                "task": data[3],
-                "number": data[4],
-                "create_time":data[7],
-                "update_time":data[8],
-                "jspath": data[11],
-            }
-            self.newjs(info)
-            print(info)
-    
+
+
     def setupUi(self):
         self.setObjectName("self")
         self.resize(1208, 781)
@@ -332,6 +318,26 @@ QLineEdit:focus{
         self.sock = QTcpSocket(self)
         self.sock.connectToHost(QHostAddress.LocalHost, 6666)
 
+    # 读取数据库
+    def read_mysql_db(self):
+        # 测试读取数据库
+        self.cardDB = CardInfo()
+        result = self.cardDB.get_name_card_info('lx')
+        # 构建
+        for data in result:
+            # 构建信息
+            info = {
+                "task": data["task"],
+                "number": data["number"],
+                "count": data["count"],
+                "schedule": data["schedule"],
+                "create_time": data["create_time"],
+                "update_time": data["update_time"],
+                "participator": data["participator"],
+                "jspath": data["jspath"]
+            }
+            self.newjs(info)
+        self.cardDB.close()
 
     def Init(self):
         self.smj_personal_info = Mysql_PersonalInfo()
@@ -569,8 +575,10 @@ QLineEdit:focus{
             self.__token.encode() # 创建token
             # 设置登录信息类
             self.loginObj().setInfo(text_name, text_password,self.__info)
-            # print(self.loginObj().info())
             self.__th_token.start()
+
+            # 读取数据库
+            self.read_mysql_db()
         else:
             # 登录失败提示
             QMessageBox.warning(self, "警告", "用户名或密码错误！", QMessageBox.Yes, QMessageBox.Yes)
