@@ -38,7 +38,6 @@ class Client(QWidget):
         self.sock = QTcpSocket(self)
         # QHostAddress.LocalHost
         self.sock.connectToHost(QHostAddress.ConvertLocalHost, 6666)
-
         self.layout_init()
         self.signal_init()
 

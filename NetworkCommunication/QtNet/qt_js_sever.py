@@ -8,7 +8,7 @@ from PyQt5.QtNetwork import QUdpSocket, QHostAddress
 from PyQt5.QtWidgets import QApplication, QWidget, QTextBrowser, QVBoxLayout
 
 import sys
-from PyQt5.QtCore import Qt, QTimer, QDateTime
+from PyQt5.QtCore import Qt, QTimer, QDateTime,QIODevice
 from PyQt5.QtNetwork import QUdpSocket, QHostAddress
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLabel, QVBoxLayout
 
@@ -17,6 +17,10 @@ import json
 import requests
 from PyQt5.QtNetwork import QTcpServer, QHostAddress
 from PyQt5.QtWidgets import QApplication, QWidget, QTextBrowser, QVBoxLayout,QPlainTextEdit
+
+
+from core.utility import Mysql_PersonalInfo,tcp_recv,tcp_send
+from core.token import JWT,QtJWT
 
 
 class Server(QWidget):
@@ -87,7 +91,11 @@ class ServerABC(QWidget):
         self.Init()
 
     def Init(self):
-        self.p_text = QPlainTextEdit(self)
+        # 数据库对象
+        self.smj_personal_info = Mysql_PersonalInfo()
+        # token,token线程
+        # self.__token = JWT()
+        # self.__th_token = QtJWT(self, self.__token)
 
     def appendText(self,text):
         self.p_text.appendPlainText(text)
@@ -102,18 +110,64 @@ class ServerABC(QWidget):
         print(news)
         # 读取数据
         sock.readyRead.connect(lambda: self.read_data_slot(sock))
+
         # sock.disconnected.connect(lambda: self.disconnected_slot(sock))
 
-    def read_data_slot(self, sock):
+    # 消息解析
+    def messageAnalysis(self,sock:QIODevice,message:dict):
+        if not message.get("protocolType",None):
+            return -1
+
+        # 登录验证
+        if message.get("protocolType") == "login":
+            text_name = message.get("data").get("username")
+            text_password = message.get("data").get("pwd")
+            print(text_name,text_password)
+            info = {
+                "protocolType": "login",
+                "data": {
+                    "username": text_name,
+                    "pwd": text_password
+                },
+                "result": None
+            }
+            # 通过数据库验证
+            if self.smj_personal_info.login(text_name, text_password):
+                info["result"] = 200
+            else:
+                info["result"] = 400
+            sock.write(tcp_send(info))
+            return
+
+        # 注册验证
+        if message.get("protocolType") == "register":
+            text_name = message.get("data").get("username")
+            text_password = message.get("data").get("pwd")
+            info = {
+                "protocolType": "register",
+                "data": {
+                    "username": text_name,
+                    "pwd": text_password
+                },
+                "result": None
+            }
+            # 通过数据库验证
+            if self.smj_personal_info.insert(text_name, text_password):
+                info["result"] = 200
+            else:
+                info["result"] = 400
+            sock.write(tcp_send(info))
+            return
+
+    def read_data_slot(self, sock:QIODevice):
         while sock.bytesAvailable():
             datagram = sock.read(sock.bytesAvailable())
-            message = datagram.decode()
-            print(message)
-            self.appendText(message)
+            message = tcp_recv(datagram)
+            self.messageAnalysis(sock,message)
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     demo = ServerABC()
-    demo.show()
+    demo.hide()
     sys.exit(app.exec_())

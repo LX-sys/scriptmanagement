@@ -103,15 +103,7 @@ class JSMBSystemp(QMainWindow):
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
         self.setWindowTitle(_translate("self", "JSM后台"))
-        self.treeWidget.headerItem().setText(0, _translate("self", "标签"))
-        __sortingEnabled = self.treeWidget.isSortingEnabled()
-        # self.treeWidget.setSortingEnabled(False)
-        # self.treeWidget.topLevelItem(0).setText(0, _translate("self", "脚本开发人员"))
-        # self.treeWidget.topLevelItem(0).child(0).setText(0, _translate("self", "刘璇"))
-        # self.treeWidget.topLevelItem(0).child(1).setText(0, _translate("self", "丁梓靖"))
-        # self.treeWidget.topLevelItem(1).setText(0, _translate("self", "脚本使用次数排名"))
-        # self.treeWidget.topLevelItem(2).setText(0, _translate("self", "脚本活跃图像"))
-        # self.treeWidget.setSortingEnabled(__sortingEnabled)
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

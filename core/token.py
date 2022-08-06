@@ -6,6 +6,19 @@
 '''
 
     生成token
+    d = {
+            # 公共声明
+            'exp': time.time() + 60*60*8,  # (Expiration Time) 此token的过期时间的时间戳
+            'iat': time.time(),  # (Issued At) 指明此创建时间的时间戳
+            'iss': 'LX',  # token的签发者
+
+            # 私有声明
+            'data': {
+                'username': 'lx',
+                "pwd": "123456",
+                'timestamp': time.time()
+            }
+        }
 '''
 
 from core.utility import time

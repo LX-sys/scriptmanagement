@@ -69,7 +69,7 @@ class SMJPersonalInfo(OperMysql):
     def insert(self, username, password,permission=0) -> int:
         if self.is_exist(username):
             print("用户名已存在")
-            return -1
+            return 0
 
         self.cursor.execute('insert into {}(user,pwd,permission) values("{}","{}",{});'.format(SMJPersonalInfo.table_name,username, password,permission))
         self.conn.commit()

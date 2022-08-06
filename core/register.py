@@ -13,16 +13,20 @@ from core.utility import (
     QApplication,
     QWidget,
     QtCore,
-    QtWidgets
+    QtWidgets,
+    pyqtSignal
 )
-
-from core.utility import Mysql_PersonalInfo
 
 
 # 注册
 class Register(QWidget):
+    # 注册信号
+    registered = pyqtSignal(dict)
+
     def __init__(self, *args,**kwargs) -> None:
         super().__init__(*args,**kwargs)
+        # 窗口前置
+        self.setWindowModality(QtCore.Qt.ApplicationModal)
         self.setupUi()
         # 信息
         self.__info = None
@@ -115,11 +119,10 @@ class Register(QWidget):
         QtCore.QMetaObject.connectSlotsByName(self)
 
     def Init(self):
-
-        self.smj_personal_info = Mysql_PersonalInfo()
         self.lineEdit.setText("")
         self.lineEdit_2.setText("")
         self.lineEdit_3.setText("")
+        self.lineEdit.setFocus()
 
     def registerEvent(self):
         name = self.lineEdit.text()
@@ -135,13 +138,16 @@ class Register(QWidget):
         if len(password) < 6:
             QtWidgets.QMessageBox.warning(self, "警告", "密码长度不能小于6位")
             return
-        if not self.smj_personal_info.is_exist(name):
-            QtWidgets.QMessageBox.information(self, "提示", "注册成功")
-            self.smj_personal_info.insert(name, password)
-            self.close()
-        else:
-            QtWidgets.QMessageBox.warning(self, "警告", "用户名已存在")
-            return
+
+        # 构建信息
+        info={
+            "protocolType": "register",
+            "data":{
+                "username": name,
+                "pwd": password
+            }
+        }
+        self.registered.emit(info)
         self.__info = [name, password]
 
     # 返回个人信息

@@ -169,3 +169,12 @@ def py2_print_To_py3(py_file_path:str,encoding:str="utf8",file_cover=False)->str
 # 获取当前时间
 def cu_time()->str:
     return datetime.now().strftime("%Y-%m-%d %H:%M")
+
+
+# TCP发送数据包装
+def tcp_send(data,encoding="utf8")->bytes:
+    return json.dumps(data).encode(encoding=encoding)
+
+# Tcp接收数据包装
+def tcp_recv(data:bytes,encoding="utf8")->dict:
+    return json.loads(data.decode(encoding=encoding))
