@@ -289,7 +289,6 @@ class NewJS(QWidget):
     def openFileEvent(self):
         # 使用QFileDialog打开文件
         file_name = QFileDialog.getOpenFileName(self, "打开文件", "./", "All Files (*)")
-        print(file_name)
         # 获取文件名
         self.lineEdit_jspath.setText(file_name[0])
 

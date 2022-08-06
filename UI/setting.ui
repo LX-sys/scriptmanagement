@@ -77,7 +77,7 @@
       </rect>
      </property>
      <property name="title">
-      <string>权限</string>
+      <string>他人访问权限</string>
      </property>
      <widget class="QLabel" name="label">
       <property name="geometry">

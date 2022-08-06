@@ -368,7 +368,6 @@ QLineEdit:focus{
         jspath_obj = self.card_body.external_cardBodyObj().external_jspath_obj()
         # 使用同一脚本路径的编号
         number_list = jspath_obj.getNumberList(jspath)
-        print(number_list)
         if not hasattr(self, "count_view"):
             self.count_view = CountView()
         self.count_view.setTitle(card.number())
