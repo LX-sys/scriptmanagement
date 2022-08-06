@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>902</width>
+    <height>616</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0" rowspan="3">
+    <widget class="QSplitter" name="splitter">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <widget class="QTableWidget" name="tableWidget_2">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="showGrid">
+       <bool>true</bool>
+      </property>
+      <property name="sortingEnabled">
+       <bool>false</bool>
+      </property>
+      <attribute name="horizontalHeaderCascadingSectionResizes">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="horizontalHeaderMinimumSectionSize">
+       <number>23</number>
+      </attribute>
+      <attribute name="horizontalHeaderDefaultSectionSize">
+       <number>100</number>
+      </attribute>
+      <attribute name="horizontalHeaderHighlightSections">
+       <bool>true</bool>
+      </attribute>
+      <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="horizontalHeaderStretchLastSection">
+       <bool>true</bool>
+      </attribute>
+      <attribute name="verticalHeaderVisible">
+       <bool>true</bool>
+      </attribute>
+      <attribute name="verticalHeaderCascadingSectionResizes">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="verticalHeaderShowSortIndicator" stdset="0">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="verticalHeaderStretchLastSection">
+       <bool>false</bool>
+      </attribute>
+      <row>
+       <property name="text">
+        <string>1</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>2</string>
+       </property>
+      </row>
+      <column>
+       <property name="text">
+        <string>脚本编号</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>进度</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>创建时间</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>修改时间</string>
+       </property>
+      </column>
+      <item row="0" column="0">
+       <property name="text">
+        <string>901</string>
+       </property>
+      </item>
+      <item row="0" column="1">
+       <property name="text">
+        <string>完成</string>
+       </property>
+      </item>
+      <item row="0" column="2">
+       <property name="text">
+        <string>2020-08-05 17：09</string>
+       </property>
+      </item>
+      <item row="0" column="3">
+       <property name="text">
+        <string>2020-08-05 17：09</string>
+       </property>
+      </item>
+      <item row="1" column="0">
+       <property name="text">
+        <string>902</string>
+       </property>
+      </item>
+      <item row="1" column="1">
+       <property name="text">
+        <string>完成</string>
+       </property>
+      </item>
+      <item row="1" column="2">
+       <property name="text">
+        <string>2020-08-06 17：09</string>
+       </property>
+      </item>
+      <item row="1" column="3">
+       <property name="text">
+        <string>2020-08-06 17：09</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QTextEdit" name="textEdit">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>281</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 255);</string>
+      </property>
+     </widget>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QWidget" name="widget_2" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>331</width>
+       <height>331</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 170, 127);</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="spacing">
+      <number>3</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="label_js_number_p">
+       <property name="minimumSize">
+        <size>
+         <width>95</width>
+         <height>31</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>101</width>
+         <height>31</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>总脚本数量:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="js_number_p">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>31</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>2</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="1">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>权限</string>
+     </property>
+     <widget class="QComboBox" name="comboBox">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>30</y>
+        <width>91</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <item>
+       <property name="text">
+        <string>可编辑</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>禁止访问</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>只读</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>禁止删除</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>密码编辑</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>密码删除</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>20</y>
+        <width>91</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>脚本权限：</string>
+      </property>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
