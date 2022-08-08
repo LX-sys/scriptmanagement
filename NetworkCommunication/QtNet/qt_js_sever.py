@@ -190,6 +190,19 @@ class ServerABC(QWidget):
                         self.card_info.update(o_number, data)
                         )
 
+        # 所有注册用户的信息
+        if message.get("protocolType") == "accountInfo":
+            temp_data = self.smj_personal_info.get_personal_info()
+            data = []
+            # 重新构建信息
+            for v in temp_data:
+                data.append({"user": v[1], "pwd": v[2]})
+            self.result(sock,
+                        message,
+                        True if temp_data else False,
+                        data
+                        )
+            return
     def read_data_slot(self, sock:QIODevice):
         while sock.bytesAvailable():
             datagram = sock.read(sock.bytesAvailable())

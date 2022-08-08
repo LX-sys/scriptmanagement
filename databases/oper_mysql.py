@@ -37,7 +37,6 @@ class OperMysql:
         self.cursor.execute(sql)
         return self.cursor.fetchall()
 
-
     # 查询数据库
     def select(self, sql):
         self.cursor.execute(sql)
@@ -175,5 +174,5 @@ class CardInfo(OperMysql):
 if __name__ == '__main__':
     # 测试
     smj = CardInfo()
-    print(smj.get_name_card_info('lx'))
+    print(smj.get_card_info())
 

@@ -525,7 +525,6 @@ QLineEdit:focus{
         self.js_template = JSTemplate()
         self.js_template.show()
 
-
     # py2 print 转换为 py3 print
     def py2_to_py3_print_Event(self):
         if not hasattr(self,"py2_print"):

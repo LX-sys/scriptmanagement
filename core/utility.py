@@ -55,7 +55,9 @@ from PyQt5.QtGui import (
 )
 from PyQt5.QtCore import (
     Qt as core_Qt,
-    QPoint
+    QPoint,
+    QSize,
+    QRect
 )
 from PyQt5.QtNetwork import (
     QTcpSocket,
