@@ -186,7 +186,6 @@ class ServerABC(QWidget):
             data = {
                 list(message.get("data").keys())[0]: list(message.get("data").values())[0],
             }
-            print(data)
             self.result(sock, message,
                         self.card_info.update(o_number, data)
                         )

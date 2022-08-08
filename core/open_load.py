@@ -2,6 +2,9 @@
 
     登录加载界面
 '''
+
+from core.utility import sys
+
 from core.utility import (
     QApplication,
     QWidget,
@@ -9,10 +12,9 @@ from core.utility import (
     QtCore,
     QtWidgets,
     QPoint,
-    core_Qt
+    core_Qt,
+    QTextBrowser
 )
-
-from core.utility import sys
 
 from GuiLib.progressbar.progressBar import MyQProgressBar
 from core.ScriptManagement import ScriptManagement
@@ -135,9 +137,9 @@ class OpenLoad(QWidget):
         self.progressBar.setAlignment(QtCore.Qt.AlignCenter)
         self.progressBar.setTextVisible(False)
         self.progressBar.setObjectName("progressBar")
-        self.textEdit = QtWidgets.QTextEdit(self)
+        self.textEdit = QTextBrowser(self)
         self.textEdit.setGeometry(QtCore.QRect(100, 280, 311, 231))
-        self.textEdit.setStyleSheet("QTextEdit{\n"
+        self.textEdit.setStyleSheet("QTextBrowser{\n"
 "    font: 40pt \"微软雅黑\";\n"
 "color:rgb(85, 85, 85);\n"
 "border:none;\n"
@@ -167,9 +169,9 @@ class OpenLoad(QWidget):
         self.label_7.setStyleSheet("background-color: rgb(170, 255, 127);")
         self.label_7.setText("")
         self.label_7.setObjectName("label_7")
-        self.writing = QtWidgets.QTextEdit(self)
+        self.writing = QTextBrowser(self)
         self.writing.setGeometry(QtCore.QRect(390, 380, 431, 101))
-        self.writing.setStyleSheet("QTextEdit{\n"
+        self.writing.setStyleSheet("QTextBrowser{\n"
 "    font: 40pt \"微软雅黑\";\n"
 "color:rgb(85, 85, 85);\n"
 "border:none;\n"

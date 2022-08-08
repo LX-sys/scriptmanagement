@@ -37,6 +37,7 @@ from PyQt5.QtWidgets import(
     QListWidgetItem,
     QGridLayout,
     QTextEdit,
+    QTextBrowser,
     QListWidget,
     QSpacerItem,
     QSizePolicy,

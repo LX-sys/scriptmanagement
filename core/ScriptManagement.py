@@ -43,6 +43,8 @@ from core.countView import CountView
 from core.agreement import createAgreement
 
 from databases.oper_mysql import CardInfo
+
+
 # JSM
 class ScriptManagement(QMainWindow):
     def __init__(self, *args,**kwargs) -> None:
