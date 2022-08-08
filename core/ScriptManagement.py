@@ -40,6 +40,7 @@ from core.viewJS import ViewJS
 from core.py2_py3.py2_py3 import Py2Py3
 from core.login_info import LoginInfo
 from core.countView import CountView
+from core.agreement import createAgreement
 
 from databases.oper_mysql import CardInfo
 # JSM
@@ -315,7 +316,7 @@ QLineEdit:focus{
     def read_mysql_db(self):
         # 测试读取数据库
         self.cardDB = CardInfo()
-        result = self.cardDB.get_name_card_info('lx')
+        result = self.cardDB.get_name_card_info(self.loginObj().name())
         # 构建
         for data in result:
             # 构建信息
@@ -376,10 +377,18 @@ QLineEdit:focus{
             return False
 
     def newjs_Event(self,info:dict):
-        card = self.newjs(info)
+        card = self.newjs(info) # 本地构建信息
         if card:
+            # 重新构建服务器信息结构
+            temp_info =card.info()
+
+            temp_info["user"] = self.loginObj().name()
+            temp_info["ip"] = "192.168.50.21"
+            temp_info["scheduleAll"] = "-".join(temp_info["scheduleAll"])
+            temp_info["participatorAll"] = "-".join(temp_info["participatorAll"])
+            info = createAgreement("newScript",temp_info)
             # 本地构建完成之后在发送到服务器
-            self.sock.write(bytes(json.dumps(card.info()), encoding="utf-8"))
+            self.sock.write(bytes(json.dumps(info), encoding="utf-8"))
         else:
             # 提示卡片已存在
             QMessageBox.warning(self, "提示", "该编号已存在")
@@ -409,10 +418,16 @@ QLineEdit:focus{
         # 修改脚本,更新脚本使用次数
         jspath_obj = self.card_body.external_cardBodyObj().external_jspath_obj()
 
+        data = {
+            "o_number": o_number
+        }
         if up_number:
             self.card_body.getCardInfo(o_number).updateNumber(up_number)
             jspath_obj.updateNumber(str(o_number),up_number)
+            # 更新数据库
+            data["number"]=up_number
         if task:
+            data["task"]=task
             self.card_body.getCardInfo(o_number).updateTask(task)
         if jspath:
             # 在修改路径之前,先获取旧路径绑定的编号
@@ -429,6 +444,16 @@ QLineEdit:focus{
             number_list = jspath_obj.getNumberList(jspath)
             for n in number_list:
                 self.card_body.getCardInfo2(n).updateCount(len(number_list))
+            data["jspath"]=jspath
+        '''
+        data最终结构
+        {
+            "o_number": o_number
+            "xx":"nn"    # xx表示字段名称,nn表示字段值
+        }
+        '''
+        info = createAgreement("updateScript", data)
+        self.sock.write(tcp_send(info))
 
     # 修改脚本
     def updateJS_Event(self):
@@ -455,10 +480,27 @@ QLineEdit:focus{
         # 是否删除提示
         reply = QMessageBox.question(self,"提示","是否删除该脚本",QMessageBox.Yes|QMessageBox.No)
         if reply == QMessageBox.Yes:
+            # 获取与该卡片绑定相同路径卡片的编号
+            card=self.card_body.getCardInfo2(number)
+            jspath_obj = self.card_body.external_cardBodyObj().external_jspath_obj()
+            number_list = jspath_obj.getNumberList(card.jspath()) # 使用同一脚本路径的编号
+            number_list.remove(number)  # 移除自己
+
             if self.card_body.delCard_number(number):
                 del_js_obj.resetUI()
-                # 提示删除成功
-                QMessageBox.information(self,"提示","删除成功")
+
+                # 删除成功后,更新其他脚本的使用次数
+                jspath_obj.removeNumber(number)
+                for card_number in number_list:
+                    self.card_body.getCardInfo2(card_number).updateCount(len(number_list))
+
+                # 删除数据库
+                data = {
+                    "number":number,
+                }
+                info = createAgreement("deleteScript",data)
+
+                self.sock.write(tcp_send(info))
 
     # 删除脚本
     def deleteJS_Event(self):
@@ -551,11 +593,13 @@ QLineEdit:focus{
             self.loginObj().setInfo(message.get("data").get("username"),
                                     message.get("data").get("pwd"),self.__info)
             self.statusbar.showMessage("登录成功-{}".format(self.loginObj().name()))
+
+            # 加载数据库
+            self.read_mysql_db()
             return
         elif message.get("protocolType") == "login" and message.get("result")==400:
             # 登录失败提示
             QMessageBox.information(self, "提示", "登录失败,账号或者密码错误!", QMessageBox.Yes, QMessageBox.Yes)
-
 
         # 注册
         if message.get("protocolType") == "register" and message.get("result")==200:
@@ -563,6 +607,22 @@ QLineEdit:focus{
             return
         elif message.get("protocolType") == "register" and message.get("result")==400:
             QtWidgets.QMessageBox.warning(self, "警告", "用户名已存在")
+            return
+
+        # 新建脚本
+        if message.get("protocolType") == "newScript" and message.get("result")==200:
+            QtWidgets.QMessageBox.information(self, "提示", "新建脚本成功")
+            return
+        elif message.get("protocolType") == "newScript" and message.get("result")==400:
+            QtWidgets.QMessageBox.warning(self, "警告", "新建脚本失败")
+            return
+
+        # 删除脚本
+        if message.get("protocolType") == "deleteScript" and message.get("result")==200:
+            QtWidgets.QMessageBox.information(self, "提示", "删除脚本成功")
+            return
+        elif message.get("protocolType") == "deleteScript" and message.get("result")==400:
+            QtWidgets.QMessageBox.warning(self, "警告", "删除脚本失败")
             return
 
     def read_data_slot(self):
@@ -581,13 +641,12 @@ QLineEdit:focus{
             QMessageBox.warning(self, "警告", "用户名或密码不能为空！", QMessageBox.Yes, QMessageBox.Yes)
             return
 
-        info ={
-            "protocolType": "login",
-            "data":{
+        data = {
                 "username": text_name,
                 "pwd": text_password
             }
-        }
+        info = createAgreement("login",data)
+
         # 发送到服务器
         self.sock.write(tcp_send(info))
         print("---发送成功---")
@@ -596,7 +655,8 @@ QLineEdit:focus{
         self.lineEdit_name.setFocus()
 
     # 注册
-    def register(self,info:dict):
+    def register(self,data:dict):
+        info = createAgreement("register",data)
         self.sock.write(tcp_send(info))
 
     # 注册事件

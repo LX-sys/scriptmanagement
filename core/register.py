@@ -140,14 +140,11 @@ class Register(QWidget):
             return
 
         # 构建信息
-        info={
-            "protocolType": "register",
-            "data":{
+        data = {
                 "username": name,
                 "pwd": password
             }
-        }
-        self.registered.emit(info)
+        self.registered.emit(data)
         self.__info = [name, password]
 
     # 返回个人信息

@@ -76,15 +76,20 @@ import socket as SOCKET
 from socket import socket
 
 # mysql数据库操作类
-from databases.oper_mysql import SMJPersonalInfo
+from databases.oper_mysql import SMJPersonalInfo,CardInfo
 
-# 创建数据库
+# 创建数据库 smj_personal_info
 PersonalInfo = SMJPersonalInfo()
+# 创建数据库 card_info
+cardInfo = CardInfo()
 
 
 # 让数据库对象只导入一次
 def Mysql_PersonalInfo()->SMJPersonalInfo:
     return PersonalInfo
+
+def Mysql_cardInfo()->CardInfo:
+    return cardInfo
 
 
 # 根路径,无论从那个文件运行,要保证文件路径是一样的

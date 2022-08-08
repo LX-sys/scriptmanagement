@@ -139,6 +139,36 @@ class CardInfo(OperMysql):
             result.append(card_info)
         return result
 
+    def insert(self,info:dict):
+        sql = "insert into {}(user,ip,number,task,count,schedule,scheduleAll,create_time,update_time,participator,participatorAll,jspath) values('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}');".format(
+            CardInfo.table_name,info["user"],info["ip"],info["number"],info["task"],info["count"],info["schedule"],info["scheduleAll"],info["create_time"],info["update_time"],info["participator"],info["participatorAll"],info["jspath"])
+        self.execute(sql)
+        return 200
+
+    def update(self,number,info:dict):
+        '''
+            任务名
+            任务数量
+            任务进度
+            参与者
+            更新时间
+            jspath
+
+
+        :param info:
+        :return:
+        '''
+        key = list(info.keys())[0]
+        value = info[key]
+        sql= "update {} set {}='{}' where number='{}';".format(CardInfo.table_name,key,value,number)
+        self.execute(sql)
+        return 200
+
+    def delete(self,number:str):
+        sql = "delete from {} where number='{}';".format(CardInfo.table_name,number)
+        self.execute(sql)
+        return 200
+
     def close(self):
         self.cursor.close()
         self.conn.close()

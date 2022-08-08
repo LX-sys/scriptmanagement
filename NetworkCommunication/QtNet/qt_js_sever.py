@@ -19,8 +19,9 @@ from PyQt5.QtNetwork import QTcpServer, QHostAddress
 from PyQt5.QtWidgets import QApplication, QWidget, QTextBrowser, QVBoxLayout,QPlainTextEdit
 
 
-from core.utility import Mysql_PersonalInfo,tcp_recv,tcp_send
+from core.utility import Mysql_PersonalInfo,Mysql_cardInfo,tcp_recv,tcp_send
 from core.token import JWT,QtJWT
+from core.agreement import createAgreement
 
 
 class Server(QWidget):
@@ -93,6 +94,7 @@ class ServerABC(QWidget):
     def Init(self):
         # 数据库对象
         self.smj_personal_info = Mysql_PersonalInfo()
+        self.card_info = Mysql_cardInfo()
         # token,token线程
         # self.__token = JWT()
         # self.__th_token = QtJWT(self, self.__token)
@@ -113,6 +115,13 @@ class ServerABC(QWidget):
 
         # sock.disconnected.connect(lambda: self.disconnected_slot(sock))
 
+    def result(self,sock,message,fun_result,data:dict=None):
+        if fun_result:
+            info = createAgreement(message.get("protocolType"), data if data else dict(), True)
+        else:
+            info = createAgreement(message.get("protocolType"), data if data else dict(), False)
+        sock.write(tcp_send(info))
+
     # 消息解析
     def messageAnalysis(self,sock:QIODevice,message:dict):
         if not message.get("protocolType",None):
@@ -122,47 +131,71 @@ class ServerABC(QWidget):
         if message.get("protocolType") == "login":
             text_name = message.get("data").get("username")
             text_password = message.get("data").get("pwd")
-            print(text_name,text_password)
-            info = {
-                "protocolType": "login",
-                "data": {
+            data = {
                     "username": text_name,
                     "pwd": text_password
-                },
-                "result": None
-            }
+                }
             # 通过数据库验证
-            if self.smj_personal_info.login(text_name, text_password):
-                info["result"] = 200
-            else:
-                info["result"] = 400
-            sock.write(tcp_send(info))
+            self.result(sock,
+                        message,
+                        self.smj_personal_info.login(text_name, text_password),
+                        data)
             return
 
         # 注册验证
         if message.get("protocolType") == "register":
             text_name = message.get("data").get("username")
             text_password = message.get("data").get("pwd")
-            info = {
-                "protocolType": "register",
-                "data": {
-                    "username": text_name,
-                    "pwd": text_password
-                },
-                "result": None
+
+            data = {
+                "username": text_name,
+                "pwd": text_password
             }
             # 通过数据库验证
-            if self.smj_personal_info.insert(text_name, text_password):
-                info["result"] = 200
-            else:
-                info["result"] = 400
-            sock.write(tcp_send(info))
+            self.result(sock,
+                        message,
+                        self.smj_personal_info.insert(text_name, text_password),
+                        data)
             return
+
+        # 新建脚本-存入数据库
+        if message.get("protocolType") == "newScript":
+            self.result(sock,
+                        message,
+                        self.card_info.insert(message.get("data"))
+                        )
+
+        # 删除脚本
+        if message.get("protocolType") == "deleteScript":
+            self.result(sock,
+                        message,
+                        self.card_info.delete(message.get("data").get("number"))
+                        )
+            return
+
+        # 更新脚本
+        if message.get("protocolType") == "updateScript":
+            o_number = message.get("data").get("o_number")
+            message.get("data").pop("o_number")
+            '''
+            例子
+            {
+            "number": "1",
+            }
+            '''
+            data = {
+                list(message.get("data").keys())[0]: list(message.get("data").values())[0],
+            }
+            print(data)
+            self.result(sock, message,
+                        self.card_info.update(o_number, data)
+                        )
 
     def read_data_slot(self, sock:QIODevice):
         while sock.bytesAvailable():
             datagram = sock.read(sock.bytesAvailable())
             message = tcp_recv(datagram)
+            # 消息解析
             self.messageAnalysis(sock,message)
 
 
