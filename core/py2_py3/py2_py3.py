@@ -1,3 +1,4 @@
+from PyQt5 import QtGui
 from PyQt5.QtWidgets import QMessageBox
 
 from core.utility import sys
@@ -194,6 +195,14 @@ border:1px solid rgb(85, 170, 0);
         self.textEdit_front.tyObj().typewrite_end.connect(self.codeEndEvent)
         # 下载文件
         self.btn_down.clicked.connect(self.downLoadEvent)
+
+    def closeEvent(self, e: QtGui.QCloseEvent) -> None:
+        self.stackedWidget.setCurrentIndex(0)
+        self.lineEdit_jspath.setText("")
+        self.textEdit_front.clear()
+        self.textEdit.clear()
+        self.btn_img.setText("Py2转换")
+        super().closeEvent(e)
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
