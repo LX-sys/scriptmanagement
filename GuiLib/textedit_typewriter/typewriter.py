@@ -11,7 +11,7 @@
 import sys
 from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5.QtGui import QTextCursor
-from PyQt5.QtWidgets import QApplication, QTextEdit
+from PyQt5.QtWidgets import QApplication,QTextBrowser
 
 
 # 打字机线程
@@ -36,7 +36,7 @@ class TypewriterThread(QThread):
         self.typewrite_end.emit()
 
 
-class Typewriter(QTextEdit):
+class Typewriter(QTextBrowser):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
